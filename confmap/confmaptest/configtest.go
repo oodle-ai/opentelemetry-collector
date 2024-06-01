@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package confmaptest // import "go.opentelemetry.io/collector/confmap/confmaptest"
+package confmaptest // import "github.com/oodle-ai/opentelemetry-collector/confmap/confmaptest"
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"go.opentelemetry.io/collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
 )
 
 // LoadConf loads a confmap.Conf from file, and does NOT validate the configuration.

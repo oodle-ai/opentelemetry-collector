@@ -1,10 +1,10 @@
-module go.opentelemetry.io/collector/filter
+module github.com/oodle-ai/opentelemetry-collector/filter
 
 go 1.21.0
 
 require (
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/collector/confmap v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/confmap v0.101.0
 )
 
 require (
@@ -21,4 +21,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace go.opentelemetry.io/collector/confmap => ../confmap
+replace github.com/oodle-ai/opentelemetry-collector/confmap => ../confmap

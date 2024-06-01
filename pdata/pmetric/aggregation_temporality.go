@@ -1,10 +1,10 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pmetric // import "go.opentelemetry.io/collector/pdata/pmetric"
+package pmetric // import "github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 
 import (
-	otlpmetrics "go.opentelemetry.io/collector/pdata/internal/data/protogen/metrics/v1"
+	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
 )
 
 // AggregationTemporality defines how a metric aggregator reports aggregated values.

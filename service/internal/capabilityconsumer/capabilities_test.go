@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/consumer/consumertest"
-	"go.opentelemetry.io/collector/pdata/testdata"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumertest"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/testdata"
 )
 
 func TestLogs(t *testing.T) {

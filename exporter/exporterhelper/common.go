@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package exporterhelper // import "go.opentelemetry.io/collector/exporter/exporterhelper"
+package exporterhelper // import "github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"
 
 import (
 	"context"
@@ -10,12 +10,12 @@ import (
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configretry"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/exporterbatcher"
-	"go.opentelemetry.io/collector/exporter/exporterqueue"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configretry"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterbatcher"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterqueue"
 )
 
 // requestSender is an abstraction of a sender for a request independent of the type of the data (traces, metrics, logs).

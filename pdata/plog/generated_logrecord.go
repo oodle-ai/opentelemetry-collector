@@ -7,10 +7,10 @@
 package plog
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	"go.opentelemetry.io/collector/pdata/internal/data"
-	otlplogs "go.opentelemetry.io/collector/pdata/internal/data/protogen/logs/v1"
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"
+	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 // LogRecord are experimental implementation of OpenTelemetry Log Data Model.

@@ -15,13 +15,13 @@ import (
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.uber.org/multierr"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/component/componenttest"
-	"go.opentelemetry.io/collector/consumer/consumertest"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"go.opentelemetry.io/collector/receiver"
-	"go.opentelemetry.io/collector/receiver/receivertest"
-	"go.opentelemetry.io/collector/receiver/scrapererror"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component/componenttest"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumertest"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/receiver"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/receivertest"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/scrapererror"
 )
 
 type testInitialize struct {

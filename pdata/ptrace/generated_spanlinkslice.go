@@ -9,8 +9,8 @@ package ptrace
 import (
 	"sort"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlptrace "go.opentelemetry.io/collector/pdata/internal/data/protogen/trace/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
 )
 
 // SpanLinkSlice logically represents a slice of SpanLink.

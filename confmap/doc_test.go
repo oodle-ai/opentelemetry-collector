@@ -8,7 +8,7 @@ import (
 	"slices"
 	"time"
 
-	"go.opentelemetry.io/collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
 )
 
 type DiskScrape struct {

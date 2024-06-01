@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/connector/connectortest"
-	"go.opentelemetry.io/collector/exporter/exportertest"
-	"go.opentelemetry.io/collector/extension/extensiontest"
-	"go.opentelemetry.io/collector/processor/processortest"
-	"go.opentelemetry.io/collector/receiver/receivertest"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/connector/connectortest"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exportertest"
+	"github.com/oodle-ai/opentelemetry-collector/extension/extensiontest"
+	"github.com/oodle-ai/opentelemetry-collector/processor/processortest"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/receivertest"
 )
 
 var nopType = component.MustNewType("nop")

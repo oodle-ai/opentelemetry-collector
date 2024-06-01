@@ -1,17 +1,17 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package servicetelemetry // import "go.opentelemetry.io/collector/service/internal/servicetelemetry"
+package servicetelemetry // import "github.com/oodle-ai/opentelemetry-collector/service/internal/servicetelemetry"
 
 import (
 	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/pdata/pcommon"
-	"go.opentelemetry.io/collector/service/internal/status"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/status"
 )
 
 // TelemetrySettings mirrors component.TelemetrySettings except for the mechanism for reporting

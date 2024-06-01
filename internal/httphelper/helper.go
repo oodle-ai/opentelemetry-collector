@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package httphelper // import "go.opentelemetry.io/collector/internal/httphelper"
+package httphelper // import "github.com/oodle-ai/opentelemetry-collector/internal/httphelper"
 
 import (
 	"net/http"

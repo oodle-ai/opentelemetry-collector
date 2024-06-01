@@ -1,15 +1,15 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package fanoutconsumer // import "go.opentelemetry.io/collector/internal/fanoutconsumer"
+package fanoutconsumer // import "github.com/oodle-ai/opentelemetry-collector/internal/fanoutconsumer"
 
 import (
 	"context"
 
 	"go.uber.org/multierr"
 
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 )
 
 // NewMetrics wraps multiple metrics consumers in a single one.

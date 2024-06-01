@@ -9,8 +9,8 @@ package plog
 import (
 	"sort"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlplogs "go.opentelemetry.io/collector/pdata/internal/data/protogen/logs/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
 )
 
 // LogRecordSlice logically represents a slice of LogRecord.

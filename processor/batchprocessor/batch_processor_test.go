@@ -16,17 +16,17 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/metric/metricdata"
 
-	"go.opentelemetry.io/collector/client"
-	"go.opentelemetry.io/collector/component/componenttest"
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/consumer/consumererror"
-	"go.opentelemetry.io/collector/consumer/consumertest"
-	"go.opentelemetry.io/collector/pdata/plog"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"go.opentelemetry.io/collector/pdata/ptrace"
-	"go.opentelemetry.io/collector/pdata/testdata"
-	"go.opentelemetry.io/collector/processor/processortest"
+	"github.com/oodle-ai/opentelemetry-collector/client"
+	"github.com/oodle-ai/opentelemetry-collector/component/componenttest"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumererror"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumertest"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/testdata"
+	"github.com/oodle-ai/opentelemetry-collector/processor/processortest"
 )
 
 func TestProcessorShutdown(t *testing.T) {

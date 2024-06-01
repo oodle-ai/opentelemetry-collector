@@ -1,4 +1,4 @@
-module go.opentelemetry.io/collector/internal/tools
+module github.com/oodle-ai/opentelemetry-collector/internal/tools
 
 go 1.21.0
 

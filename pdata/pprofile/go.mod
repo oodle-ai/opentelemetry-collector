@@ -1,4 +1,4 @@
-module go.opentelemetry.io/collector/pdata/pprofile
+module github.com/oodle-ai/opentelemetry-collector/pdata/pprofile
 
 go 1.21.0
 
@@ -6,7 +6,7 @@ toolchain go1.21.10
 
 require (
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/collector/pdata v1.8.0
+	github.com/oodle-ai/opentelemetry-collector/pdata v1.8.0
 )
 
 require (
@@ -24,4 +24,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace go.opentelemetry.io/collector/pdata => ../
+replace github.com/oodle-ai/opentelemetry-collector/pdata => ../

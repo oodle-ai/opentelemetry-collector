@@ -11,10 +11,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/service"
-	"go.opentelemetry.io/collector/service/pipelines"
-	"go.opentelemetry.io/collector/service/telemetry"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/service"
+	"github.com/oodle-ai/opentelemetry-collector/service/pipelines"
+	"github.com/oodle-ai/opentelemetry-collector/service/telemetry"
 )
 
 func TestUnmarshalEmpty(t *testing.T) {

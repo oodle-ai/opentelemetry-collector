@@ -1,12 +1,12 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package consumererror // import "go.opentelemetry.io/collector/consumer/consumererror"
+package consumererror // import "github.com/oodle-ai/opentelemetry-collector/consumer/consumererror"
 
 import (
-	"go.opentelemetry.io/collector/pdata/plog"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"go.opentelemetry.io/collector/pdata/ptrace"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
 )
 
 type retryable[V ptrace.Traces | pmetric.Metrics | plog.Logs] struct {

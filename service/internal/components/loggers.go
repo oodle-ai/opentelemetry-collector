@@ -1,14 +1,14 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package components // import "go.opentelemetry.io/collector/service/internal/components"
+package components // import "github.com/oodle-ai/opentelemetry-collector/service/internal/components"
 
 import (
 	"strings"
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 const (

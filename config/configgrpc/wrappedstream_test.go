@@ -2,7 +2,7 @@
 // Copyright 2016 Michal Witkowski. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package configgrpc // import "go.opentelemetry.io/collector/internal/middleware"
+package configgrpc // import "github.com/oodle-ai/opentelemetry-collector/internal/middleware"
 
 import (
 	"context"

@@ -1,18 +1,18 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package memorylimiterprocessor // import "go.opentelemetry.io/collector/processor/memorylimiterprocessor"
+package memorylimiterprocessor // import "github.com/oodle-ai/opentelemetry-collector/processor/memorylimiterprocessor"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/internal/memorylimiter"
-	"go.opentelemetry.io/collector/pdata/plog"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"go.opentelemetry.io/collector/pdata/ptrace"
-	"go.opentelemetry.io/collector/processor"
-	"go.opentelemetry.io/collector/processor/processorhelper"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/internal/memorylimiter"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
+	"github.com/oodle-ai/opentelemetry-collector/processor"
+	"github.com/oodle-ai/opentelemetry-collector/processor/processorhelper"
 )
 
 type memoryLimiterProcessor struct {

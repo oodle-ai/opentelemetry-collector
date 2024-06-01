@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/cmd/builder/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/cmd/builder/internal"
 
 import (
 	"fmt"
@@ -15,8 +15,8 @@ import (
 	flag "github.com/spf13/pflag"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/cmd/builder/internal/builder"
-	"go.opentelemetry.io/collector/cmd/builder/internal/config"
+	"github.com/oodle-ai/opentelemetry-collector/cmd/builder/internal/builder"
+	"github.com/oodle-ai/opentelemetry-collector/cmd/builder/internal/config"
 )
 
 const (
@@ -111,7 +111,7 @@ configuration is provided, ocb will generate a default Collector.
 	if err := cmd.Flags().MarkDeprecated(distributionGoFlag, "use config distribution::go"); err != nil {
 		return nil, err
 	}
-	cmd.Flags().StringVar(&cfg.Distribution.Module, distributionModuleFlag, "go.opentelemetry.io/collector/cmd/builder", "The Go module for the new distribution")
+	cmd.Flags().StringVar(&cfg.Distribution.Module, distributionModuleFlag, "github.com/oodle-ai/opentelemetry-collector/cmd/builder", "The Go module for the new distribution")
 	if err := cmd.Flags().MarkDeprecated(distributionModuleFlag, "use config distribution::module"); err != nil {
 		return nil, err
 	}

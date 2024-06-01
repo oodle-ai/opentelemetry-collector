@@ -4,13 +4,13 @@
 // Package sharedcomponent exposes functionality for components
 // to register against a shared key, such as a configuration object, in order to be reused across signal types.
 // This is particularly useful when the component relies on a shared resource such as os.File or http.Server.
-package sharedcomponent // import "go.opentelemetry.io/collector/internal/sharedcomponent"
+package sharedcomponent // import "github.com/oodle-ai/opentelemetry-collector/internal/sharedcomponent"
 
 import (
 	"context"
 	"sync"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 func NewMap[K comparable, V component.Component]() *Map[K, V] {

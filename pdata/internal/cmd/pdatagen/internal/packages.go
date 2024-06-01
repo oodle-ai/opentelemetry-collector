@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/pdata/internal/cmd/pdatagen/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/pdata/internal/cmd/pdatagen/internal"
 
 import (
 	"bytes"
@@ -121,7 +121,7 @@ func (p *Package) GenerateInternalFiles() error {
 		// Add imports
 		sb.WriteString("import (" + newLine)
 		for _, imp := range p.imports {
-			if imp == `"go.opentelemetry.io/collector/pdata/internal"` {
+			if imp == `"github.com/oodle-ai/opentelemetry-collector/pdata/internal"` {
 				continue
 			}
 			if imp != "" {

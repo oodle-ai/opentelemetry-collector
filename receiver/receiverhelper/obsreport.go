@@ -3,7 +3,7 @@
 
 //go:generate mdatagen metadata.yaml
 
-package receiverhelper // import "go.opentelemetry.io/collector/receiver/receiverhelper"
+package receiverhelper // import "github.com/oodle-ai/opentelemetry-collector/receiver/receiverhelper"
 
 import (
 	"context"
@@ -14,11 +14,11 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/internal/obsreportconfig/obsmetrics"
-	"go.opentelemetry.io/collector/receiver"
-	"go.opentelemetry.io/collector/receiver/receiverhelper/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/internal/obsreportconfig/obsmetrics"
+	"github.com/oodle-ai/opentelemetry-collector/receiver"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/receiverhelper/internal/metadata"
 )
 
 // ObsReport is a helper to add observability to a receiver.

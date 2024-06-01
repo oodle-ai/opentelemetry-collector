@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.opentelemetry.io/contrib/config"
 
-	"go.opentelemetry.io/collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
 )
 
 func TestLoadConfig(t *testing.T) {

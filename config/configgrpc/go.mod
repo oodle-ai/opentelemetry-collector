@@ -1,22 +1,22 @@
-module go.opentelemetry.io/collector/config/configgrpc
+module github.com/oodle-ai/opentelemetry-collector/config/configgrpc
 
 go 1.21.0
 
 require (
 	github.com/mostynb/go-grpc-compression v1.2.2
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/collector v0.101.0
-	go.opentelemetry.io/collector/component v0.101.0
-	go.opentelemetry.io/collector/config/configauth v0.101.0
-	go.opentelemetry.io/collector/config/configcompression v1.8.0
-	go.opentelemetry.io/collector/config/confignet v0.101.0
-	go.opentelemetry.io/collector/config/configopaque v1.8.0
-	go.opentelemetry.io/collector/config/configtelemetry v0.101.0
-	go.opentelemetry.io/collector/config/configtls v0.101.0
-	go.opentelemetry.io/collector/config/internal v0.101.0
-	go.opentelemetry.io/collector/extension/auth v0.101.0
-	go.opentelemetry.io/collector/pdata v1.8.0
-	go.opentelemetry.io/collector/pdata/testdata v0.101.0
+	github.com/oodle-ai/opentelemetry-collector v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/component v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/config/configauth v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/config/configcompression v1.8.0
+	github.com/oodle-ai/opentelemetry-collector/config/confignet v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/config/configopaque v1.8.0
+	github.com/oodle-ai/opentelemetry-collector/config/configtelemetry v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/config/configtls v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/config/internal v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/extension/auth v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/pdata v1.8.0
+	github.com/oodle-ai/opentelemetry-collector/pdata/testdata v0.101.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.52.0
 	go.opentelemetry.io/otel v1.27.0
 	go.uber.org/goleak v1.3.0
@@ -49,9 +49,9 @@ require (
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.53.0 // indirect
 	github.com/prometheus/procfs v0.15.0 // indirect
-	go.opentelemetry.io/collector/confmap v0.101.0 // indirect
-	go.opentelemetry.io/collector/extension v0.101.0 // indirect
-	go.opentelemetry.io/collector/featuregate v1.8.0 // indirect
+	github.com/oodle-ai/opentelemetry-collector/confmap v0.101.0 // indirect
+	github.com/oodle-ai/opentelemetry-collector/extension v0.101.0 // indirect
+	github.com/oodle-ai/opentelemetry-collector/featuregate v1.8.0 // indirect
 	go.opentelemetry.io/otel/exporters/prometheus v0.49.0 // indirect
 	go.opentelemetry.io/otel/metric v1.27.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.27.0 // indirect
@@ -66,34 +66,34 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace go.opentelemetry.io/collector => ../../
+replace github.com/oodle-ai/opentelemetry-collector => ../../
 
-replace go.opentelemetry.io/collector/config/configauth => ../configauth
+replace github.com/oodle-ai/opentelemetry-collector/config/configauth => ../configauth
 
-replace go.opentelemetry.io/collector/config/configcompression => ../configcompression
+replace github.com/oodle-ai/opentelemetry-collector/config/configcompression => ../configcompression
 
-replace go.opentelemetry.io/collector/config/confignet => ../confignet
+replace github.com/oodle-ai/opentelemetry-collector/config/confignet => ../confignet
 
-replace go.opentelemetry.io/collector/config/configopaque => ../configopaque
+replace github.com/oodle-ai/opentelemetry-collector/config/configopaque => ../configopaque
 
-replace go.opentelemetry.io/collector/config/configtls => ../configtls
+replace github.com/oodle-ai/opentelemetry-collector/config/configtls => ../configtls
 
-replace go.opentelemetry.io/collector/config/configtelemetry => ../configtelemetry
+replace github.com/oodle-ai/opentelemetry-collector/config/configtelemetry => ../configtelemetry
 
-replace go.opentelemetry.io/collector/config/internal => ../internal
+replace github.com/oodle-ai/opentelemetry-collector/config/internal => ../internal
 
-replace go.opentelemetry.io/collector/extension => ../../extension
+replace github.com/oodle-ai/opentelemetry-collector/extension => ../../extension
 
-replace go.opentelemetry.io/collector/extension/auth => ../../extension/auth
+replace github.com/oodle-ai/opentelemetry-collector/extension/auth => ../../extension/auth
 
-replace go.opentelemetry.io/collector/confmap => ../../confmap
+replace github.com/oodle-ai/opentelemetry-collector/confmap => ../../confmap
 
-replace go.opentelemetry.io/collector/featuregate => ../../featuregate
+replace github.com/oodle-ai/opentelemetry-collector/featuregate => ../../featuregate
 
-replace go.opentelemetry.io/collector/pdata => ../../pdata
+replace github.com/oodle-ai/opentelemetry-collector/pdata => ../../pdata
 
-replace go.opentelemetry.io/collector/pdata/testdata => ../../pdata/testdata
+replace github.com/oodle-ai/opentelemetry-collector/pdata/testdata => ../../pdata/testdata
 
-replace go.opentelemetry.io/collector/component => ../../component
+replace github.com/oodle-ai/opentelemetry-collector/component => ../../component
 
-replace go.opentelemetry.io/collector/consumer => ../../consumer
+replace github.com/oodle-ai/opentelemetry-collector/consumer => ../../consumer

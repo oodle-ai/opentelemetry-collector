@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package grpclog // import "go.opentelemetry.io/collector/otelcol/internal/grpclog"
+package grpclog // import "github.com/oodle-ai/opentelemetry-collector/otelcol/internal/grpclog"
 
 import (
 	"go.uber.org/zap"

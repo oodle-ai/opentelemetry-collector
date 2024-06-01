@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package processorhelper // import "go.opentelemetry.io/collector/processor/processorhelper"
+package processorhelper // import "github.com/oodle-ai/opentelemetry-collector/processor/processorhelper"
 
 import (
 	"context"
@@ -9,10 +9,10 @@ import (
 
 	"go.opentelemetry.io/otel/trace"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/pdata/plog"
-	"go.opentelemetry.io/collector/processor"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/processor"
 )
 
 // ProcessLogsFunc is a helper function that processes the incoming data and returns the data to be sent to the next component.

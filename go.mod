@@ -1,16 +1,16 @@
-module go.opentelemetry.io/collector
+module github.com/oodle-ai/opentelemetry-collector
 
 go 1.21.0
 
 require (
+	github.com/oodle-ai/opentelemetry-collector/component v0.0.0-00010101000000-000000000000
+	github.com/oodle-ai/opentelemetry-collector/confmap v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/consumer v0.0.0-00010101000000-000000000000
+	github.com/oodle-ai/opentelemetry-collector/featuregate v0.0.0-00010101000000-000000000000
+	github.com/oodle-ai/opentelemetry-collector/pdata v1.8.0
+	github.com/oodle-ai/opentelemetry-collector/pdata/testdata v0.101.0
 	github.com/shirou/gopsutil/v3 v3.24.4
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/collector/component v0.101.0
-	go.opentelemetry.io/collector/confmap v0.101.0
-	go.opentelemetry.io/collector/consumer v0.101.0
-	go.opentelemetry.io/collector/featuregate v1.8.0
-	go.opentelemetry.io/collector/pdata v1.8.0
-	go.opentelemetry.io/collector/pdata/testdata v0.101.0
 	go.opentelemetry.io/contrib/config v0.7.0
 	go.uber.org/goleak v1.3.0
 	go.uber.org/multierr v1.11.0
@@ -39,6 +39,8 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/oodle-ai/opentelemetry-collector/config/configtelemetry v0.101.0 // indirect
+	github.com/planetscale/vtprotobuf v0.6.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/prometheus/client_golang v1.19.1 // indirect
@@ -48,7 +50,6 @@ require (
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
-	go.opentelemetry.io/collector/config/configtelemetry v0.101.0 // indirect
 	go.opentelemetry.io/otel v1.27.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.27.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp v1.27.0 // indirect
@@ -72,19 +73,19 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace go.opentelemetry.io/collector/component => ./component
+replace github.com/oodle-ai/opentelemetry-collector/component => ./component
 
-replace go.opentelemetry.io/collector/confmap => ./confmap
+replace github.com/oodle-ai/opentelemetry-collector/confmap => ./confmap
 
-replace go.opentelemetry.io/collector/config/configtelemetry => ./config/configtelemetry
+replace github.com/oodle-ai/opentelemetry-collector/config/configtelemetry => ./config/configtelemetry
 
-replace go.opentelemetry.io/collector/consumer => ./consumer
+replace github.com/oodle-ai/opentelemetry-collector/consumer => ./consumer
 
-replace go.opentelemetry.io/collector/featuregate => ./featuregate
+replace github.com/oodle-ai/opentelemetry-collector/featuregate => ./featuregate
 
-replace go.opentelemetry.io/collector/pdata => ./pdata
+replace github.com/oodle-ai/opentelemetry-collector/pdata => ./pdata
 
-replace go.opentelemetry.io/collector/pdata/testdata => ./pdata/testdata
+replace github.com/oodle-ai/opentelemetry-collector/pdata/testdata => ./pdata/testdata
 
 retract (
 	v0.76.0 // Depends on retracted pdata v1.0.0-rc10 module, use v0.76.1

@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package common // import "go.opentelemetry.io/collector/exporter/internal/common"
+package common // import "github.com/oodle-ai/opentelemetry-collector/exporter/internal/common"
 
 import (
 	"context"
@@ -11,12 +11,12 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/exporterhelper"
-	"go.opentelemetry.io/collector/exporter/internal/otlptext"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/internal/otlptext"
 )
 
 var onceWarnLogLevel sync.Once

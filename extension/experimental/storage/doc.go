@@ -3,4 +3,4 @@
 
 // Package storage implements an extension that can
 // persist state beyond the collector process.
-package storage // import "go.opentelemetry.io/collector/extension/experimental/storage"
+package storage // import "github.com/oodle-ai/opentelemetry-collector/extension/experimental/storage"

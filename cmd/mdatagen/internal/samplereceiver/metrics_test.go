@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel/sdk/metric/metricdata"
 
-	"go.opentelemetry.io/collector/cmd/mdatagen/internal/samplereceiver/internal/metadata"
-	"go.opentelemetry.io/collector/component/componenttest"
-	"go.opentelemetry.io/collector/consumer/consumertest"
-	"go.opentelemetry.io/collector/receiver/receivertest"
+	"github.com/oodle-ai/opentelemetry-collector/cmd/mdatagen/internal/samplereceiver/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/component/componenttest"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumertest"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/receivertest"
 )
 
 // TestGeneratedMetrics verifies that the internal/metadata API is generated correctly.

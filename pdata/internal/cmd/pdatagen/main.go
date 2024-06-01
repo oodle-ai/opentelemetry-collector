@@ -4,7 +4,7 @@
 package main
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal/cmd/pdatagen/internal"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/cmd/pdatagen/internal"
 )
 
 func check(e error) {

@@ -7,10 +7,9 @@
 package pmetric
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	"go.opentelemetry.io/collector/pdata/internal/data"
-	otlpmetrics "go.opentelemetry.io/collector/pdata/internal/data/protogen/metrics/v1"
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 // Exemplar is a sample input double measurement.
@@ -112,7 +111,7 @@ func (ms Exemplar) TraceID() pcommon.TraceID {
 // SetTraceID replaces the traceid associated with this Exemplar.
 func (ms Exemplar) SetTraceID(v pcommon.TraceID) {
 	ms.state.AssertMutable()
-	ms.orig.TraceId = data.TraceID(v)
+	//ms.orig.TraceId = data.TraceID(v)
 }
 
 // SpanID returns the spanid associated with this Exemplar.
@@ -123,7 +122,7 @@ func (ms Exemplar) SpanID() pcommon.SpanID {
 // SetSpanID replaces the spanid associated with this Exemplar.
 func (ms Exemplar) SetSpanID(v pcommon.SpanID) {
 	ms.state.AssertMutable()
-	ms.orig.SpanId = data.SpanID(v)
+	//ms.orig.SpanId = data.SpanID(v)
 }
 
 // CopyTo copies all properties from the current struct overriding the destination.

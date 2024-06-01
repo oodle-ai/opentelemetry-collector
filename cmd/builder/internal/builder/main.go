@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package builder // import "go.opentelemetry.io/collector/cmd/builder/internal/builder"
+package builder // import "github.com/oodle-ai/opentelemetry-collector/cmd/builder/internal/builder"
 
 import (
 	"bytes"
@@ -213,7 +213,7 @@ func processAndWrite(cfg Config, tmpl *template.Template, outFile string, tmplPa
 }
 
 func (c *Config) coreModuleAndVersion() (string, string) {
-	module := "go.opentelemetry.io/collector"
+	module := "github.com/oodle-ai/opentelemetry-collector"
 	if c.Distribution.RequireOtelColModule {
 		module += "/otelcol"
 	}

@@ -11,9 +11,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlptrace "go.opentelemetry.io/collector/pdata/internal/data/protogen/trace/v1"
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 func TestSpanEvent_MoveTo(t *testing.T) {

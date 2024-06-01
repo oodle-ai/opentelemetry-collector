@@ -1,17 +1,17 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package receivertest // import "go.opentelemetry.io/collector/receiver/receivertest"
+package receivertest // import "github.com/oodle-ai/opentelemetry-collector/receiver/receivertest"
 
 import (
 	"context"
 
 	"github.com/google/uuid"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/component/componenttest"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/receiver"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component/componenttest"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/receiver"
 )
 
 var defaultComponentType = component.MustNewType("nop")

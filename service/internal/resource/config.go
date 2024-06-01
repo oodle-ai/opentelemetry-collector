@@ -1,15 +1,15 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package resource // import "go.opentelemetry.io/collector/service/internal/resource"
+package resource // import "github.com/oodle-ai/opentelemetry-collector/service/internal/resource"
 
 import (
 	"github.com/google/uuid"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/resource"
 
-	"go.opentelemetry.io/collector/component"
-	semconv "go.opentelemetry.io/collector/semconv/v1.18.0"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	semconv "github.com/oodle-ai/opentelemetry-collector/semconv/v1.18.0"
 )
 
 // New resource from telemetry configuration.

@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 func TestConfigValidate(t *testing.T) {

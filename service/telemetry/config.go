@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package telemetry // import "go.opentelemetry.io/collector/service/telemetry"
+package telemetry // import "github.com/oodle-ai/opentelemetry-collector/service/telemetry"
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"go.opentelemetry.io/contrib/config"
 	"go.uber.org/zap/zapcore"
 
-	"go.opentelemetry.io/collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
 )
 
 // Config defines the configurable settings for service telemetry.

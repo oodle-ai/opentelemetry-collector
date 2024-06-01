@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package configopaque // import "go.opentelemetry.io/collector/config/configopaque"
+package configopaque // import "github.com/oodle-ai/opentelemetry-collector/config/configopaque"
 
 import (
 	"fmt"

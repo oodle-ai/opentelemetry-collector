@@ -1,12 +1,12 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package json // import "go.opentelemetry.io/collector/pdata/internal/json"
+package json // import "github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
 
 import (
 	jsoniter "github.com/json-iterator/go"
 
-	otlpcommon "go.opentelemetry.io/collector/pdata/internal/data/protogen/common/v1"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 )
 
 func ReadScope(iter *jsoniter.Iterator, scope *otlpcommon.InstrumentationScope) {

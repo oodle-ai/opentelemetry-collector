@@ -9,9 +9,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"go.opentelemetry.io/collector/exporter/exporterbatcher"
-	"go.opentelemetry.io/collector/pdata/plog"
-	"go.opentelemetry.io/collector/pdata/testdata"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterbatcher"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/testdata"
 )
 
 func TestMergeLogs(t *testing.T) {

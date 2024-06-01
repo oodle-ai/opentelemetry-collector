@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package service // import "go.opentelemetry.io/collector/service"
+package service // import "github.com/oodle-ai/opentelemetry-collector/service"
 
 import (
 	"net/http"
@@ -9,9 +9,9 @@ import (
 	"runtime"
 	"time"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/featuregate"
-	"go.opentelemetry.io/collector/service/internal/zpages"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/featuregate"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/zpages"
 )
 
 const (

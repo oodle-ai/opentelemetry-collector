@@ -7,9 +7,9 @@
 package ptrace
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlptrace "go.opentelemetry.io/collector/pdata/internal/data/protogen/trace/v1"
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 // ResourceSpans is a collection of spans from a Resource.

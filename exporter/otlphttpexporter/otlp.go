@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package otlphttpexporter // import "go.opentelemetry.io/collector/exporter/otlphttpexporter"
+package otlphttpexporter // import "github.com/oodle-ai/opentelemetry-collector/exporter/otlphttpexporter"
 
 import (
 	"bytes"
@@ -19,17 +19,17 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/proto"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer/consumererror"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/exporterhelper"
-	"go.opentelemetry.io/collector/internal/httphelper"
-	"go.opentelemetry.io/collector/pdata/plog"
-	"go.opentelemetry.io/collector/pdata/plog/plogotlp"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"go.opentelemetry.io/collector/pdata/pmetric/pmetricotlp"
-	"go.opentelemetry.io/collector/pdata/ptrace"
-	"go.opentelemetry.io/collector/pdata/ptrace/ptraceotlp"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumererror"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"
+	"github.com/oodle-ai/opentelemetry-collector/internal/httphelper"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog/plogotlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric/pmetricotlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace/ptraceotlp"
 )
 
 type baseExporter struct {

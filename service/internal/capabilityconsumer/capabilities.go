@@ -1,10 +1,10 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package capabilityconsumer // import "go.opentelemetry.io/collector/service/internal/capabilityconsumer"
+package capabilityconsumer // import "github.com/oodle-ai/opentelemetry-collector/service/internal/capabilityconsumer"
 
 import (
-	"go.opentelemetry.io/collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
 )
 
 func NewLogs(logs consumer.Logs, cap consumer.Capabilities) consumer.Logs {

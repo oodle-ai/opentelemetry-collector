@@ -16,14 +16,14 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/consumer/consumererror"
-	"go.opentelemetry.io/collector/consumer/consumertest"
-	"go.opentelemetry.io/collector/pdata/ptrace/ptraceotlp"
-	"go.opentelemetry.io/collector/pdata/testdata"
-	"go.opentelemetry.io/collector/receiver/receiverhelper"
-	"go.opentelemetry.io/collector/receiver/receivertest"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumererror"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumertest"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace/ptraceotlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/testdata"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/receiverhelper"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/receivertest"
 )
 
 func TestExport(t *testing.T) {

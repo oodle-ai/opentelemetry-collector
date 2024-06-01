@@ -1,10 +1,10 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package batchprocessor // import "go.opentelemetry.io/collector/processor/batchprocessor"
+package batchprocessor // import "github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor"
 
 import (
-	"go.opentelemetry.io/collector/pdata/ptrace"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
 )
 
 // splitTraces removes spans from the input trace and returns a new trace of the specified size.

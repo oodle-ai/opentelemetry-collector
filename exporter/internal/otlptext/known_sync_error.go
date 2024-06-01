@@ -3,7 +3,7 @@
 
 //go:build linux || darwin
 
-package otlptext // import "go.opentelemetry.io/collector/exporter/internal/otlptext"
+package otlptext // import "github.com/oodle-ai/opentelemetry-collector/exporter/internal/otlptext"
 
 import (
 	"errors"

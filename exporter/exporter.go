@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package exporter // import "go.opentelemetry.io/collector/exporter"
+package exporter // import "github.com/oodle-ai/opentelemetry-collector/exporter"
 
 import (
 	"context"
@@ -9,8 +9,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
 )
 
 // Traces is an exporter that can consume traces.

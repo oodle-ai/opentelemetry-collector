@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package exporterhelper // import "go.opentelemetry.io/collector/exporter/exporterhelper"
+package exporterhelper // import "github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"
 
 import (
 	"context"
@@ -14,11 +14,11 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/config/configretry"
-	"go.opentelemetry.io/collector/consumer/consumererror"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/internal/experr"
-	"go.opentelemetry.io/collector/internal/obsreportconfig/obsmetrics"
+	"github.com/oodle-ai/opentelemetry-collector/config/configretry"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumererror"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/internal/experr"
+	"github.com/oodle-ai/opentelemetry-collector/internal/obsreportconfig/obsmetrics"
 )
 
 // TODO: Clean this by forcing all exporters to return an internal error type that always include the information about retries.

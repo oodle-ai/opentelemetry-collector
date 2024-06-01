@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package otlptext // import "go.opentelemetry.io/collector/exporter/internal/otlptext"
+package otlptext // import "github.com/oodle-ai/opentelemetry-collector/exporter/internal/otlptext"
 
 import (
 	"bytes"
@@ -9,9 +9,9 @@ import (
 	"math"
 	"strings"
 
-	"go.opentelemetry.io/collector/pdata/pcommon"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"go.opentelemetry.io/collector/pdata/ptrace"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
 )
 
 type dataBuffer struct {

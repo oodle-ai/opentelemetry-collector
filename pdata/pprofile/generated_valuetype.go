@@ -7,8 +7,8 @@
 package pprofile
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpprofiles "go.opentelemetry.io/collector/pdata/internal/data/protogen/profiles/v1experimental"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpprofiles "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/profiles/v1experimental"
 )
 
 // ValueType describes the type and units of a value, with an optional aggregation temporality.

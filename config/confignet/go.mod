@@ -1,4 +1,4 @@
-module go.opentelemetry.io/collector/config/confignet
+module github.com/oodle-ai/opentelemetry-collector/config/confignet
 
 go 1.21.0
 

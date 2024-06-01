@@ -1,18 +1,18 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package otelcoltest // import "go.opentelemetry.io/collector/otelcol/otelcoltest"
+package otelcoltest // import "github.com/oodle-ai/opentelemetry-collector/otelcol/otelcoltest"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/confmap/converter/expandconverter"
-	"go.opentelemetry.io/collector/confmap/provider/envprovider"
-	"go.opentelemetry.io/collector/confmap/provider/fileprovider"
-	"go.opentelemetry.io/collector/confmap/provider/httpprovider"
-	"go.opentelemetry.io/collector/confmap/provider/yamlprovider"
-	"go.opentelemetry.io/collector/otelcol"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/converter/expandconverter"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/provider/envprovider"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpprovider"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/provider/yamlprovider"
+	"github.com/oodle-ai/opentelemetry-collector/otelcol"
 )
 
 // LoadConfig loads a config.Config  from file, and does NOT validate the configuration.

@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package exporterhelper // import "go.opentelemetry.io/collector/exporter/exporterhelper"
+package exporterhelper // import "github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"
 
 import (
 	"context"
@@ -9,13 +9,13 @@ import (
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/consumer/consumererror"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/exporterqueue"
-	"go.opentelemetry.io/collector/exporter/internal/queue"
-	"go.opentelemetry.io/collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumererror"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterqueue"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/internal/queue"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 )
 
 var metricsMarshaler = &pmetric.ProtoMarshaler{}

@@ -3,8 +3,8 @@
 package metadata
 
 import (
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/filter"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/filter"
 )
 
 // MetricConfig provides common config for a particular metric.

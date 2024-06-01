@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package service // import "go.opentelemetry.io/collector/service"
+package service // import "github.com/oodle-ai/opentelemetry-collector/service"
 
 import (
 	"context"
@@ -14,24 +14,24 @@ import (
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/connector"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/extension"
-	"go.opentelemetry.io/collector/internal/localhostgate"
-	"go.opentelemetry.io/collector/internal/obsreportconfig"
-	"go.opentelemetry.io/collector/pdata/pcommon"
-	"go.opentelemetry.io/collector/processor"
-	"go.opentelemetry.io/collector/receiver"
-	"go.opentelemetry.io/collector/service/extensions"
-	"go.opentelemetry.io/collector/service/internal/graph"
-	"go.opentelemetry.io/collector/service/internal/proctelemetry"
-	"go.opentelemetry.io/collector/service/internal/resource"
-	"go.opentelemetry.io/collector/service/internal/servicetelemetry"
-	"go.opentelemetry.io/collector/service/internal/status"
-	"go.opentelemetry.io/collector/service/telemetry"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/connector"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/extension"
+	"github.com/oodle-ai/opentelemetry-collector/internal/localhostgate"
+	"github.com/oodle-ai/opentelemetry-collector/internal/obsreportconfig"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/processor"
+	"github.com/oodle-ai/opentelemetry-collector/receiver"
+	"github.com/oodle-ai/opentelemetry-collector/service/extensions"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/graph"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/proctelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/resource"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/servicetelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/status"
+	"github.com/oodle-ai/opentelemetry-collector/service/telemetry"
 )
 
 // Settings holds configuration for building a new Service.

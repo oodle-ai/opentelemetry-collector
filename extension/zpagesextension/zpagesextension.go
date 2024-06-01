@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package zpagesextension // import "go.opentelemetry.io/collector/extension/zpagesextension"
+package zpagesextension // import "github.com/oodle-ai/opentelemetry-collector/extension/zpagesextension"
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 	"go.opentelemetry.io/otel/sdk/trace"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 const (

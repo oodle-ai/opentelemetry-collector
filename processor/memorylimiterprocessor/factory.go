@@ -3,17 +3,17 @@
 
 //go:generate mdatagen metadata.yaml
 
-package memorylimiterprocessor // import "go.opentelemetry.io/collector/processor/memorylimiterprocessor"
+package memorylimiterprocessor // import "github.com/oodle-ai/opentelemetry-collector/processor/memorylimiterprocessor"
 
 import (
 	"context"
 	"sync"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/processor"
-	"go.opentelemetry.io/collector/processor/memorylimiterprocessor/internal/metadata"
-	"go.opentelemetry.io/collector/processor/processorhelper"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/processor"
+	"github.com/oodle-ai/opentelemetry-collector/processor/memorylimiterprocessor/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/processor/processorhelper"
 )
 
 var processorCapabilities = consumer.Capabilities{MutatesData: false}

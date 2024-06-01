@@ -1,10 +1,10 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package obsreportconfig // import "go.opentelemetry.io/collector/internal/obsreportconfig"
+package obsreportconfig // import "github.com/oodle-ai/opentelemetry-collector/internal/obsreportconfig"
 
 import (
-	"go.opentelemetry.io/collector/featuregate"
+	"github.com/oodle-ai/opentelemetry-collector/featuregate"
 )
 
 // DisableHighCardinalityMetricsfeatureGate is the feature gate that controls whether the collector should enable

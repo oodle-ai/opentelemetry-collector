@@ -1,17 +1,17 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package otlphttpexporter // import "go.opentelemetry.io/collector/exporter/otlphttpexporter"
+package otlphttpexporter // import "github.com/oodle-ai/opentelemetry-collector/exporter/otlphttpexporter"
 
 import (
 	"encoding"
 	"errors"
 	"fmt"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/confighttp"
-	"go.opentelemetry.io/collector/config/configretry"
-	"go.opentelemetry.io/collector/exporter/exporterhelper"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/confighttp"
+	"github.com/oodle-ai/opentelemetry-collector/config/configretry"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"
 )
 
 // EncodingType defines the type for content encoding

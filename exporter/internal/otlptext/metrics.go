@@ -1,9 +1,9 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package otlptext // import "go.opentelemetry.io/collector/exporter/internal/otlptext"
+package otlptext // import "github.com/oodle-ai/opentelemetry-collector/exporter/internal/otlptext"
 
-import "go.opentelemetry.io/collector/pdata/pmetric"
+import "github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 
 // NewTextMetricsMarshaler returns a pmetric.Marshaler to encode to OTLP text bytes.
 func NewTextMetricsMarshaler() pmetric.Marshaler {

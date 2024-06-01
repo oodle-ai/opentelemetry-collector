@@ -9,7 +9,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"go.opentelemetry.io/collector/component/componenttest"
+	"github.com/oodle-ai/opentelemetry-collector/component/componenttest"
 )
 
 func TestExampleReceiver(t *testing.T) {

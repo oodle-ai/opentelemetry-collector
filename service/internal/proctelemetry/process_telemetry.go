@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package proctelemetry // import "go.opentelemetry.io/collector/service/internal/proctelemetry"
+package proctelemetry // import "github.com/oodle-ai/opentelemetry-collector/service/internal/proctelemetry"
 
 import (
 	"context"
@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	scopeName      = "go.opentelemetry.io/collector/service/process_telemetry"
+	scopeName      = "github.com/oodle-ai/opentelemetry-collector/service/process_telemetry"
 	processNameKey = "process_name"
 )
 

@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package queue // import "go.opentelemetry.io/collector/exporter/internal/queue"
+package queue // import "github.com/oodle-ai/opentelemetry-collector/exporter/internal/queue"
 
 import (
 	"context"
@@ -11,8 +11,8 @@ import (
 	"sync/atomic"
 	"syscall"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/extension/experimental/storage"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/extension/experimental/storage"
 )
 
 type mockStorageExtension struct {

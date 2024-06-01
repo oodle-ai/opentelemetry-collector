@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package exporterbatcher // import "go.opentelemetry.io/collector/exporter/exporterbatcher"
+package exporterbatcher // import "github.com/oodle-ai/opentelemetry-collector/exporter/exporterbatcher"
 
 import "context"
 

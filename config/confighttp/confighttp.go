@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package confighttp // import "go.opentelemetry.io/collector/config/confighttp"
+package confighttp // import "github.com/oodle-ai/opentelemetry-collector/config/confighttp"
 
 import (
 	"context"
@@ -19,14 +19,14 @@ import (
 	"go.opentelemetry.io/otel"
 	"golang.org/x/net/http2"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configauth"
-	"go.opentelemetry.io/collector/config/configcompression"
-	"go.opentelemetry.io/collector/config/configopaque"
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/config/configtls"
-	"go.opentelemetry.io/collector/config/internal"
-	"go.opentelemetry.io/collector/extension/auth"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configauth"
+	"github.com/oodle-ai/opentelemetry-collector/config/configcompression"
+	"github.com/oodle-ai/opentelemetry-collector/config/configopaque"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtls"
+	"github.com/oodle-ai/opentelemetry-collector/config/internal"
+	"github.com/oodle-ai/opentelemetry-collector/extension/auth"
 )
 
 const headerContentEncoding = "Content-Encoding"

@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package filter // import "go.opentelemetry.io/collector/filter"
+package filter // import "github.com/oodle-ai/opentelemetry-collector/filter"
 
 // Filter is an interface for matching values against a set of filters.
 type Filter interface {

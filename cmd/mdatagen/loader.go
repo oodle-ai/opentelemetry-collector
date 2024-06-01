@@ -11,12 +11,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/confmap/confmaptest"
-	"go.opentelemetry.io/collector/confmap/provider/fileprovider"
-	"go.opentelemetry.io/collector/filter"
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/confmaptest"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider"
+	"github.com/oodle-ai/opentelemetry-collector/filter"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 type metricName string

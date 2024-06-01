@@ -1,15 +1,15 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package trace // import "go.opentelemetry.io/collector/receiver/otlpreceiver/internal/trace"
+package trace // import "github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver/internal/trace"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/pdata/ptrace/ptraceotlp"
-	"go.opentelemetry.io/collector/receiver/otlpreceiver/internal/errors"
-	"go.opentelemetry.io/collector/receiver/receiverhelper"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace/ptraceotlp"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver/internal/errors"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/receiverhelper"
 )
 
 const dataFormatProtobuf = "protobuf"

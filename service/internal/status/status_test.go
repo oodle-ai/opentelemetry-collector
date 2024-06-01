@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 func TestStatusFSM(t *testing.T) {

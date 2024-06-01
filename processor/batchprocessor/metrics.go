@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package batchprocessor // import "go.opentelemetry.io/collector/processor/batchprocessor"
+package batchprocessor // import "github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor"
 
 import (
 	"context"
@@ -9,10 +9,10 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
 
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/internal/obsreportconfig/obsmetrics"
-	"go.opentelemetry.io/collector/processor"
-	"go.opentelemetry.io/collector/processor/batchprocessor/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/internal/obsreportconfig/obsmetrics"
+	"github.com/oodle-ai/opentelemetry-collector/processor"
+	"github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor/internal/metadata"
 )
 
 type trigger int

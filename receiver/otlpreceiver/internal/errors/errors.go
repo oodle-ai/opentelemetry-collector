@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package errors // import "go.opentelemetry.io/collector/receiver/otlpreceiver/internal/errors"
+package errors // import "github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver/internal/errors"
 
 import (
 	"net/http"
@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"go.opentelemetry.io/collector/consumer/consumererror"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumererror"
 )
 
 func GetStatusFromError(err error) error {

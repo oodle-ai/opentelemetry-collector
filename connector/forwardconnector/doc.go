@@ -4,4 +4,4 @@
 //go:generate mdatagen metadata.yaml
 
 // Package forwardconnector passes signals from one pipeline to another.
-package forwardconnector // import "go.opentelemetry.io/collector/connector/forwardconnector"
+package forwardconnector // import "github.com/oodle-ai/opentelemetry-collector/connector/forwardconnector"

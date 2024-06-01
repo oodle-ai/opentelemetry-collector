@@ -3,15 +3,15 @@
 
 //go:generate mdatagen metadata.yaml
 
-package ballastextension // import "go.opentelemetry.io/collector/extension/ballastextension"
+package ballastextension // import "github.com/oodle-ai/opentelemetry-collector/extension/ballastextension"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/extension"
-	"go.opentelemetry.io/collector/extension/ballastextension/internal/metadata"
-	"go.opentelemetry.io/collector/internal/iruntime"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/extension"
+	"github.com/oodle-ai/opentelemetry-collector/extension/ballastextension/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/internal/iruntime"
 )
 
 // memHandler returns the total memory of the target host/vm

@@ -7,9 +7,9 @@
 package pprofile
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpprofiles "go.opentelemetry.io/collector/pdata/internal/data/protogen/profiles/v1experimental"
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpprofiles "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/profiles/v1experimental"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 // Sample represents each record value encountered within a profiled program.

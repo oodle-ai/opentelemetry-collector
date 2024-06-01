@@ -6,4 +6,4 @@
 // OpenTelemetry semantic conventions are agreed standardized naming
 // patterns for OpenTelemetry things. This package represents the v1.22.0
 // version of the OpenTelemetry semantic conventions.
-package semconv // import "go.opentelemetry.io/collector/semconv/v1.22.0"
+package semconv // import "github.com/oodle-ai/opentelemetry-collector/semconv/v1.22.0"

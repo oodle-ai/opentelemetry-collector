@@ -17,13 +17,13 @@ import (
 	"go.opentelemetry.io/contrib/config"
 	"go.opentelemetry.io/otel/metric"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/internal/testutil"
-	semconv "go.opentelemetry.io/collector/semconv/v1.18.0"
-	"go.opentelemetry.io/collector/service/internal/proctelemetry"
-	"go.opentelemetry.io/collector/service/internal/resource"
-	"go.opentelemetry.io/collector/service/telemetry"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/internal/testutil"
+	semconv "github.com/oodle-ai/opentelemetry-collector/semconv/v1.18.0"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/proctelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/resource"
+	"github.com/oodle-ai/opentelemetry-collector/service/telemetry"
 )
 
 const (

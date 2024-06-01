@@ -7,9 +7,9 @@
 package pmetric
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpmetrics "go.opentelemetry.io/collector/pdata/internal/data/protogen/metrics/v1"
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 // HistogramDataPoint is a single data point in a timeseries that describes the time-varying values of a Histogram of values.
@@ -118,19 +118,19 @@ func (ms HistogramDataPoint) Sum() float64 {
 // HasSum returns true if the HistogramDataPoint contains a
 // Sum value, false otherwise.
 func (ms HistogramDataPoint) HasSum() bool {
-	return ms.orig.Sum_ != nil
+	return ms.orig.Sum != nil
 }
 
 // SetSum replaces the sum associated with this HistogramDataPoint.
 func (ms HistogramDataPoint) SetSum(v float64) {
 	ms.state.AssertMutable()
-	ms.orig.Sum_ = &otlpmetrics.HistogramDataPoint_Sum{Sum: v}
+	ms.orig.Sum = &v
 }
 
 // RemoveSum removes the sum associated with this HistogramDataPoint.
 func (ms HistogramDataPoint) RemoveSum() {
 	ms.state.AssertMutable()
-	ms.orig.Sum_ = nil
+	ms.orig.Sum = nil
 }
 
 // Min returns the min associated with this HistogramDataPoint.
@@ -141,19 +141,19 @@ func (ms HistogramDataPoint) Min() float64 {
 // HasMin returns true if the HistogramDataPoint contains a
 // Min value, false otherwise.
 func (ms HistogramDataPoint) HasMin() bool {
-	return ms.orig.Min_ != nil
+	return ms.orig.Min != nil
 }
 
 // SetMin replaces the min associated with this HistogramDataPoint.
 func (ms HistogramDataPoint) SetMin(v float64) {
 	ms.state.AssertMutable()
-	ms.orig.Min_ = &otlpmetrics.HistogramDataPoint_Min{Min: v}
+	ms.orig.Min = &v
 }
 
 // RemoveMin removes the min associated with this HistogramDataPoint.
 func (ms HistogramDataPoint) RemoveMin() {
 	ms.state.AssertMutable()
-	ms.orig.Min_ = nil
+	ms.orig.Min = nil
 }
 
 // Max returns the max associated with this HistogramDataPoint.
@@ -164,19 +164,19 @@ func (ms HistogramDataPoint) Max() float64 {
 // HasMax returns true if the HistogramDataPoint contains a
 // Max value, false otherwise.
 func (ms HistogramDataPoint) HasMax() bool {
-	return ms.orig.Max_ != nil
+	return ms.orig.Max != nil
 }
 
 // SetMax replaces the max associated with this HistogramDataPoint.
 func (ms HistogramDataPoint) SetMax(v float64) {
 	ms.state.AssertMutable()
-	ms.orig.Max_ = &otlpmetrics.HistogramDataPoint_Max{Max: v}
+	ms.orig.Max = &v
 }
 
 // RemoveMax removes the max associated with this HistogramDataPoint.
 func (ms HistogramDataPoint) RemoveMax() {
 	ms.state.AssertMutable()
-	ms.orig.Max_ = nil
+	ms.orig.Max = nil
 }
 
 // CopyTo copies all properties from the current struct overriding the destination.

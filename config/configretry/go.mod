@@ -1,4 +1,4 @@
-module go.opentelemetry.io/collector/config/configretry
+module github.com/oodle-ai/opentelemetry-collector/config/configretry
 
 go 1.21.0
 

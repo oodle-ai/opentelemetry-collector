@@ -1,15 +1,15 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package samplereceiver // import "go.opentelemetry.io/collector/cmd/mdatagen/internal/samplereceiver"
+package samplereceiver // import "github.com/oodle-ai/opentelemetry-collector/cmd/mdatagen/internal/samplereceiver"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/cmd/mdatagen/internal/samplereceiver/internal/metadata"
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/receiver"
+	"github.com/oodle-ai/opentelemetry-collector/cmd/mdatagen/internal/samplereceiver/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/receiver"
 )
 
 // NewFactory returns a receiver.Factory for sample receiver.

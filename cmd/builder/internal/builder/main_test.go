@@ -22,19 +22,19 @@ import (
 const (
 	goModTestFile = `// Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
-module go.opentelemetry.io/collector/cmd/builder/internal/tester
+module github.com/oodle-ai/opentelemetry-collector/cmd/builder/internal/tester
 go 1.20
 require (
-	go.opentelemetry.io/collector/component v0.96.0
-	go.opentelemetry.io/collector/connector v0.94.1
-	go.opentelemetry.io/collector/exporter v0.94.1
-	go.opentelemetry.io/collector/extension v0.94.1
-	go.opentelemetry.io/collector/otelcol v0.94.1
-	go.opentelemetry.io/collector/processor v0.94.1
-	go.opentelemetry.io/collector/receiver v0.94.1
-	go.opentelemetry.io/collector v0.96.0
+	github.com/oodle-ai/opentelemetry-collector/component v0.96.0
+	github.com/oodle-ai/opentelemetry-collector/connector v0.94.1
+	github.com/oodle-ai/opentelemetry-collector/exporter v0.94.1
+	github.com/oodle-ai/opentelemetry-collector/extension v0.94.1
+	github.com/oodle-ai/opentelemetry-collector/otelcol v0.94.1
+	github.com/oodle-ai/opentelemetry-collector/processor v0.94.1
+	github.com/oodle-ai/opentelemetry-collector/receiver v0.94.1
+	github.com/oodle-ai/opentelemetry-collector v0.96.0
 )`
-	modulePrefix = "go.opentelemetry.io/collector"
+	modulePrefix = "github.com/oodle-ai/opentelemetry-collector"
 )
 
 var (
@@ -166,19 +166,19 @@ func TestVersioning(t *testing.T) {
 				var err error
 				cfg.Exporters, err = parseModules([]Module{
 					{
-						GoMod: "go.opentelemetry.io/collector/exporter/otlpexporter v0.97.0",
+						GoMod: "github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter v0.97.0",
 					},
 				})
 				require.NoError(t, err)
 				cfg.Receivers, err = parseModules([]Module{
 					{
-						GoMod: "go.opentelemetry.io/collector/receiver/otlpreceiver v0.97.0",
+						GoMod: "github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver v0.97.0",
 					},
 				})
 				require.NoError(t, err)
 				providers, err := parseModules([]Module{
 					{
-						GoMod: "go.opentelemetry.io/collector/confmap/provider/envprovider v0.97.0",
+						GoMod: "github.com/oodle-ai/opentelemetry-collector/confmap/provider/envprovider v0.97.0",
 					},
 				})
 				require.NoError(t, err)
@@ -194,7 +194,7 @@ func TestVersioning(t *testing.T) {
 				cfg.Distribution.Go = "go"
 				cfg.Exporters = []Module{
 					{
-						GoMod: "go.opentelemetry.io/collector/exporter/otlpexporter v0.97.0",
+						GoMod: "github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter v0.97.0",
 					},
 				}
 				cfg.Providers = &[]Module{}
@@ -211,7 +211,7 @@ func TestVersioning(t *testing.T) {
 				cfg.SkipStrictVersioning = true
 				cfg.Exporters = []Module{
 					{
-						GoMod: "go.opentelemetry.io/collector/exporter/otlpexporter v0.97.0",
+						GoMod: "github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter v0.97.0",
 					},
 				}
 				cfg.Providers = &[]Module{}
@@ -368,40 +368,40 @@ func TestReplaceStatementsAreComplete(t *testing.T) {
 	// that exist in the Core repository.
 	cfg.Exporters, err = parseModules([]Module{
 		{
-			GoMod: "go.opentelemetry.io/collector/exporter/debugexporter v1.9999.9999",
+			GoMod: "github.com/oodle-ai/opentelemetry-collector/exporter/debugexporter v1.9999.9999",
 		},
 		{
-			GoMod: "go.opentelemetry.io/collector/exporter/nopexporter v1.9999.9999",
+			GoMod: "github.com/oodle-ai/opentelemetry-collector/exporter/nopexporter v1.9999.9999",
 		},
 		{
-			GoMod: "go.opentelemetry.io/collector/exporter/otlpexporter v1.9999.9999",
+			GoMod: "github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter v1.9999.9999",
 		},
 		{
-			GoMod: "go.opentelemetry.io/collector/exporter/otlphttpexporter v1.9999.9999",
+			GoMod: "github.com/oodle-ai/opentelemetry-collector/exporter/otlphttpexporter v1.9999.9999",
 		},
 	})
 	require.NoError(t, err)
 	cfg.Receivers, err = parseModules([]Module{
 		{
-			GoMod: "go.opentelemetry.io/collector/receiver/nopreceiver v1.9999.9999",
+			GoMod: "github.com/oodle-ai/opentelemetry-collector/receiver/nopreceiver v1.9999.9999",
 		},
 		{
-			GoMod: "go.opentelemetry.io/collector/receiver/otlpreceiver v1.9999.9999",
+			GoMod: "github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver v1.9999.9999",
 		},
 	})
 	require.NoError(t, err)
 	cfg.Extensions, err = parseModules([]Module{
 		{
-			GoMod: "go.opentelemetry.io/collector/extension/zpagesextension v1.9999.9999",
+			GoMod: "github.com/oodle-ai/opentelemetry-collector/extension/zpagesextension v1.9999.9999",
 		},
 	})
 	require.NoError(t, err)
 	cfg.Processors, err = parseModules([]Module{
 		{
-			GoMod: "go.opentelemetry.io/collector/processor/batchprocessor v1.9999.9999",
+			GoMod: "github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor v1.9999.9999",
 		},
 		{
-			GoMod: "go.opentelemetry.io/collector/processor/memorylimiterprocessor v1.9999.9999",
+			GoMod: "github.com/oodle-ai/opentelemetry-collector/processor/memorylimiterprocessor v1.9999.9999",
 		},
 	})
 	require.NoError(t, err)

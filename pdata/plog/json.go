@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package plog // import "go.opentelemetry.io/collector/pdata/plog"
+package plog // import "github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 
 import (
 	"bytes"
@@ -9,10 +9,10 @@ import (
 
 	jsoniter "github.com/json-iterator/go"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlplogs "go.opentelemetry.io/collector/pdata/internal/data/protogen/logs/v1"
-	"go.opentelemetry.io/collector/pdata/internal/json"
-	"go.opentelemetry.io/collector/pdata/internal/otlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/otlp"
 )
 
 // JSONMarshaler marshals pdata.Logs to JSON bytes using the OTLP/JSON format.

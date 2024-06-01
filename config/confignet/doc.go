@@ -3,4 +3,4 @@
 
 // Package confignet implements the configuration settings for protocols to
 // connect and transport data information.
-package confignet // import "go.opentelemetry.io/collector/config/confignet"
+package confignet // import "github.com/oodle-ai/opentelemetry-collector/config/confignet"

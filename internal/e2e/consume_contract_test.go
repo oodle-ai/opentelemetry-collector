@@ -7,15 +7,15 @@ import (
 	"testing"
 	"time"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configgrpc"
-	"go.opentelemetry.io/collector/config/configretry"
-	"go.opentelemetry.io/collector/config/configtls"
-	"go.opentelemetry.io/collector/exporter/exporterhelper"
-	"go.opentelemetry.io/collector/exporter/exportertest"
-	"go.opentelemetry.io/collector/exporter/otlpexporter"
-	"go.opentelemetry.io/collector/internal/testutil"
-	"go.opentelemetry.io/collector/receiver/otlpreceiver"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configgrpc"
+	"github.com/oodle-ai/opentelemetry-collector/config/configretry"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtls"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exportertest"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter"
+	"github.com/oodle-ai/opentelemetry-collector/internal/testutil"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver"
 )
 
 func testExporterConfig(endpoint string) component.Config {

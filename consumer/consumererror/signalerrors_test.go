@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/pdata/testdata"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/testdata"
 )
 
 func TestTraces(t *testing.T) {

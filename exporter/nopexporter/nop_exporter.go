@@ -1,15 +1,15 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package nopexporter // import "go.opentelemetry.io/collector/exporter/nopexporter"
+package nopexporter // import "github.com/oodle-ai/opentelemetry-collector/exporter/nopexporter"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer/consumertest"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/nopexporter/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumertest"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/nopexporter/internal/metadata"
 )
 
 // NewFactory returns an exporter.Factory that constructs nop exporters.

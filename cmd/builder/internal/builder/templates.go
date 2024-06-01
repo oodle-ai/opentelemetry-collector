@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package builder // import "go.opentelemetry.io/collector/cmd/builder/internal/builder"
+package builder // import "github.com/oodle-ai/opentelemetry-collector/cmd/builder/internal/builder"
 
 import (
 	_ "embed"

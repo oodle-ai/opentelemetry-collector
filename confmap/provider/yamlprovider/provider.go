@@ -1,15 +1,15 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package yamlprovider // import "go.opentelemetry.io/collector/confmap/provider/yamlprovider"
+package yamlprovider // import "github.com/oodle-ai/opentelemetry-collector/confmap/provider/yamlprovider"
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/confmap/provider/internal"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/provider/internal"
 )
 
 const schemeName = "yaml"

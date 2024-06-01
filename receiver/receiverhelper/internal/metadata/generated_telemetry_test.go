@@ -13,7 +13,7 @@ import (
 	embeddedtrace "go.opentelemetry.io/otel/trace/embedded"
 	nooptrace "go.opentelemetry.io/otel/trace/noop"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 type mockMeter struct {
@@ -49,14 +49,14 @@ func TestProviders(t *testing.T) {
 
 	meter := Meter(set)
 	if m, ok := meter.(mockMeter); ok {
-		require.Equal(t, "go.opentelemetry.io/collector/receiver/receiverhelper", m.name)
+		require.Equal(t, "github.com/oodle-ai/opentelemetry-collector/receiver/receiverhelper", m.name)
 	} else {
 		require.Fail(t, "returned Meter not mockMeter")
 	}
 
 	tracer := Tracer(set)
 	if m, ok := tracer.(mockTracer); ok {
-		require.Equal(t, "go.opentelemetry.io/collector/receiver/receiverhelper", m.name)
+		require.Equal(t, "github.com/oodle-ai/opentelemetry-collector/receiver/receiverhelper", m.name)
 	} else {
 		require.Fail(t, "returned Meter not mockTracer")
 	}

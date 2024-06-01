@@ -11,7 +11,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"go.opentelemetry.io/collector/pdata/internal"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 )
 
 func TestNewUInt64Slice(t *testing.T) {

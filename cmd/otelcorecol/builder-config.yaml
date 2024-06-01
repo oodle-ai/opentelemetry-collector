@@ -1,79 +1,79 @@
 dist:
-  module: go.opentelemetry.io/collector/cmd/otelcorecol
+  module: github.com/oodle-ai/opentelemetry-collector/cmd/otelcorecol
   name: otelcorecol
   description: Local OpenTelemetry Collector binary, testing only.
   version: 0.101.0-dev
   otelcol_version: 0.101.0
 
 receivers:
-  - gomod: go.opentelemetry.io/collector/receiver/nopreceiver v0.101.0
-  - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/receiver/nopreceiver v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver v0.101.0
 exporters:
-  - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.101.0
-  - gomod: go.opentelemetry.io/collector/exporter/loggingexporter v0.101.0
-  - gomod: go.opentelemetry.io/collector/exporter/nopexporter v0.101.0
-  - gomod: go.opentelemetry.io/collector/exporter/otlpexporter v0.101.0
-  - gomod: go.opentelemetry.io/collector/exporter/otlphttpexporter v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/exporter/debugexporter v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/exporter/loggingexporter v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/exporter/nopexporter v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/exporter/otlphttpexporter v0.101.0
 extensions:
-  - gomod: go.opentelemetry.io/collector/extension/ballastextension v0.101.0
-  - gomod: go.opentelemetry.io/collector/extension/memorylimiterextension v0.101.0
-  - gomod: go.opentelemetry.io/collector/extension/zpagesextension v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/extension/ballastextension v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/extension/memorylimiterextension v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/extension/zpagesextension v0.101.0
 processors:
-  - gomod: go.opentelemetry.io/collector/processor/batchprocessor v0.101.0
-  - gomod: go.opentelemetry.io/collector/processor/memorylimiterprocessor v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/processor/memorylimiterprocessor v0.101.0
 connectors:
-  - gomod: go.opentelemetry.io/collector/connector/forwardconnector v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/connector/forwardconnector v0.101.0
 
 providers:
-  - gomod: go.opentelemetry.io/collector/confmap/provider/envprovider v0.101.0
-  - gomod: go.opentelemetry.io/collector/confmap/provider/fileprovider v0.101.0
-  - gomod: go.opentelemetry.io/collector/confmap/provider/httpprovider v0.101.0
-  - gomod: go.opentelemetry.io/collector/confmap/provider/httpsprovider v0.101.0
-  - gomod: go.opentelemetry.io/collector/confmap/provider/yamlprovider v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/confmap/provider/envprovider v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpprovider v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpsprovider v0.101.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/confmap/provider/yamlprovider v0.101.0
 
 replaces:
-  - go.opentelemetry.io/collector => ../../
-  - go.opentelemetry.io/collector/otelcol => ../../otelcol
-  - go.opentelemetry.io/collector/component => ../../component
-  - go.opentelemetry.io/collector/config/configauth => ../../config/configauth
-  - go.opentelemetry.io/collector/config/configcompression => ../../config/configcompression
-  - go.opentelemetry.io/collector/config/configgrpc => ../../config/configgrpc
-  - go.opentelemetry.io/collector/config/confighttp => ../../config/confighttp
-  - go.opentelemetry.io/collector/config/confignet => ../../config/confignet
-  - go.opentelemetry.io/collector/config/configopaque => ../../config/configopaque
-  - go.opentelemetry.io/collector/config/configretry => ../../config/configretry
-  - go.opentelemetry.io/collector/config/configtelemetry => ../../config/configtelemetry
-  - go.opentelemetry.io/collector/config/configtls => ../../config/configtls
-  - go.opentelemetry.io/collector/config/internal => ../../config/internal
-  - go.opentelemetry.io/collector/confmap => ../../confmap
-  - go.opentelemetry.io/collector/confmap/converter/expandconverter => ../../confmap/converter/expandconverter
-  - go.opentelemetry.io/collector/confmap/provider/envprovider => ../../confmap/provider/envprovider
-  - go.opentelemetry.io/collector/confmap/provider/fileprovider => ../../confmap/provider/fileprovider
-  - go.opentelemetry.io/collector/confmap/provider/httpprovider => ../../confmap/provider/httpprovider
-  - go.opentelemetry.io/collector/confmap/provider/httpsprovider => ../../confmap/provider/httpsprovider
-  - go.opentelemetry.io/collector/confmap/provider/yamlprovider => ../../confmap/provider/yamlprovider
-  - go.opentelemetry.io/collector/consumer => ../../consumer
-  - go.opentelemetry.io/collector/connector => ../../connector
-  - go.opentelemetry.io/collector/connector/forwardconnector => ../../connector/forwardconnector
-  - go.opentelemetry.io/collector/exporter => ../../exporter
-  - go.opentelemetry.io/collector/exporter/debugexporter => ../../exporter/debugexporter
-  - go.opentelemetry.io/collector/exporter/loggingexporter => ../../exporter/loggingexporter
-  - go.opentelemetry.io/collector/exporter/nopexporter => ../../exporter/nopexporter
-  - go.opentelemetry.io/collector/exporter/otlpexporter => ../../exporter/otlpexporter
-  - go.opentelemetry.io/collector/exporter/otlphttpexporter => ../../exporter/otlphttpexporter
-  - go.opentelemetry.io/collector/extension => ../../extension
-  - go.opentelemetry.io/collector/extension/auth => ../../extension/auth
-  - go.opentelemetry.io/collector/extension/ballastextension => ../../extension/ballastextension
-  - go.opentelemetry.io/collector/extension/memorylimiterextension => ../../extension/memorylimiterextension
-  - go.opentelemetry.io/collector/extension/zpagesextension => ../../extension/zpagesextension
-  - go.opentelemetry.io/collector/featuregate => ../../featuregate
-  - go.opentelemetry.io/collector/pdata => ../../pdata
-  - go.opentelemetry.io/collector/pdata/testdata => ../../pdata/testdata
-  - go.opentelemetry.io/collector/processor => ../../processor
-  - go.opentelemetry.io/collector/receiver => ../../receiver
-  - go.opentelemetry.io/collector/receiver/nopreceiver => ../../receiver/nopreceiver
-  - go.opentelemetry.io/collector/receiver/otlpreceiver => ../../receiver/otlpreceiver
-  - go.opentelemetry.io/collector/processor/batchprocessor => ../../processor/batchprocessor
-  - go.opentelemetry.io/collector/processor/memorylimiterprocessor => ../../processor/memorylimiterprocessor
-  - go.opentelemetry.io/collector/semconv => ../../semconv
-  - go.opentelemetry.io/collector/service => ../../service
+  - github.com/oodle-ai/opentelemetry-collector => ../../
+  - github.com/oodle-ai/opentelemetry-collector/otelcol => ../../otelcol
+  - github.com/oodle-ai/opentelemetry-collector/component => ../../component
+  - github.com/oodle-ai/opentelemetry-collector/config/configauth => ../../config/configauth
+  - github.com/oodle-ai/opentelemetry-collector/config/configcompression => ../../config/configcompression
+  - github.com/oodle-ai/opentelemetry-collector/config/configgrpc => ../../config/configgrpc
+  - github.com/oodle-ai/opentelemetry-collector/config/confighttp => ../../config/confighttp
+  - github.com/oodle-ai/opentelemetry-collector/config/confignet => ../../config/confignet
+  - github.com/oodle-ai/opentelemetry-collector/config/configopaque => ../../config/configopaque
+  - github.com/oodle-ai/opentelemetry-collector/config/configretry => ../../config/configretry
+  - github.com/oodle-ai/opentelemetry-collector/config/configtelemetry => ../../config/configtelemetry
+  - github.com/oodle-ai/opentelemetry-collector/config/configtls => ../../config/configtls
+  - github.com/oodle-ai/opentelemetry-collector/config/internal => ../../config/internal
+  - github.com/oodle-ai/opentelemetry-collector/confmap => ../../confmap
+  - github.com/oodle-ai/opentelemetry-collector/confmap/converter/expandconverter => ../../confmap/converter/expandconverter
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/envprovider => ../../confmap/provider/envprovider
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider => ../../confmap/provider/fileprovider
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpprovider => ../../confmap/provider/httpprovider
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpsprovider => ../../confmap/provider/httpsprovider
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/yamlprovider => ../../confmap/provider/yamlprovider
+  - github.com/oodle-ai/opentelemetry-collector/consumer => ../../consumer
+  - github.com/oodle-ai/opentelemetry-collector/connector => ../../connector
+  - github.com/oodle-ai/opentelemetry-collector/connector/forwardconnector => ../../connector/forwardconnector
+  - github.com/oodle-ai/opentelemetry-collector/exporter => ../../exporter
+  - github.com/oodle-ai/opentelemetry-collector/exporter/debugexporter => ../../exporter/debugexporter
+  - github.com/oodle-ai/opentelemetry-collector/exporter/loggingexporter => ../../exporter/loggingexporter
+  - github.com/oodle-ai/opentelemetry-collector/exporter/nopexporter => ../../exporter/nopexporter
+  - github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter => ../../exporter/otlpexporter
+  - github.com/oodle-ai/opentelemetry-collector/exporter/otlphttpexporter => ../../exporter/otlphttpexporter
+  - github.com/oodle-ai/opentelemetry-collector/extension => ../../extension
+  - github.com/oodle-ai/opentelemetry-collector/extension/auth => ../../extension/auth
+  - github.com/oodle-ai/opentelemetry-collector/extension/ballastextension => ../../extension/ballastextension
+  - github.com/oodle-ai/opentelemetry-collector/extension/memorylimiterextension => ../../extension/memorylimiterextension
+  - github.com/oodle-ai/opentelemetry-collector/extension/zpagesextension => ../../extension/zpagesextension
+  - github.com/oodle-ai/opentelemetry-collector/featuregate => ../../featuregate
+  - github.com/oodle-ai/opentelemetry-collector/pdata => ../../pdata
+  - github.com/oodle-ai/opentelemetry-collector/pdata/testdata => ../../pdata/testdata
+  - github.com/oodle-ai/opentelemetry-collector/processor => ../../processor
+  - github.com/oodle-ai/opentelemetry-collector/receiver => ../../receiver
+  - github.com/oodle-ai/opentelemetry-collector/receiver/nopreceiver => ../../receiver/nopreceiver
+  - github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver => ../../receiver/otlpreceiver
+  - github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor => ../../processor/batchprocessor
+  - github.com/oodle-ai/opentelemetry-collector/processor/memorylimiterprocessor => ../../processor/memorylimiterprocessor
+  - github.com/oodle-ai/opentelemetry-collector/semconv => ../../semconv
+  - github.com/oodle-ai/opentelemetry-collector/service => ../../service

@@ -4,7 +4,7 @@
 package testdata
 
 import (
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 func initMetricExemplarAttributes(dest pcommon.Map) {

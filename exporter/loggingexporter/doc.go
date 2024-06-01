@@ -4,4 +4,4 @@
 //go:generate mdatagen metadata.yaml
 
 // Package loggingexporter exports data to console as logs.
-package loggingexporter // import "go.opentelemetry.io/collector/exporter/loggingexporter"
+package loggingexporter // import "github.com/oodle-ai/opentelemetry-collector/exporter/loggingexporter"

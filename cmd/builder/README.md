@@ -5,7 +5,7 @@ This program generates a custom OpenTelemetry Collector binary based on a given 
 ## TL;DR
 
 ```console
-$ go install go.opentelemetry.io/collector/cmd/builder@latest
+$ go install github.com/oodle-ai/opentelemetry-collector/cmd/builder@latest
 $ cat > otelcol-builder.yaml <<EOF
 dist:
   name: otelcol-custom
@@ -13,19 +13,19 @@ dist:
   output_path: /tmp/dist
 exporters:
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/alibabacloudlogserviceexporter v0.99.0
-  - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.99.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/exporter/debugexporter v0.99.0
 
 receivers:
-  - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.99.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver v0.99.0
 
 processors:
-  - gomod: go.opentelemetry.io/collector/processor/batchprocessor v0.99.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor v0.99.0
 
 providers:
-  - gomod: go.opentelemetry.io/collector/confmap/provider/fileprovider v0.99.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider v0.99.0
 
 converters:
-  - gomod: go.opentelemetry.io/collector/confmap/converter/expandconverter v0.99.0
+  - gomod: github.com/oodle-ai/opentelemetry-collector/confmap/converter/expandconverter v0.99.0
 EOF
 $ builder --config=otelcol-builder.yaml
 $ cat > /tmp/otelcol.yaml <<EOF
@@ -67,7 +67,7 @@ This is the recommended installation method. Download the binary for your respec
 You need to have a `go` compiler in your PATH. Run the following command to install the latest version:
 
 ```
-go install go.opentelemetry.io/collector/cmd/builder@latest
+go install github.com/oodle-ai/opentelemetry-collector/cmd/builder@latest
 ```
 
 If installing through this method the binary will be called `builder`. Binaries installed through this method [will incorrectly show `dev` as their version](https://github.com/open-telemetry/opentelemetry-collector/issues/8691).

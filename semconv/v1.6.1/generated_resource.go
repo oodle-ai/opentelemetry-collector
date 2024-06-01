@@ -3,7 +3,7 @@
 
 // Code generated from semantic convention specification. DO NOT EDIT.
 
-package semconv // import "go.opentelemetry.io/collector/semconv/v1.6.1"
+package semconv // import "github.com/oodle-ai/opentelemetry-collector/semconv/v1.6.1"
 
 // A cloud environment (e.g. GCP, Azure, AWS)
 const (

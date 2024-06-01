@@ -1,4 +1,4 @@
-module go.opentelemetry.io/collector/confmap
+module github.com/oodle-ai/opentelemetry-collector/confmap
 
 go 1.21.0
 

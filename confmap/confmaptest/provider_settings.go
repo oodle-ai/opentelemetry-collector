@@ -1,12 +1,12 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package confmaptest // import "go.opentelemetry.io/collector/confmap/confmaptest"
+package confmaptest // import "github.com/oodle-ai/opentelemetry-collector/confmap/confmaptest"
 
 import (
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
 )
 
 func NewNopProviderSettings() confmap.ProviderSettings {

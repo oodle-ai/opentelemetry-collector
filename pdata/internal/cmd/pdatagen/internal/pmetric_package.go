@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/pdata/internal/cmd/pdatagen/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/pdata/internal/cmd/pdatagen/internal"
 
 var pmetric = &Package{
 	name: "pmetric",
@@ -9,10 +9,10 @@ var pmetric = &Package{
 	imports: []string{
 		`"sort"`,
 		``,
-		`"go.opentelemetry.io/collector/pdata/internal"`,
-		`"go.opentelemetry.io/collector/pdata/internal/data"`,
-		`otlpmetrics "go.opentelemetry.io/collector/pdata/internal/data/protogen/metrics/v1"`,
-		`"go.opentelemetry.io/collector/pdata/pcommon"`,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"`,
+		`otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"`,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
 	testImports: []string{
 		`"testing"`,
@@ -20,10 +20,10 @@ var pmetric = &Package{
 		``,
 		`"github.com/stretchr/testify/assert"`,
 		``,
-		`"go.opentelemetry.io/collector/pdata/internal"`,
-		`"go.opentelemetry.io/collector/pdata/internal/data"`,
-		`otlpmetrics "go.opentelemetry.io/collector/pdata/internal/data/protogen/metrics/v1"`,
-		`"go.opentelemetry.io/collector/pdata/pcommon"`,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"`,
+		`otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"`,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
 	structs: []baseStruct{
 		resourceMetricsSlice,

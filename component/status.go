@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package component // import "go.opentelemetry.io/collector/component"
+package component // import "github.com/oodle-ai/opentelemetry-collector/component"
 
 import (
 	"time"

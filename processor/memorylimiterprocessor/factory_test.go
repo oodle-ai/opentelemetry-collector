@@ -11,10 +11,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/component/componenttest"
-	"go.opentelemetry.io/collector/consumer/consumertest"
-	"go.opentelemetry.io/collector/internal/memorylimiter"
-	"go.opentelemetry.io/collector/processor/processortest"
+	"github.com/oodle-ai/opentelemetry-collector/component/componenttest"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumertest"
+	"github.com/oodle-ai/opentelemetry-collector/internal/memorylimiter"
+	"github.com/oodle-ai/opentelemetry-collector/processor/processortest"
 )
 
 func TestCreateDefaultConfig(t *testing.T) {

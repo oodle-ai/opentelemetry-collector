@@ -3,9 +3,9 @@
 package {{ .Package }}
 
 import (
-    "go.opentelemetry.io/collector/confmap"
+    "github.com/oodle-ai/opentelemetry-collector/confmap"
     {{ if and .Metrics .ResourceAttributes -}}
-    "go.opentelemetry.io/collector/filter"
+    "github.com/oodle-ai/opentelemetry-collector/filter"
     {{- end }}
 )
 {{ if .Metrics -}}

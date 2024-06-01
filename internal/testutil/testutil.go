@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package testutil // import "go.opentelemetry.io/collector/internal/testutil"
+package testutil // import "github.com/oodle-ai/opentelemetry-collector/internal/testutil"
 
 import (
 	"net"

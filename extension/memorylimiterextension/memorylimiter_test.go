@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/internal/iruntime"
-	"go.opentelemetry.io/collector/internal/memorylimiter"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/internal/iruntime"
+	"github.com/oodle-ai/opentelemetry-collector/internal/memorylimiter"
 )
 
 func TestMemoryPressureResponse(t *testing.T) {

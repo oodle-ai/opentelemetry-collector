@@ -1,14 +1,14 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package confighttp // import "go.opentelemetry.io/collector/config/confighttp"
+package confighttp // import "github.com/oodle-ai/opentelemetry-collector/config/confighttp"
 
 import (
 	"context"
 	"net"
 	"net/http"
 
-	"go.opentelemetry.io/collector/client"
+	"github.com/oodle-ai/opentelemetry-collector/client"
 )
 
 // clientInfoHandler is an http.Handler that enhances the incoming request context with client.Info.

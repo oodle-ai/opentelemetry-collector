@@ -1,20 +1,20 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package otlpexporter // import "go.opentelemetry.io/collector/exporter/otlpexporter"
+package otlpexporter // import "github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configcompression"
-	"go.opentelemetry.io/collector/config/configgrpc"
-	"go.opentelemetry.io/collector/config/configopaque"
-	"go.opentelemetry.io/collector/config/configretry"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/exporterhelper"
-	"go.opentelemetry.io/collector/exporter/otlpexporter/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configcompression"
+	"github.com/oodle-ai/opentelemetry-collector/config/configgrpc"
+	"github.com/oodle-ai/opentelemetry-collector/config/configopaque"
+	"github.com/oodle-ai/opentelemetry-collector/config/configretry"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter/internal/metadata"
 )
 
 // NewFactory creates a factory for OTLP exporter.

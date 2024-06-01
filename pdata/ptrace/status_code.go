@@ -1,10 +1,10 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package ptrace // import "go.opentelemetry.io/collector/pdata/ptrace"
+package ptrace // import "github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
 
 import (
-	otlptrace "go.opentelemetry.io/collector/pdata/internal/data/protogen/trace/v1"
+	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
 )
 
 // StatusCode mirrors the codes defined at

@@ -1,12 +1,12 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/confmap/provider/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/confmap/provider/internal"
 
 import (
 	"gopkg.in/yaml.v3"
 
-	"go.opentelemetry.io/collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
 )
 
 // NewRetrievedFromYAML returns a new Retrieved instance that contains the deserialized data from the yaml bytes.

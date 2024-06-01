@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"net"
 
-	"go.opentelemetry.io/collector/client"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/pdata/ptrace"
+	"github.com/oodle-ai/opentelemetry-collector/client"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
 )
 
 func Example_receiver() {

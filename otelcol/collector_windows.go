@@ -3,7 +3,7 @@
 
 //go:build windows
 
-package otelcol // import "go.opentelemetry.io/collector/otelcol"
+package otelcol // import "github.com/oodle-ai/opentelemetry-collector/otelcol"
 
 import (
 	"context"
@@ -17,8 +17,8 @@ import (
 	"golang.org/x/sys/windows/svc"
 	"golang.org/x/sys/windows/svc/eventlog"
 
-	"go.opentelemetry.io/collector/featuregate"
-	"go.opentelemetry.io/collector/service"
+	"github.com/oodle-ai/opentelemetry-collector/featuregate"
+	"github.com/oodle-ai/opentelemetry-collector/service"
 )
 
 type windowsService struct {

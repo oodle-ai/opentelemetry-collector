@@ -3,7 +3,7 @@
 
 // This logger implements zapcore.Core and is based on zaptest/observer.
 
-package otelcol // import "go.opentelemetry.io/collector/otelcol"
+package otelcol // import "github.com/oodle-ai/opentelemetry-collector/otelcol"
 
 import (
 	"fmt"

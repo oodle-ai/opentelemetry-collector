@@ -1,16 +1,16 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package memorylimiterextension // import "go.opentelemetry.io/collector/extension/memorylimiterextension"
+package memorylimiterextension // import "github.com/oodle-ai/opentelemetry-collector/extension/memorylimiterextension"
 
 //go:generate mdatagen metadata.yaml
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/extension"
-	"go.opentelemetry.io/collector/extension/memorylimiterextension/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/extension"
+	"github.com/oodle-ai/opentelemetry-collector/extension/memorylimiterextension/internal/metadata"
 )
 
 // NewFactory returns a new factory for the Memory Limiter extension.

@@ -1,10 +1,10 @@
-module go.opentelemetry.io/collector/config/configopaque
+module github.com/oodle-ai/opentelemetry-collector/config/configopaque
 
 go 1.21.0
 
 require (
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/collector/confmap v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/confmap v0.101.0
 	go.uber.org/goleak v1.3.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -25,4 +25,4 @@ require (
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 )
 
-replace go.opentelemetry.io/collector/confmap => ../../confmap
+replace github.com/oodle-ai/opentelemetry-collector/confmap => ../../confmap

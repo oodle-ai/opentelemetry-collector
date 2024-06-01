@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/config/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/config/internal"
 
 import (
 	"net"
@@ -10,7 +10,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/internal/localhostgate"
+	"github.com/oodle-ai/opentelemetry-collector/internal/localhostgate"
 )
 
 func shouldWarn(endpoint string) bool {

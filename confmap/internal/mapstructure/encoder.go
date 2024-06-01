@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package mapstructure // import "go.opentelemetry.io/collector/confmap/internal/mapstructure"
+package mapstructure // import "github.com/oodle-ai/opentelemetry-collector/confmap/internal/mapstructure"
 
 import (
 	"encoding"

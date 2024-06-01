@@ -1,12 +1,12 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package json // import "go.opentelemetry.io/collector/pdata/internal/json"
+package json // import "github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
 
 import (
 	jsoniter "github.com/json-iterator/go"
 
-	otlpresource "go.opentelemetry.io/collector/pdata/internal/data/protogen/resource/v1"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 )
 
 func ReadResource(iter *jsoniter.Iterator, resource *otlpresource.Resource) {

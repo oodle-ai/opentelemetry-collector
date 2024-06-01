@@ -1,14 +1,14 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package service // import "go.opentelemetry.io/collector/service"
+package service // import "github.com/oodle-ai/opentelemetry-collector/service"
 
 import (
 	"fmt"
 
-	"go.opentelemetry.io/collector/service/extensions"
-	"go.opentelemetry.io/collector/service/pipelines"
-	"go.opentelemetry.io/collector/service/telemetry"
+	"github.com/oodle-ai/opentelemetry-collector/service/extensions"
+	"github.com/oodle-ai/opentelemetry-collector/service/pipelines"
+	"github.com/oodle-ai/opentelemetry-collector/service/telemetry"
 )
 
 // Config defines the configurable components of the Service.

@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/confmap/confmaptest"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/confmaptest"
 )
 
 func TestUnmarshalConfig(t *testing.T) {

@@ -1,10 +1,10 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package memorylimiterextension // import "go.opentelemetry.io/collector/extension/memorylimiterextension"
+package memorylimiterextension // import "github.com/oodle-ai/opentelemetry-collector/extension/memorylimiterextension"
 
 import (
-	"go.opentelemetry.io/collector/internal/memorylimiter"
+	"github.com/oodle-ai/opentelemetry-collector/internal/memorylimiter"
 )
 
 type Config = memorylimiter.Config

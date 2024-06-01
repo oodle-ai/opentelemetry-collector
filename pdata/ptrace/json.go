@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package ptrace // import "go.opentelemetry.io/collector/pdata/ptrace"
+package ptrace // import "github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
 
 import (
 	"bytes"
@@ -9,10 +9,10 @@ import (
 
 	jsoniter "github.com/json-iterator/go"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlptrace "go.opentelemetry.io/collector/pdata/internal/data/protogen/trace/v1"
-	"go.opentelemetry.io/collector/pdata/internal/json"
-	"go.opentelemetry.io/collector/pdata/internal/otlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/otlp"
 )
 
 // JSONMarshaler marshals pdata.Traces to JSON bytes using the OTLP/JSON format.

@@ -1,13 +1,13 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pcommon // import "go.opentelemetry.io/collector/pdata/pcommon"
+package pcommon // import "github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 
 import (
 	"go.uber.org/multierr"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpcommon "go.opentelemetry.io/collector/pdata/internal/data/protogen/common/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 )
 
 // Map stores a map of string keys to elements of Value type.
@@ -18,12 +18,12 @@ type Map internal.Map
 
 // NewMap creates a Map with 0 elements.
 func NewMap() Map {
-	orig := []otlpcommon.KeyValue(nil)
+	orig := []*otlpcommon.KeyValue(nil)
 	state := internal.StateMutable
 	return Map(internal.NewMap(&orig, &state))
 }
 
-func (m Map) getOrig() *[]otlpcommon.KeyValue {
+func (m Map) getOrig() *[]*otlpcommon.KeyValue {
 	return internal.GetOrigMap(internal.Map(m))
 }
 
@@ -31,7 +31,7 @@ func (m Map) getState() *internal.State {
 	return internal.GetMapState(internal.Map(m))
 }
 
-func newMap(orig *[]otlpcommon.KeyValue, state *internal.State) Map {
+func newMap(orig *[]*otlpcommon.KeyValue, state *internal.State) Map {
 	return Map(internal.NewMap(orig, state))
 }
 
@@ -49,7 +49,7 @@ func (m Map) EnsureCapacity(capacity int) {
 	if capacity <= cap(oldOrig) {
 		return
 	}
-	*m.getOrig() = make([]otlpcommon.KeyValue, len(oldOrig), capacity)
+	*m.getOrig() = make([]*otlpcommon.KeyValue, len(oldOrig), capacity)
 	copy(*m.getOrig(), oldOrig)
 }
 
@@ -62,9 +62,9 @@ func (m Map) EnsureCapacity(capacity int) {
 // Calling any functions on the returned invalid instance may cause a panic.
 func (m Map) Get(key string) (Value, bool) {
 	for i := range *m.getOrig() {
-		akv := &(*m.getOrig())[i]
+		akv := (*m.getOrig())[i]
 		if akv.Key == key {
-			return newValue(&akv.Value, m.getState()), true
+			return newValue(akv.Value, m.getState()), true
 		}
 	}
 	return newValue(nil, m.getState()), false
@@ -75,9 +75,9 @@ func (m Map) Get(key string) (Value, bool) {
 func (m Map) Remove(key string) bool {
 	m.getState().AssertMutable()
 	for i := range *m.getOrig() {
-		akv := &(*m.getOrig())[i]
+		akv := (*m.getOrig())[i]
 		if akv.Key == key {
-			*akv = (*m.getOrig())[len(*m.getOrig())-1]
+			*akv = *(*m.getOrig())[len(*m.getOrig())-1]
 			*m.getOrig() = (*m.getOrig())[:len(*m.getOrig())-1]
 			return true
 		}
@@ -90,8 +90,8 @@ func (m Map) RemoveIf(f func(string, Value) bool) {
 	m.getState().AssertMutable()
 	newLen := 0
 	for i := 0; i < len(*m.getOrig()); i++ {
-		akv := &(*m.getOrig())[i]
-		if f(akv.Key, newValue(&akv.Value, m.getState())) {
+		akv := (*m.getOrig())[i]
+		if f(akv.Key, newValue(akv.Value, m.getState())) {
 			continue
 		}
 		if newLen == i {
@@ -113,8 +113,8 @@ func (m Map) PutEmpty(k string) Value {
 		av.getOrig().Value = nil
 		return newValue(av.getOrig(), m.getState())
 	}
-	*m.getOrig() = append(*m.getOrig(), otlpcommon.KeyValue{Key: k})
-	return newValue(&(*m.getOrig())[len(*m.getOrig())-1].Value, m.getState())
+	*m.getOrig() = append(*m.getOrig(), &otlpcommon.KeyValue{Key: k})
+	return newValue((*m.getOrig())[len(*m.getOrig())-1].Value, m.getState())
 }
 
 // PutStr performs the Insert or Update action. The Value is
@@ -172,7 +172,7 @@ func (m Map) PutEmptyBytes(k string) ByteSlice {
 	if av, existing := m.Get(k); existing {
 		av.getOrig().Value = &bv
 	} else {
-		*m.getOrig() = append(*m.getOrig(), otlpcommon.KeyValue{Key: k, Value: otlpcommon.AnyValue{Value: &bv}})
+		*m.getOrig() = append(*m.getOrig(), &otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{Value: &bv}})
 	}
 	return ByteSlice(internal.NewByteSlice(&bv.BytesValue, m.getState()))
 }
@@ -180,11 +180,11 @@ func (m Map) PutEmptyBytes(k string) ByteSlice {
 // PutEmptyMap inserts or updates an empty map under given key and returns it.
 func (m Map) PutEmptyMap(k string) Map {
 	m.getState().AssertMutable()
-	kvl := otlpcommon.AnyValue_KvlistValue{KvlistValue: &otlpcommon.KeyValueList{Values: []otlpcommon.KeyValue(nil)}}
+	kvl := otlpcommon.AnyValue_KvlistValue{KvlistValue: &otlpcommon.KeyValueList{Values: []*otlpcommon.KeyValue(nil)}}
 	if av, existing := m.Get(k); existing {
 		av.getOrig().Value = &kvl
 	} else {
-		*m.getOrig() = append(*m.getOrig(), otlpcommon.KeyValue{Key: k, Value: otlpcommon.AnyValue{Value: &kvl}})
+		*m.getOrig() = append(*m.getOrig(), &otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{Value: &kvl}})
 	}
 	return Map(internal.NewMap(&kvl.KvlistValue.Values, m.getState()))
 }
@@ -192,11 +192,11 @@ func (m Map) PutEmptyMap(k string) Map {
 // PutEmptySlice inserts or updates an empty slice under given key and returns it.
 func (m Map) PutEmptySlice(k string) Slice {
 	m.getState().AssertMutable()
-	vl := otlpcommon.AnyValue_ArrayValue{ArrayValue: &otlpcommon.ArrayValue{Values: []otlpcommon.AnyValue(nil)}}
+	vl := otlpcommon.AnyValue_ArrayValue{ArrayValue: &otlpcommon.ArrayValue{Values: []*otlpcommon.AnyValue(nil)}}
 	if av, existing := m.Get(k); existing {
 		av.getOrig().Value = &vl
 	} else {
-		*m.getOrig() = append(*m.getOrig(), otlpcommon.KeyValue{Key: k, Value: otlpcommon.AnyValue{Value: &vl}})
+		*m.getOrig() = append(*m.getOrig(), &otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{Value: &vl}})
 	}
 	return Slice(internal.NewSlice(&vl.ArrayValue.Values, m.getState()))
 }
@@ -218,8 +218,8 @@ func (m Map) Len() int {
 //	})
 func (m Map) Range(f func(k string, v Value) bool) {
 	for i := range *m.getOrig() {
-		kv := &(*m.getOrig())[i]
-		if !f(kv.Key, Value(internal.NewValue(&kv.Value, m.getState()))) {
+		kv := (*m.getOrig())[i]
+		if !f(kv.Key, Value(internal.NewValue(kv.Value, m.getState()))) {
 			break
 		}
 	}
@@ -234,20 +234,20 @@ func (m Map) CopyTo(dest Map) {
 		// New slice fits in existing slice, no need to reallocate.
 		*dest.getOrig() = (*dest.getOrig())[:newLen:oldCap]
 		for i := range *m.getOrig() {
-			akv := &(*m.getOrig())[i]
-			destAkv := &(*dest.getOrig())[i]
+			akv := (*m.getOrig())[i]
+			destAkv := (*dest.getOrig())[i]
 			destAkv.Key = akv.Key
-			newValue(&akv.Value, m.getState()).CopyTo(newValue(&destAkv.Value, dest.getState()))
+			newValue(akv.Value, m.getState()).CopyTo(newValue(destAkv.Value, dest.getState()))
 		}
 		return
 	}
 
 	// New slice is bigger than exist slice. Allocate new space.
-	origs := make([]otlpcommon.KeyValue, len(*m.getOrig()))
+	origs := make([]*otlpcommon.KeyValue, len(*m.getOrig()))
 	for i := range *m.getOrig() {
-		akv := &(*m.getOrig())[i]
+		akv := (*m.getOrig())[i]
 		origs[i].Key = akv.Key
-		newValue(&akv.Value, m.getState()).CopyTo(newValue(&origs[i].Value, dest.getState()))
+		newValue(akv.Value, m.getState()).CopyTo(newValue(origs[i].Value, dest.getState()))
 	}
 	*dest.getOrig() = origs
 }
@@ -271,11 +271,11 @@ func (m Map) FromRaw(rawMap map[string]any) error {
 	}
 
 	var errs error
-	origs := make([]otlpcommon.KeyValue, len(rawMap))
+	origs := make([]*otlpcommon.KeyValue, len(rawMap))
 	ix := 0
 	for k, iv := range rawMap {
 		origs[ix].Key = k
-		errs = multierr.Append(errs, newValue(&origs[ix].Value, m.getState()).FromRaw(iv))
+		errs = multierr.Append(errs, newValue(origs[ix].Value, m.getState()).FromRaw(iv))
 		ix++
 	}
 	*m.getOrig() = origs

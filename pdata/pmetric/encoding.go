@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pmetric // import "go.opentelemetry.io/collector/pdata/pmetric"
+package pmetric // import "github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 
 // MarshalSizer is the interface that groups the basic Marshal and Size methods
 type MarshalSizer interface {

@@ -16,13 +16,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/exporter/exportertest"
-	"go.opentelemetry.io/collector/exporter/internal/experr"
-	"go.opentelemetry.io/collector/extension/experimental/storage"
-	"go.opentelemetry.io/collector/extension/extensiontest"
-	"go.opentelemetry.io/collector/pdata/pcommon"
-	"go.opentelemetry.io/collector/pdata/ptrace"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exportertest"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/internal/experr"
+	"github.com/oodle-ai/opentelemetry-collector/extension/experimental/storage"
+	"github.com/oodle-ai/opentelemetry-collector/extension/extensiontest"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
 )
 
 type tracesRequest struct {

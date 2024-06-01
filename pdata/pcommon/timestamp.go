@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pcommon // import "go.opentelemetry.io/collector/pdata/pcommon"
+package pcommon // import "github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 
 import (
 	"time"

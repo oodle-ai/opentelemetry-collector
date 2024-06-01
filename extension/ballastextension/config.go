@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package ballastextension // import "go.opentelemetry.io/collector/extension/ballastextension"
+package ballastextension // import "github.com/oodle-ai/opentelemetry-collector/extension/ballastextension"
 
 import (
 	"errors"

@@ -8,8 +8,8 @@ import (
 	"sort"
 	"strings"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
 )
 
 // distros is a collection of distributions that can be referenced in the metadata.yaml files.
