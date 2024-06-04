@@ -62,7 +62,7 @@ benchmark:
 .PHONY: fmt
 fmt: $(GOIMPORTS)
 	gofmt -w -s ./
-	$(GOIMPORTS) -w  -local go.opentelemetry.io/collector ./
+	$(GOIMPORTS) -w  -local github.com/oodle-ai/opentelemetry-collector ./
 
 .PHONY: tidy
 tidy:
@@ -83,7 +83,7 @@ generate:
 
 .PHONY: impi
 impi: $(IMPI)
-	@$(IMPI) --local go.opentelemetry.io/collector --scheme stdThirdPartyLocal ./...
+	@$(IMPI) --local github.com/oodle-ai/opentelemetry-collector --scheme stdThirdPartyLocal ./...
 
 .PHONY: moddownload
 moddownload:

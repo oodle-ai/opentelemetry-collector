@@ -3,7 +3,7 @@
 
 // This file contains helper functions regarding compression/decompression for confighttp.
 
-package confighttp // import "go.opentelemetry.io/collector/config/confighttp"
+package confighttp // import "github.com/oodle-ai/opentelemetry-collector/config/confighttp"
 
 import (
 	"bytes"
@@ -14,7 +14,7 @@ import (
 
 	"github.com/klauspost/compress/zstd"
 
-	"go.opentelemetry.io/collector/config/configcompression"
+	"github.com/oodle-ai/opentelemetry-collector/config/configcompression"
 )
 
 func BenchmarkCompression(b *testing.B) {

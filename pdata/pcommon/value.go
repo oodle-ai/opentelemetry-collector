@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pcommon // import "go.opentelemetry.io/collector/pdata/pcommon"
+package pcommon // import "github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 
 import (
 	"encoding/base64"
@@ -10,8 +10,8 @@ import (
 	"math"
 	"strconv"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpcommon "go.opentelemetry.io/collector/pdata/internal/data/protogen/common/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 )
 
 // ValueType specifies the type of Value.
@@ -450,34 +450,34 @@ func (v Value) AsRaw() any {
 	return fmt.Sprintf("<Unknown OpenTelemetry value type %q>", v.Type())
 }
 
-func newKeyValueString(k string, v string) otlpcommon.KeyValue {
+func newKeyValueString(k string, v string) *otlpcommon.KeyValue {
 	orig := otlpcommon.KeyValue{Key: k}
 	state := internal.StateMutable
-	akv := newValue(&orig.Value, &state)
+	akv := newValue(orig.Value, &state)
 	akv.SetStr(v)
-	return orig
+	return &orig
 }
 
-func newKeyValueInt(k string, v int64) otlpcommon.KeyValue {
+func newKeyValueInt(k string, v int64) *otlpcommon.KeyValue {
 	orig := otlpcommon.KeyValue{Key: k}
 	state := internal.StateMutable
-	akv := newValue(&orig.Value, &state)
+	akv := newValue(orig.Value, &state)
 	akv.SetInt(v)
-	return orig
+	return &orig
 }
 
-func newKeyValueDouble(k string, v float64) otlpcommon.KeyValue {
+func newKeyValueDouble(k string, v float64) *otlpcommon.KeyValue {
 	orig := otlpcommon.KeyValue{Key: k}
 	state := internal.StateMutable
-	akv := newValue(&orig.Value, &state)
+	akv := newValue(orig.Value, &state)
 	akv.SetDouble(v)
-	return orig
+	return &orig
 }
 
-func newKeyValueBool(k string, v bool) otlpcommon.KeyValue {
+func newKeyValueBool(k string, v bool) *otlpcommon.KeyValue {
 	orig := otlpcommon.KeyValue{Key: k}
 	state := internal.StateMutable
-	akv := newValue(&orig.Value, &state)
+	akv := newValue(orig.Value, &state)
 	akv.SetBool(v)
-	return orig
+	return &orig
 }

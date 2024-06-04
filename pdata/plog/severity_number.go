@@ -1,10 +1,10 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package plog // import "go.opentelemetry.io/collector/pdata/plog"
+package plog // import "github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 
 import (
-	otlplogs "go.opentelemetry.io/collector/pdata/internal/data/protogen/logs/v1"
+	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
 )
 
 // SeverityNumber represents severity number of a log record.

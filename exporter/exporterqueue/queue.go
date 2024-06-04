@@ -1,14 +1,14 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package exporterqueue // import "go.opentelemetry.io/collector/exporter/exporterqueue"
+package exporterqueue // import "github.com/oodle-ai/opentelemetry-collector/exporter/exporterqueue"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/internal/queue"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/internal/queue"
 )
 
 // ErrQueueIsFull is the error that Queue returns when full.

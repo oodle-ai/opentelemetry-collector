@@ -37,7 +37,7 @@
     &nbsp;&nbsp;&bull;&nbsp;&nbsp;
     <a href="docs/security-best-practices.md">Security</a>
     &nbsp;&nbsp;&bull;&nbsp;&nbsp;
-    <a href="https://pkg.go.dev/go.opentelemetry.io/collector">Package</a>
+    <a href="https://pkg.go.dev/github.com/oodle-ai/opentelemetry-collector">Package</a>
   </strong>
 </p>
 

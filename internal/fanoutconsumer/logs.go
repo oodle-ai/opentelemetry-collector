@@ -3,15 +3,15 @@
 
 // Package fanoutconsumer contains implementations of Traces/Metrics/Logs consumers
 // that fan out the data to multiple other consumers.
-package fanoutconsumer // import "go.opentelemetry.io/collector/internal/fanoutconsumer"
+package fanoutconsumer // import "github.com/oodle-ai/opentelemetry-collector/internal/fanoutconsumer"
 
 import (
 	"context"
 
 	"go.uber.org/multierr"
 
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 )
 
 // NewLogs wraps multiple log consumers in a single one.

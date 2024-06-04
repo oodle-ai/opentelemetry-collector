@@ -9,15 +9,15 @@ import (
 	{{- end }}
 	"time"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/pdata/pcommon"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"go.opentelemetry.io/collector/receiver"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/receiver"
 	{{- if .SemConvVersion }}
-	conventions "go.opentelemetry.io/collector/semconv/v{{ .SemConvVersion }}"
+	conventions "github.com/oodle-ai/opentelemetry-collector/semconv/v{{ .SemConvVersion }}"
 	{{- end }}
 	{{ if .ResourceAttributes -}}
-	"go.opentelemetry.io/collector/filter"
+	"github.com/oodle-ai/opentelemetry-collector/filter"
 	{{- end }}
 )
 

@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/featuregate"
+	"github.com/oodle-ai/opentelemetry-collector/featuregate"
 )
 
 func setFeatureGateForTest(t testing.TB, gate *featuregate.Gate, enabled bool) func() {

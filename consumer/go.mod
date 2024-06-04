@@ -1,11 +1,11 @@
-module go.opentelemetry.io/collector/consumer
+module github.com/oodle-ai/opentelemetry-collector/consumer
 
 go 1.21.0
 
 require (
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/collector/pdata v1.8.0
-	go.opentelemetry.io/collector/pdata/testdata v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/pdata v1.8.0
+	github.com/oodle-ai/opentelemetry-collector/pdata/testdata v0.101.0
 	go.uber.org/goleak v1.3.0
 )
 
@@ -27,9 +27,9 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace go.opentelemetry.io/collector/pdata => ../pdata
+replace github.com/oodle-ai/opentelemetry-collector/pdata => ../pdata
 
-replace go.opentelemetry.io/collector/pdata/testdata => ../pdata/testdata
+replace github.com/oodle-ai/opentelemetry-collector/pdata/testdata => ../pdata/testdata
 
 retract (
 	v0.76.0 // Depends on retracted pdata v1.0.0-rc10 module, use v0.76.1

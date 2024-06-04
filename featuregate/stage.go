@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package featuregate // import "go.opentelemetry.io/collector/featuregate"
+package featuregate // import "github.com/oodle-ai/opentelemetry-collector/featuregate"
 
 // Stage represents the Gate's lifecycle and what is the expected state of it.
 type Stage int8

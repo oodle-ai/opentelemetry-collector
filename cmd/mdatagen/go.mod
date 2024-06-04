@@ -1,19 +1,19 @@
-module go.opentelemetry.io/collector/cmd/mdatagen
+module github.com/oodle-ai/opentelemetry-collector/cmd/mdatagen
 
 go 1.21.0
 
 require (
 	github.com/google/go-cmp v0.6.0
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/collector/component v0.101.0
-	go.opentelemetry.io/collector/config/configtelemetry v0.101.0
-	go.opentelemetry.io/collector/confmap v0.101.0
-	go.opentelemetry.io/collector/confmap/provider/fileprovider v0.101.0
-	go.opentelemetry.io/collector/consumer v0.101.0
-	go.opentelemetry.io/collector/filter v0.101.0
-	go.opentelemetry.io/collector/pdata v1.8.0
-	go.opentelemetry.io/collector/receiver v0.101.0
-	go.opentelemetry.io/collector/semconv v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/component v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/config/configtelemetry v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/confmap v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/consumer v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/filter v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/pdata v1.8.0
+	github.com/oodle-ai/opentelemetry-collector/receiver v0.101.0
+	github.com/oodle-ai/opentelemetry-collector/semconv v0.101.0
 	go.opentelemetry.io/otel v1.27.0
 	go.opentelemetry.io/otel/metric v1.27.0
 	go.opentelemetry.io/otel/sdk/metric v1.27.0
@@ -56,29 +56,29 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace go.opentelemetry.io/collector/component => ../../component
+replace github.com/oodle-ai/opentelemetry-collector/component => ../../component
 
-replace go.opentelemetry.io/collector/confmap => ../../confmap
+replace github.com/oodle-ai/opentelemetry-collector/confmap => ../../confmap
 
-replace go.opentelemetry.io/collector/confmap/provider/fileprovider => ../../confmap/provider/fileprovider
+replace github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider => ../../confmap/provider/fileprovider
 
-replace go.opentelemetry.io/collector/filter => ../../filter
+replace github.com/oodle-ai/opentelemetry-collector/filter => ../../filter
 
-replace go.opentelemetry.io/collector/pdata => ../../pdata
+replace github.com/oodle-ai/opentelemetry-collector/pdata => ../../pdata
 
-replace go.opentelemetry.io/collector/pdata/testdata => ../../pdata/testdata
+replace github.com/oodle-ai/opentelemetry-collector/pdata/testdata => ../../pdata/testdata
 
-replace go.opentelemetry.io/collector/receiver => ../../receiver
+replace github.com/oodle-ai/opentelemetry-collector/receiver => ../../receiver
 
-replace go.opentelemetry.io/collector/semconv => ../../semconv
+replace github.com/oodle-ai/opentelemetry-collector/semconv => ../../semconv
 
-replace go.opentelemetry.io/collector/featuregate => ../../featuregate
+replace github.com/oodle-ai/opentelemetry-collector/featuregate => ../../featuregate
 
-replace go.opentelemetry.io/collector/consumer => ../../consumer
+replace github.com/oodle-ai/opentelemetry-collector/consumer => ../../consumer
 
-replace go.opentelemetry.io/collector => ../..
+replace github.com/oodle-ai/opentelemetry-collector => ../..
 
-replace go.opentelemetry.io/collector/config/configtelemetry => ../../config/configtelemetry
+replace github.com/oodle-ai/opentelemetry-collector/config/configtelemetry => ../../config/configtelemetry
 
 retract (
 	v0.76.2

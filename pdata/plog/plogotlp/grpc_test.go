@@ -19,7 +19,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 
-	"go.opentelemetry.io/collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 )
 
 func TestGrpc(t *testing.T) {

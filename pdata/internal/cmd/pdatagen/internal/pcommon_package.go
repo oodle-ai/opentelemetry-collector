@@ -1,22 +1,22 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/pdata/internal/cmd/pdatagen/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/pdata/internal/cmd/pdatagen/internal"
 
 var pcommon = &Package{
 	name: "pcommon",
 	path: "pcommon",
 	imports: []string{
-		`"go.opentelemetry.io/collector/pdata/internal"`,
-		`otlpcommon "go.opentelemetry.io/collector/pdata/internal/data/protogen/common/v1"`,
-		`otlpresource "go.opentelemetry.io/collector/pdata/internal/data/protogen/resource/v1"`,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 	},
 	testImports: []string{
 		`"testing"`,
 		``,
 		`"github.com/stretchr/testify/assert"`,
 		``,
-		`"go.opentelemetry.io/collector/pdata/internal"`,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 	},
 	structs: []baseStruct{
 		scope,

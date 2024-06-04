@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"go.opentelemetry.io/collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
 )
 
 func TestNewNopTelemetrySettings(t *testing.T) {

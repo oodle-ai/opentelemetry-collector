@@ -1,11 +1,11 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package httpsprovider // import "go.opentelemetry.io/collector/confmap/provider/httpsprovider"
+package httpsprovider // import "github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpsprovider"
 
 import (
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/confmap/provider/internal/configurablehttpprovider"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/provider/internal/configurablehttpprovider"
 )
 
 // NewFactory returns a factory for a confmap.Provider that reads the configuration from a https server.

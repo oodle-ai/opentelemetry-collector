@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	sdkresource "go.opentelemetry.io/otel/sdk/resource"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/pdata/pcommon"
-	semconv "go.opentelemetry.io/collector/semconv/v1.18.0"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
+	semconv "github.com/oodle-ai/opentelemetry-collector/semconv/v1.18.0"
 )
 
 const (

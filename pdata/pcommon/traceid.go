@@ -1,12 +1,12 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pcommon // import "go.opentelemetry.io/collector/pdata/pcommon"
+package pcommon // import "github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 
 import (
 	"encoding/hex"
 
-	"go.opentelemetry.io/collector/pdata/internal/data"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"
 )
 
 var emptyTraceID = TraceID([16]byte{})

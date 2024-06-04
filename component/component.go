@@ -3,7 +3,7 @@
 
 // Package component outlines the abstraction of components within the OpenTelemetry Collector.  It provides details on the component
 // lifecycle as well as defining the interface that components must fulfill.
-package component // import "go.opentelemetry.io/collector/component"
+package component // import "github.com/oodle-ai/opentelemetry-collector/component"
 
 import (
 	"context"

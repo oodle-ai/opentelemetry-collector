@@ -9,7 +9,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"go.opentelemetry.io/collector/config/configopaque"
+	"github.com/oodle-ai/opentelemetry-collector/config/configopaque"
 )
 
 func Example_opaqueString() {

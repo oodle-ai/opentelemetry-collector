@@ -1,16 +1,16 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package connector // import "go.opentelemetry.io/collector/connector"
+package connector // import "github.com/oodle-ai/opentelemetry-collector/connector"
 
 import (
 	"fmt"
 
 	"go.uber.org/multierr"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/internal/fanoutconsumer"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/internal/fanoutconsumer"
 )
 
 // LogsRouterAndConsumer feeds the first consumer.Logs in each of the specified pipelines.

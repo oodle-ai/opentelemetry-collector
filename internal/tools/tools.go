@@ -3,7 +3,7 @@
 
 //go:build tools
 
-package tools // import "go.opentelemetry.io/collector/internal/tools"
+package tools // import "github.com/oodle-ai/opentelemetry-collector/internal/tools"
 
 // This file follows the recommendation at
 // https://github.com/golang/go/wiki/Modules#how-can-i-track-tool-dependencies-for-a-module
@@ -26,5 +26,5 @@ import (
 	_ "golang.org/x/tools/cmd/goimports"
 	_ "golang.org/x/vuln/cmd/govulncheck"
 
-	_ "go.opentelemetry.io/collector/internal/tools/semconvkit"
+	_ "github.com/oodle-ai/opentelemetry-collector/internal/tools/semconvkit"
 )

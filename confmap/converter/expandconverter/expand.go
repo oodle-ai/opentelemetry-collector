@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package expandconverter // import "go.opentelemetry.io/collector/confmap/converter/expandconverter"
+package expandconverter // import "github.com/oodle-ai/opentelemetry-collector/confmap/converter/expandconverter"
 
 import (
 	"context"
@@ -11,8 +11,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/confmap/internal/envvar"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/internal/envvar"
 )
 
 type converter struct {

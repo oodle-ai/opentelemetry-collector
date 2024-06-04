@@ -4,4 +4,4 @@
 // Package configtelemetry defines various telemetry level for configuration.
 // It enables every component to have access to telemetry level
 // to enable metrics only when necessary.
-package configtelemetry // import "go.opentelemetry.io/collector/config/configtelemetry"
+package configtelemetry // import "github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"

@@ -1,56 +1,56 @@
 dist:
-  module: go.opentelemetry.io/collector/builder/test/core
+  module: github.com/oodle-ai/opentelemetry-collector/builder/test/core
   otelcol_version: 0.101.0
 
 extensions:
-  - import: go.opentelemetry.io/collector/extension/zpagesextension
-    gomod: go.opentelemetry.io/collector v0.101.0
+  - import: github.com/oodle-ai/opentelemetry-collector/extension/zpagesextension
+    gomod: github.com/oodle-ai/opentelemetry-collector v0.101.0
     path: ${WORKSPACE_DIR}
 
 receivers:
-  - import: go.opentelemetry.io/collector/receiver/otlpreceiver
-    gomod: go.opentelemetry.io/collector v0.101.0
+  - import: github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver
+    gomod: github.com/oodle-ai/opentelemetry-collector v0.101.0
     path: ${WORKSPACE_DIR}
 
 exporters:
-  - import: go.opentelemetry.io/collector/exporter/debugexporter
-    gomod: go.opentelemetry.io/collector v0.101.0
+  - import: github.com/oodle-ai/opentelemetry-collector/exporter/debugexporter
+    gomod: github.com/oodle-ai/opentelemetry-collector v0.101.0
     path: ${WORKSPACE_DIR}
 
 replaces:
-  - go.opentelemetry.io/collector => ${WORKSPACE_DIR}
-  - go.opentelemetry.io/collector/component => ${WORKSPACE_DIR}/component
-  - go.opentelemetry.io/collector/config/configauth => ${WORKSPACE_DIR}/config/configauth
-  - go.opentelemetry.io/collector/config/configcompression => ${WORKSPACE_DIR}/config/configcompression
-  - go.opentelemetry.io/collector/config/configgrpc => ${WORKSPACE_DIR}/config/configgrpc
-  - go.opentelemetry.io/collector/config/confighttp => ${WORKSPACE_DIR}/config/confighttp
-  - go.opentelemetry.io/collector/config/confignet => ${WORKSPACE_DIR}/config/confignet
-  - go.opentelemetry.io/collector/config/configopaque => ${WORKSPACE_DIR}/config/configopaque
-  - go.opentelemetry.io/collector/config/configretry => ${WORKSPACE_DIR}/config/configretry
-  - go.opentelemetry.io/collector/config/configtelemetry => ${WORKSPACE_DIR}/config/configtelemetry
-  - go.opentelemetry.io/collector/config/configtls => ${WORKSPACE_DIR}/config/configtls
-  - go.opentelemetry.io/collector/config/internal => ${WORKSPACE_DIR}/config/internal
-  - go.opentelemetry.io/collector/confmap => ${WORKSPACE_DIR}/confmap
-  - go.opentelemetry.io/collector/confmap/converter/expandconverter => ${WORKSPACE_DIR}/confmap/converter/expandconverter
-  - go.opentelemetry.io/collector/confmap/provider/envprovider => ${WORKSPACE_DIR}/confmap/provider/envprovider
-  - go.opentelemetry.io/collector/confmap/provider/fileprovider => ${WORKSPACE_DIR}/confmap/provider/fileprovider
-  - go.opentelemetry.io/collector/confmap/provider/httpprovider => ${WORKSPACE_DIR}/confmap/provider/httpprovider
-  - go.opentelemetry.io/collector/confmap/provider/httpsprovider => ${WORKSPACE_DIR}/confmap/provider/httpsprovider
-  - go.opentelemetry.io/collector/confmap/provider/yamlprovider => ${WORKSPACE_DIR}/confmap/provider/yamlprovider
-  - go.opentelemetry.io/collector/consumer => ${WORKSPACE_DIR}/consumer
-  - go.opentelemetry.io/collector/connector => ${WORKSPACE_DIR}/connector
-  - go.opentelemetry.io/collector/exporter => ${WORKSPACE_DIR}/exporter
-  - go.opentelemetry.io/collector/exporter/debugexporter => ${WORKSPACE_DIR}/exporter/debugexporter
-  - go.opentelemetry.io/collector/exporter/loggingexporter => ${WORKSPACE_DIR}/exporter/loggingexporter
-  - go.opentelemetry.io/collector/extension => ${WORKSPACE_DIR}/extension
-  - go.opentelemetry.io/collector/extension/auth => ${WORKSPACE_DIR}/extension/auth
-  - go.opentelemetry.io/collector/extension/zpagesextension => ${WORKSPACE_DIR}/extension/zpagesextension
-  - go.opentelemetry.io/collector/featuregate => ${WORKSPACE_DIR}/featuregate
-  - go.opentelemetry.io/collector/otelcol => ${WORKSPACE_DIR}/otelcol
-  - go.opentelemetry.io/collector/pdata => ${WORKSPACE_DIR}/pdata
-  - go.opentelemetry.io/collector/pdata/testdata => ${WORKSPACE_DIR}/pdata/testdata
-  - go.opentelemetry.io/collector/processor => ${WORKSPACE_DIR}/processor
-  - go.opentelemetry.io/collector/receiver => ${WORKSPACE_DIR}/receiver
-  - go.opentelemetry.io/collector/receiver/otlpreceiver => ${WORKSPACE_DIR}/receiver/otlpreceiver
-  - go.opentelemetry.io/collector/semconv => ${WORKSPACE_DIR}/semconv
-  - go.opentelemetry.io/collector/service => ${WORKSPACE_DIR}/service
+  - github.com/oodle-ai/opentelemetry-collector => ${WORKSPACE_DIR}
+  - github.com/oodle-ai/opentelemetry-collector/component => ${WORKSPACE_DIR}/component
+  - github.com/oodle-ai/opentelemetry-collector/config/configauth => ${WORKSPACE_DIR}/config/configauth
+  - github.com/oodle-ai/opentelemetry-collector/config/configcompression => ${WORKSPACE_DIR}/config/configcompression
+  - github.com/oodle-ai/opentelemetry-collector/config/configgrpc => ${WORKSPACE_DIR}/config/configgrpc
+  - github.com/oodle-ai/opentelemetry-collector/config/confighttp => ${WORKSPACE_DIR}/config/confighttp
+  - github.com/oodle-ai/opentelemetry-collector/config/confignet => ${WORKSPACE_DIR}/config/confignet
+  - github.com/oodle-ai/opentelemetry-collector/config/configopaque => ${WORKSPACE_DIR}/config/configopaque
+  - github.com/oodle-ai/opentelemetry-collector/config/configretry => ${WORKSPACE_DIR}/config/configretry
+  - github.com/oodle-ai/opentelemetry-collector/config/configtelemetry => ${WORKSPACE_DIR}/config/configtelemetry
+  - github.com/oodle-ai/opentelemetry-collector/config/configtls => ${WORKSPACE_DIR}/config/configtls
+  - github.com/oodle-ai/opentelemetry-collector/config/internal => ${WORKSPACE_DIR}/config/internal
+  - github.com/oodle-ai/opentelemetry-collector/confmap => ${WORKSPACE_DIR}/confmap
+  - github.com/oodle-ai/opentelemetry-collector/confmap/converter/expandconverter => ${WORKSPACE_DIR}/confmap/converter/expandconverter
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/envprovider => ${WORKSPACE_DIR}/confmap/provider/envprovider
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider => ${WORKSPACE_DIR}/confmap/provider/fileprovider
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpprovider => ${WORKSPACE_DIR}/confmap/provider/httpprovider
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpsprovider => ${WORKSPACE_DIR}/confmap/provider/httpsprovider
+  - github.com/oodle-ai/opentelemetry-collector/confmap/provider/yamlprovider => ${WORKSPACE_DIR}/confmap/provider/yamlprovider
+  - github.com/oodle-ai/opentelemetry-collector/consumer => ${WORKSPACE_DIR}/consumer
+  - github.com/oodle-ai/opentelemetry-collector/connector => ${WORKSPACE_DIR}/connector
+  - github.com/oodle-ai/opentelemetry-collector/exporter => ${WORKSPACE_DIR}/exporter
+  - github.com/oodle-ai/opentelemetry-collector/exporter/debugexporter => ${WORKSPACE_DIR}/exporter/debugexporter
+  - github.com/oodle-ai/opentelemetry-collector/exporter/loggingexporter => ${WORKSPACE_DIR}/exporter/loggingexporter
+  - github.com/oodle-ai/opentelemetry-collector/extension => ${WORKSPACE_DIR}/extension
+  - github.com/oodle-ai/opentelemetry-collector/extension/auth => ${WORKSPACE_DIR}/extension/auth
+  - github.com/oodle-ai/opentelemetry-collector/extension/zpagesextension => ${WORKSPACE_DIR}/extension/zpagesextension
+  - github.com/oodle-ai/opentelemetry-collector/featuregate => ${WORKSPACE_DIR}/featuregate
+  - github.com/oodle-ai/opentelemetry-collector/otelcol => ${WORKSPACE_DIR}/otelcol
+  - github.com/oodle-ai/opentelemetry-collector/pdata => ${WORKSPACE_DIR}/pdata
+  - github.com/oodle-ai/opentelemetry-collector/pdata/testdata => ${WORKSPACE_DIR}/pdata/testdata
+  - github.com/oodle-ai/opentelemetry-collector/processor => ${WORKSPACE_DIR}/processor
+  - github.com/oodle-ai/opentelemetry-collector/receiver => ${WORKSPACE_DIR}/receiver
+  - github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver => ${WORKSPACE_DIR}/receiver/otlpreceiver
+  - github.com/oodle-ai/opentelemetry-collector/semconv => ${WORKSPACE_DIR}/semconv
+  - github.com/oodle-ai/opentelemetry-collector/service => ${WORKSPACE_DIR}/service

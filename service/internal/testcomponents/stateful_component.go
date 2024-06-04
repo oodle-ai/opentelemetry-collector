@@ -1,12 +1,12 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package testcomponents // import "go.opentelemetry.io/collector/service/internal/testcomponents"
+package testcomponents // import "github.com/oodle-ai/opentelemetry-collector/service/internal/testcomponents"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 type componentState struct {

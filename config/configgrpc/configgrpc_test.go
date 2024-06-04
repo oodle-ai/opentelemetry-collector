@@ -22,17 +22,17 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
 
-	"go.opentelemetry.io/collector/client"
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/component/componenttest"
-	"go.opentelemetry.io/collector/config/configauth"
-	"go.opentelemetry.io/collector/config/configcompression"
-	"go.opentelemetry.io/collector/config/confignet"
-	"go.opentelemetry.io/collector/config/configopaque"
-	"go.opentelemetry.io/collector/config/configtls"
-	"go.opentelemetry.io/collector/extension/auth"
-	"go.opentelemetry.io/collector/extension/auth/authtest"
-	"go.opentelemetry.io/collector/pdata/ptrace/ptraceotlp"
+	"github.com/oodle-ai/opentelemetry-collector/client"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component/componenttest"
+	"github.com/oodle-ai/opentelemetry-collector/config/configauth"
+	"github.com/oodle-ai/opentelemetry-collector/config/configcompression"
+	"github.com/oodle-ai/opentelemetry-collector/config/confignet"
+	"github.com/oodle-ai/opentelemetry-collector/config/configopaque"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtls"
+	"github.com/oodle-ai/opentelemetry-collector/extension/auth"
+	"github.com/oodle-ai/opentelemetry-collector/extension/auth/authtest"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace/ptraceotlp"
 )
 
 func TestNewDefaultKeepaliveClientConfig(t *testing.T) {

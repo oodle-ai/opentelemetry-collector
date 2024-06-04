@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package configurablehttpprovider // import "go.opentelemetry.io/collector/confmap/provider/internal/configurablehttpprovider"
+package configurablehttpprovider // import "github.com/oodle-ai/opentelemetry-collector/confmap/provider/internal/configurablehttpprovider"
 
 import (
 	"context"
@@ -14,8 +14,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/confmap/provider/internal"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/provider/internal"
 )
 
 type SchemeType string

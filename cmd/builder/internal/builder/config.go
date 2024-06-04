@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package builder // import "go.opentelemetry.io/collector/cmd/builder/internal/builder"
+package builder // import "github.com/oodle-ai/opentelemetry-collector/cmd/builder/internal/builder"
 
 import (
 	"errors"
@@ -91,7 +91,7 @@ func NewDefaultConfig() Config {
 		Distribution: Distribution{
 			OutputPath:     outputDir,
 			OtelColVersion: defaultOtelColVersion,
-			Module:         "go.opentelemetry.io/collector/cmd/builder",
+			Module:         "github.com/oodle-ai/opentelemetry-collector/cmd/builder",
 		},
 		// basic retry if error from go mod command (in case of transient network error).
 		// retry 3 times with 5 second spacing interval
@@ -202,19 +202,19 @@ func (c *Config) ParseModules() error {
 	} else {
 		providers, err := parseModules([]Module{
 			{
-				GoMod: "go.opentelemetry.io/collector/confmap/provider/envprovider v" + c.Distribution.OtelColVersion,
+				GoMod: "github.com/oodle-ai/opentelemetry-collector/confmap/provider/envprovider v" + c.Distribution.OtelColVersion,
 			},
 			{
-				GoMod: "go.opentelemetry.io/collector/confmap/provider/fileprovider v" + c.Distribution.OtelColVersion,
+				GoMod: "github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider v" + c.Distribution.OtelColVersion,
 			},
 			{
-				GoMod: "go.opentelemetry.io/collector/confmap/provider/httpprovider v" + c.Distribution.OtelColVersion,
+				GoMod: "github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpprovider v" + c.Distribution.OtelColVersion,
 			},
 			{
-				GoMod: "go.opentelemetry.io/collector/confmap/provider/httpsprovider v" + c.Distribution.OtelColVersion,
+				GoMod: "github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpsprovider v" + c.Distribution.OtelColVersion,
 			},
 			{
-				GoMod: "go.opentelemetry.io/collector/confmap/provider/yamlprovider v" + c.Distribution.OtelColVersion,
+				GoMod: "github.com/oodle-ai/opentelemetry-collector/confmap/provider/yamlprovider v" + c.Distribution.OtelColVersion,
 			},
 		})
 		if err != nil {

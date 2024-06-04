@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package otlpreceiver // import "go.opentelemetry.io/collector/receiver/otlpreceiver"
+package otlpreceiver // import "github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver"
 
 import (
 	"bytes"
@@ -10,9 +10,9 @@ import (
 	"github.com/gogo/protobuf/proto"
 	spb "google.golang.org/genproto/googleapis/rpc/status"
 
-	"go.opentelemetry.io/collector/pdata/plog/plogotlp"
-	"go.opentelemetry.io/collector/pdata/pmetric/pmetricotlp"
-	"go.opentelemetry.io/collector/pdata/ptrace/ptraceotlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog/plogotlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric/pmetricotlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace/ptraceotlp"
 )
 
 const (

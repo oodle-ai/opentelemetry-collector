@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package proctelemetry // import "go.opentelemetry.io/collector/service/internal/proctelemetry"
+package proctelemetry // import "github.com/oodle-ai/opentelemetry-collector/service/internal/proctelemetry"
 
 import (
 	"context"
@@ -27,8 +27,8 @@ import (
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 	"go.opentelemetry.io/otel/sdk/resource"
 
-	"go.opentelemetry.io/collector/processor/processorhelper"
-	semconv "go.opentelemetry.io/collector/semconv/v1.18.0"
+	"github.com/oodle-ai/opentelemetry-collector/processor/processorhelper"
+	semconv "github.com/oodle-ai/opentelemetry-collector/semconv/v1.18.0"
 )
 
 const (

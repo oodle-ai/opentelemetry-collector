@@ -1,15 +1,15 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package forwardconnector // import "go.opentelemetry.io/collector/connector/forwardconnector"
+package forwardconnector // import "github.com/oodle-ai/opentelemetry-collector/connector/forwardconnector"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/connector"
-	"go.opentelemetry.io/collector/connector/forwardconnector/internal/metadata"
-	"go.opentelemetry.io/collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/connector"
+	"github.com/oodle-ai/opentelemetry-collector/connector/forwardconnector/internal/metadata"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
 )
 
 // NewFactory returns a connector.Factory.

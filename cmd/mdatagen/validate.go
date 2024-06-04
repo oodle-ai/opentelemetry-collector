@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 func (md *metadata) Validate() error {

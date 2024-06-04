@@ -7,9 +7,9 @@
 package pmetric
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpmetrics "go.opentelemetry.io/collector/pdata/internal/data/protogen/metrics/v1"
-	"go.opentelemetry.io/collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
 // ExponentialHistogramDataPoint is a single data point in a timeseries that describes the
@@ -111,12 +111,12 @@ func (ms ExponentialHistogramDataPoint) SetZeroCount(v uint64) {
 
 // Positive returns the positive associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) Positive() ExponentialHistogramDataPointBuckets {
-	return newExponentialHistogramDataPointBuckets(&ms.orig.Positive, ms.state)
+	return newExponentialHistogramDataPointBuckets(ms.orig.Positive, ms.state)
 }
 
 // Negative returns the negative associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) Negative() ExponentialHistogramDataPointBuckets {
-	return newExponentialHistogramDataPointBuckets(&ms.orig.Negative, ms.state)
+	return newExponentialHistogramDataPointBuckets(ms.orig.Negative, ms.state)
 }
 
 // Exemplars returns the Exemplars associated with this ExponentialHistogramDataPoint.
@@ -143,19 +143,19 @@ func (ms ExponentialHistogramDataPoint) Sum() float64 {
 // HasSum returns true if the ExponentialHistogramDataPoint contains a
 // Sum value, false otherwise.
 func (ms ExponentialHistogramDataPoint) HasSum() bool {
-	return ms.orig.Sum_ != nil
+	return ms.orig.Sum != nil
 }
 
 // SetSum replaces the sum associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) SetSum(v float64) {
 	ms.state.AssertMutable()
-	ms.orig.Sum_ = &otlpmetrics.ExponentialHistogramDataPoint_Sum{Sum: v}
+	ms.orig.Sum = &v
 }
 
 // RemoveSum removes the sum associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) RemoveSum() {
 	ms.state.AssertMutable()
-	ms.orig.Sum_ = nil
+	ms.orig.Sum = nil
 }
 
 // Min returns the min associated with this ExponentialHistogramDataPoint.
@@ -166,19 +166,19 @@ func (ms ExponentialHistogramDataPoint) Min() float64 {
 // HasMin returns true if the ExponentialHistogramDataPoint contains a
 // Min value, false otherwise.
 func (ms ExponentialHistogramDataPoint) HasMin() bool {
-	return ms.orig.Min_ != nil
+	return ms.orig.Min != nil
 }
 
 // SetMin replaces the min associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) SetMin(v float64) {
 	ms.state.AssertMutable()
-	ms.orig.Min_ = &otlpmetrics.ExponentialHistogramDataPoint_Min{Min: v}
+	ms.orig.Min = &v
 }
 
 // RemoveMin removes the min associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) RemoveMin() {
 	ms.state.AssertMutable()
-	ms.orig.Min_ = nil
+	ms.orig.Min = nil
 }
 
 // Max returns the max associated with this ExponentialHistogramDataPoint.
@@ -189,19 +189,19 @@ func (ms ExponentialHistogramDataPoint) Max() float64 {
 // HasMax returns true if the ExponentialHistogramDataPoint contains a
 // Max value, false otherwise.
 func (ms ExponentialHistogramDataPoint) HasMax() bool {
-	return ms.orig.Max_ != nil
+	return ms.orig.Max != nil
 }
 
 // SetMax replaces the max associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) SetMax(v float64) {
 	ms.state.AssertMutable()
-	ms.orig.Max_ = &otlpmetrics.ExponentialHistogramDataPoint_Max{Max: v}
+	ms.orig.Max = &v
 }
 
 // RemoveMax removes the max associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) RemoveMax() {
 	ms.state.AssertMutable()
-	ms.orig.Max_ = nil
+	ms.orig.Max = nil
 }
 
 // ZeroThreshold returns the zerothreshold associated with this ExponentialHistogramDataPoint.

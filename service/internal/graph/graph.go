@@ -10,7 +10,7 @@
 // [Graph.StartAll] starts all components in each pipeline.
 //
 // [Graph.ShutdownAll] stops all components in each pipeline.
-package graph // import "go.opentelemetry.io/collector/service/internal/graph"
+package graph // import "github.com/oodle-ai/opentelemetry-collector/service/internal/graph"
 
 import (
 	"context"
@@ -23,16 +23,16 @@ import (
 	"gonum.org/v1/gonum/graph/simple"
 	"gonum.org/v1/gonum/graph/topo"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/connector"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/internal/fanoutconsumer"
-	"go.opentelemetry.io/collector/processor"
-	"go.opentelemetry.io/collector/receiver"
-	"go.opentelemetry.io/collector/service/internal/capabilityconsumer"
-	"go.opentelemetry.io/collector/service/internal/servicetelemetry"
-	"go.opentelemetry.io/collector/service/pipelines"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/connector"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/internal/fanoutconsumer"
+	"github.com/oodle-ai/opentelemetry-collector/processor"
+	"github.com/oodle-ai/opentelemetry-collector/receiver"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/capabilityconsumer"
+	"github.com/oodle-ai/opentelemetry-collector/service/internal/servicetelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/service/pipelines"
 )
 
 // Settings holds configuration for building builtPipelines.

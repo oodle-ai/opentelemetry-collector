@@ -1,11 +1,11 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package plog // import "go.opentelemetry.io/collector/pdata/plog"
+package plog // import "github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlplogs "go.opentelemetry.io/collector/pdata/internal/data/protogen/logs/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
 )
 
 var _ MarshalSizer = (*ProtoMarshaler)(nil)

@@ -1,4 +1,4 @@
-module go.opentelemetry.io/collector/semconv
+module github.com/oodle-ai/opentelemetry-collector/semconv
 
 go 1.21.0
 

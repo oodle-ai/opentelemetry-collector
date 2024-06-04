@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package plog // import "go.opentelemetry.io/collector/pdata/plog"
+package plog // import "github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 
 // MarshalSizer is the interface that groups the basic Marshal and Size methods
 type MarshalSizer interface {

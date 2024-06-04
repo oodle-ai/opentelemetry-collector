@@ -16,7 +16,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest"
 
-	"go.opentelemetry.io/collector/cmd/builder/internal/config"
+	"github.com/oodle-ai/opentelemetry-collector/cmd/builder/internal/config"
 )
 
 func TestParseModules(t *testing.T) {
@@ -61,12 +61,12 @@ func TestModuleFromCore(t *testing.T) {
 	cfg := Config{
 		Extensions: []Module{ // see issue-12
 			{
-				Import: "go.opentelemetry.io/collector/receiver/otlpreceiver",
-				GoMod:  "go.opentelemetry.io/collector v0.0.0",
+				Import: "github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver",
+				GoMod:  "github.com/oodle-ai/opentelemetry-collector v0.0.0",
 			},
 			{
-				Import: "go.opentelemetry.io/collector/receiver/otlpreceiver",
-				GoMod:  "go.opentelemetry.io/collector v0.0.0",
+				Import: "github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver",
+				GoMod:  "github.com/oodle-ai/opentelemetry-collector v0.0.0",
 			},
 		},
 	}

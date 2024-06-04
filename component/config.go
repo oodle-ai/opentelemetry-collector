@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package component // import "go.opentelemetry.io/collector/component"
+package component // import "github.com/oodle-ai/opentelemetry-collector/component"
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 
 	"go.uber.org/multierr"
 
-	"go.opentelemetry.io/collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
 )
 
 // Config defines the configuration for a component.Component.

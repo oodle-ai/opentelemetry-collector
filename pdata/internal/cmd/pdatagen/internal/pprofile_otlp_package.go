@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/pdata/internal/cmd/pdatagen/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/pdata/internal/cmd/pdatagen/internal"
 import (
 	"path/filepath"
 )
@@ -10,7 +10,7 @@ var pprofileotlp = &Package{
 	name: "pprofileotlp",
 	path: filepath.Join("pprofile", "pprofileotlp"),
 	imports: []string{
-		`otlpcollectorprofile "go.opentelemetry.io/collector/pdata/internal/data/protogen/collector/profiles/v1experimental"`,
+		`otlpcollectorprofile "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/profiles/v1experimental"`,
 	},
 	testImports: []string{
 		`"testing"`,

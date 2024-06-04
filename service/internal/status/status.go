@@ -1,14 +1,14 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package status // import "go.opentelemetry.io/collector/service/internal/status"
+package status // import "github.com/oodle-ai/opentelemetry-collector/service/internal/status"
 
 import (
 	"errors"
 	"fmt"
 	"sync"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 // onTransitionFunc receives a component.StatusEvent on a successful state transition

@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package queue // import "go.opentelemetry.io/collector/exporter/internal/queue"
+package queue // import "github.com/oodle-ai/opentelemetry-collector/exporter/internal/queue"
 
 import (
 	"context"
@@ -14,10 +14,10 @@ import (
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/internal/experr"
-	"go.opentelemetry.io/collector/extension/experimental/storage"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/internal/experr"
+	"github.com/oodle-ai/opentelemetry-collector/extension/experimental/storage"
 )
 
 // persistentQueue provides a persistent queue implementation backed by file storage extension

@@ -5,7 +5,7 @@
 // This package is duplicated across core and contrib to avoid exposing the feature gate as part of the public API.
 // To do this we define a `registerOrLoad` helper and try to register the gate in both modules.
 // IMPORTANT NOTE: ANY CHANGES TO THIS PACKAGE MUST BE MIRRORED IN THE CONTRIB COUNTERPART.
-package localhostgate // import "go.opentelemetry.io/collector/internal/localhostgate"
+package localhostgate // import "github.com/oodle-ai/opentelemetry-collector/internal/localhostgate"
 
 import (
 	"errors"
@@ -13,7 +13,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/featuregate"
+	"github.com/oodle-ai/opentelemetry-collector/featuregate"
 )
 
 const UseLocalHostAsDefaultHostID = "component.UseLocalHostAsDefaultHost"

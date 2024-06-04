@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package memorylimiter // import "go.opentelemetry.io/collector/internal/memorylimiter"
+package memorylimiter // import "github.com/oodle-ai/opentelemetry-collector/internal/memorylimiter"
 
 import (
 	"context"
@@ -14,8 +14,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/internal/iruntime"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/internal/iruntime"
 )
 
 const (

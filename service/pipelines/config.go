@@ -1,13 +1,13 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pipelines // import "go.opentelemetry.io/collector/service/pipelines"
+package pipelines // import "github.com/oodle-ai/opentelemetry-collector/service/pipelines"
 
 import (
 	"errors"
 	"fmt"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 var (

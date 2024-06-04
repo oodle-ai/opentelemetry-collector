@@ -1,11 +1,11 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package ptrace // import "go.opentelemetry.io/collector/pdata/ptrace"
+package ptrace // import "github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpcollectortrace "go.opentelemetry.io/collector/pdata/internal/data/protogen/collector/trace/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcollectortrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/trace/v1"
 )
 
 // Traces is the top-level struct that is propagated through the traces pipeline.

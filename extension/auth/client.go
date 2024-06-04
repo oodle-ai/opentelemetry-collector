@@ -1,15 +1,15 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package auth // import "go.opentelemetry.io/collector/extension/auth"
+package auth // import "github.com/oodle-ai/opentelemetry-collector/extension/auth"
 
 import (
 	"net/http"
 
 	"google.golang.org/grpc/credentials"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/extension"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/extension"
 )
 
 // Client is an Extension that can be used as an authenticator for the configauth.Authentication option.

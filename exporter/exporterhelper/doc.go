@@ -4,4 +4,4 @@
 //go:generate mdatagen metadata.yaml
 
 // Package exporterhelper provides helper functions for exporters.
-package exporterhelper // import "go.opentelemetry.io/collector/exporter/exporterhelper"
+package exporterhelper // import "github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"

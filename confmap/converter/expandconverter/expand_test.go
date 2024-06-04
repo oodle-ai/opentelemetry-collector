@@ -15,9 +15,9 @@ import (
 	"go.uber.org/zap/zapcore"
 	"go.uber.org/zap/zaptest/observer"
 
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/confmap/confmaptest"
-	"go.opentelemetry.io/collector/confmap/internal/envvar"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/confmaptest"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/internal/envvar"
 )
 
 func TestNewExpandConverter(t *testing.T) {

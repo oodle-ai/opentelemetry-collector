@@ -3,4 +3,4 @@
 
 // Package consumertest defines types and functions used to help test packages
 // implementing the consumer package interfaces.
-package consumertest // import "go.opentelemetry.io/collector/consumer/consumertest"
+package consumertest // import "github.com/oodle-ai/opentelemetry-collector/consumer/consumertest"

@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"go.opentelemetry.io/collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 )
 
 func TestMetricData(t *testing.T) {

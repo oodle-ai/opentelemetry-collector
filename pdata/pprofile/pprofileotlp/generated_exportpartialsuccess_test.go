@@ -11,8 +11,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpcollectorprofile "go.opentelemetry.io/collector/pdata/internal/data/protogen/collector/profiles/v1experimental"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcollectorprofile "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/profiles/v1experimental"
 )
 
 func TestExportPartialSuccess_MoveTo(t *testing.T) {

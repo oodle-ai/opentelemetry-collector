@@ -9,16 +9,16 @@ import (
 	"go.opentelemetry.io/otel/metric/noop"
 	"go.opentelemetry.io/otel/trace"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
 )
 
 func Meter(settings component.TelemetrySettings) metric.Meter {
-	return settings.MeterProvider.Meter("go.opentelemetry.io/collector/processor/processorhelper")
+	return settings.MeterProvider.Meter("github.com/oodle-ai/opentelemetry-collector/processor/processorhelper")
 }
 
 func Tracer(settings component.TelemetrySettings) trace.Tracer {
-	return settings.TracerProvider.Tracer("go.opentelemetry.io/collector/processor/processorhelper")
+	return settings.TracerProvider.Tracer("github.com/oodle-ai/opentelemetry-collector/processor/processorhelper")
 }
 
 // TelemetryBuilder provides an interface for components to report telemetry

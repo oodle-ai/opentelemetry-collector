@@ -1,14 +1,14 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package exporterhelper // import "go.opentelemetry.io/collector/exporter/exporterhelper"
+package exporterhelper // import "github.com/oodle-ai/opentelemetry-collector/exporter/exporterhelper"
 
 import (
 	"context"
 	"errors"
 
-	"go.opentelemetry.io/collector/exporter/exporterbatcher"
-	"go.opentelemetry.io/collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/exporterbatcher"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 )
 
 // mergeLogs merges two logs requests into one.

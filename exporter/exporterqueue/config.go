@@ -1,12 +1,12 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package exporterqueue // import "go.opentelemetry.io/collector/exporter/exporterqueue"
+package exporterqueue // import "github.com/oodle-ai/opentelemetry-collector/exporter/exporterqueue"
 
 import (
 	"errors"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 // Config defines configuration for queueing requests before exporting.

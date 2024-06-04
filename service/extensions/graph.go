@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package extensions // import "go.opentelemetry.io/collector/service/extensions"
+package extensions // import "github.com/oodle-ai/opentelemetry-collector/service/extensions"
 
 import (
 	"errors"
@@ -12,8 +12,8 @@ import (
 	"gonum.org/v1/gonum/graph/simple"
 	"gonum.org/v1/gonum/graph/topo"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/extension"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/extension"
 )
 
 type node struct {

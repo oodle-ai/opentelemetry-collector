@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package configopaque // import "go.opentelemetry.io/collector/config/configopaque"
+package configopaque // import "github.com/oodle-ai/opentelemetry-collector/config/configopaque"
 
 import (
 	"encoding"
@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
 )
 
 var _ encoding.TextMarshaler = String("")

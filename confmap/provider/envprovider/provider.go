@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package envprovider // import "go.opentelemetry.io/collector/confmap/provider/envprovider"
+package envprovider // import "github.com/oodle-ai/opentelemetry-collector/confmap/provider/envprovider"
 
 import (
 	"context"
@@ -11,9 +11,9 @@ import (
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/confmap"
-	"go.opentelemetry.io/collector/confmap/internal/envvar"
-	"go.opentelemetry.io/collector/confmap/provider/internal"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/internal/envvar"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/provider/internal"
 )
 
 const (

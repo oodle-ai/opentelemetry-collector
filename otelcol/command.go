@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package otelcol // import "go.opentelemetry.io/collector/otelcol"
+package otelcol // import "github.com/oodle-ai/opentelemetry-collector/otelcol"
 
 import (
 	"errors"
@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"go.opentelemetry.io/collector/featuregate"
+	"github.com/oodle-ai/opentelemetry-collector/featuregate"
 )
 
 // NewCommand constructs a new cobra.Command using the given CollectorSettings.

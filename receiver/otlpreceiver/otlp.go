@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package otlpreceiver // import "go.opentelemetry.io/collector/receiver/otlpreceiver"
+package otlpreceiver // import "github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver"
 
 import (
 	"context"
@@ -13,17 +13,17 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/confighttp"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/pdata/plog/plogotlp"
-	"go.opentelemetry.io/collector/pdata/pmetric/pmetricotlp"
-	"go.opentelemetry.io/collector/pdata/ptrace/ptraceotlp"
-	"go.opentelemetry.io/collector/receiver"
-	"go.opentelemetry.io/collector/receiver/otlpreceiver/internal/logs"
-	"go.opentelemetry.io/collector/receiver/otlpreceiver/internal/metrics"
-	"go.opentelemetry.io/collector/receiver/otlpreceiver/internal/trace"
-	"go.opentelemetry.io/collector/receiver/receiverhelper"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/confighttp"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog/plogotlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric/pmetricotlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace/ptraceotlp"
+	"github.com/oodle-ai/opentelemetry-collector/receiver"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver/internal/logs"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver/internal/metrics"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver/internal/trace"
+	"github.com/oodle-ai/opentelemetry-collector/receiver/receiverhelper"
 )
 
 // otlpReceiver is the type that exposes Trace and Metrics reception.

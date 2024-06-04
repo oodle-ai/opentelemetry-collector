@@ -652,8 +652,8 @@ Each module should have a `Makefile` at its root that includes `Makefile.Common`
 #### Module-level targets
 
 Module-level targets SHOULD NOT act on nested modules. For example, running `make lint` at the root of the repo will
-_only_ evaluate code that is part of the `go.opentelemetry.io/collector` module. This excludes nested modules such as
-`go.opentelemetry.io/collector/component`.
+_only_ evaluate code that is part of the `github.com/oodle-ai/opentelemetry-collector` module. This excludes nested modules such as
+`github.com/oodle-ai/opentelemetry-collector/component`.
 
 Each module-level target SHOULD have a corresponding repo-level target. For example, `make golint` will run `make lint`
 in each module. In this way, the entire repository is covered. The root `Makefile` contains some "for each module" targets

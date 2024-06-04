@@ -1,4 +1,4 @@
-module go.opentelemetry.io/collector/config/configcompression
+module github.com/oodle-ai/opentelemetry-collector/config/configcompression
 
 go 1.21.0
 

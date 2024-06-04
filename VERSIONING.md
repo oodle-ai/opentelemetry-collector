@@ -63,11 +63,11 @@ on its intended usage (e.g. when calling a method or when passed to any method o
         * Versions will comply with [semver 2.0](https://semver.org/spec/v2.0.0.html).
         * If a module is version `v2` or higher, the major version of the module
           must be included as a `/vN` at the end of the module paths used in
-          `go.mod` files (e.g., `module go.opentelemetry.io/collector/v2`, `require
-          go.opentelemetry.io/collector/v2 v2.0.1`) and in the package import path
-          (e.g., `import "go.opentelemetry.io/collector/v2/component"`). This includes the
+          `go.mod` files (e.g., `module github.com/oodle-ai/opentelemetry-collector/v2`, `require
+          github.com/oodle-ai/opentelemetry-collector/v2 v2.0.1`) and in the package import path
+          (e.g., `import "github.com/oodle-ai/opentelemetry-collector/v2/component"`). This includes the
           paths used in `go get` commands (e.g., `go get
-          go.opentelemetry.io/collector/v2@v2.0.1`.  Note there is both a `/v2` and a
+          github.com/oodle-ai/opentelemetry-collector/v2@v2.0.1`.  Note there is both a `/v2` and a
           `@v2.0.1` in that example. One way to think about it is that the module
           name now includes the `/v2`, so include `/v2` whenever you are using the
           module name).
@@ -81,7 +81,7 @@ on its intended usage (e.g. when calling a method or when passed to any method o
       that contains all packages provided for use outside this repository.
     * Additional modules may be created in this repository to provide for
       isolation of build-time tools, other commands or independent libraries. Such modules should be
-      versioned in sync with the `go.opentelemetry.io/collector` module.
+      versioned in sync with the `github.com/oodle-ai/opentelemetry-collector` module.
     * Experimental modules still under active development will be versioned with a major
       version of `v0` to imply the stability guarantee defined by
       [semver](https://semver.org/spec/v2.0.0.html#spec-item-4).

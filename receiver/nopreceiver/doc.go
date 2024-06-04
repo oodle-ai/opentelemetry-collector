@@ -4,4 +4,4 @@
 //go:generate mdatagen metadata.yaml
 
 // Package nopreceiver serves as a placeholder receiver.
-package nopreceiver // import "go.opentelemetry.io/collector/receiver/nopreceiver"
+package nopreceiver // import "github.com/oodle-ai/opentelemetry-collector/receiver/nopreceiver"

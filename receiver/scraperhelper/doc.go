@@ -4,4 +4,4 @@
 //go:generate mdatagen metadata.yaml
 
 // Package scraperhelper provides utilities for scrapers.
-package scraperhelper // import "go.opentelemetry.io/collector/receiver/scraperhelper"
+package scraperhelper // import "github.com/oodle-ai/opentelemetry-collector/receiver/scraperhelper"

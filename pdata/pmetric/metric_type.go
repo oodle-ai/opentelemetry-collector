@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pmetric // import "go.opentelemetry.io/collector/pdata/pmetric"
+package pmetric // import "github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 
 // MetricType specifies the type of data in a Metric.
 type MetricType int32

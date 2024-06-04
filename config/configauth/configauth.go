@@ -4,14 +4,14 @@
 // Package configauth implements the configuration settings to
 // ensure authentication on incoming requests, and allows
 // exporters to add authentication on outgoing requests.
-package configauth // import "go.opentelemetry.io/collector/config/configauth"
+package configauth // import "github.com/oodle-ai/opentelemetry-collector/config/configauth"
 
 import (
 	"errors"
 	"fmt"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/extension/auth"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/extension/auth"
 )
 
 var (

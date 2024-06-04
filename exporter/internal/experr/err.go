@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package experr // import "go.opentelemetry.io/collector/exporter/internal/experr"
+package experr // import "github.com/oodle-ai/opentelemetry-collector/exporter/internal/experr"
 
 import "errors"
 

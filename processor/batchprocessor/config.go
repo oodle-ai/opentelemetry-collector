@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package batchprocessor // import "go.opentelemetry.io/collector/processor/batchprocessor"
+package batchprocessor // import "github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor"
 
 import (
 	"errors"
@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 // Config defines configuration for batch processor.

@@ -1,16 +1,16 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package loggingexporter // import "go.opentelemetry.io/collector/exporter/loggingexporter"
+package loggingexporter // import "github.com/oodle-ai/opentelemetry-collector/exporter/loggingexporter"
 
 import (
 	"fmt"
 
 	"go.uber.org/zap/zapcore"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/confmap"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/confmap"
 )
 
 var (

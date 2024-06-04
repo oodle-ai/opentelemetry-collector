@@ -7,7 +7,7 @@
 package pcommon
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 )
 
 // StringSlice represents a []string slice.

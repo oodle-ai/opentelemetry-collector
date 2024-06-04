@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package semconv // import "go.opentelemetry.io/collector/semconv/v1.8.0"
+package semconv // import "github.com/oodle-ai/opentelemetry-collector/semconv/v1.8.0"
 
 const (
 	OtelLibraryName       = "otel.library.name"

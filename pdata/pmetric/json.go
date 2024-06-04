@@ -1,18 +1,17 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pmetric // import "go.opentelemetry.io/collector/pdata/pmetric"
+package pmetric // import "github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 
 import (
 	"bytes"
-	"fmt"
 
 	jsoniter "github.com/json-iterator/go"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpmetrics "go.opentelemetry.io/collector/pdata/internal/data/protogen/metrics/v1"
-	"go.opentelemetry.io/collector/pdata/internal/json"
-	"go.opentelemetry.io/collector/pdata/internal/otlp"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/otlp"
 )
 
 var _ Marshaler = (*JSONMarshaler)(nil)
@@ -63,7 +62,7 @@ func (ms ResourceMetrics) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "resource":
-			json.ReadResource(iter, &ms.orig.Resource)
+			json.ReadResource(iter, ms.orig.Resource)
 		case "scopeMetrics", "scope_metrics":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
 				ms.ScopeMetrics().AppendEmpty().unmarshalJsoniter(iter)
@@ -82,7 +81,7 @@ func (ms ScopeMetrics) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "scope":
-			json.ReadScope(iter, &ms.orig.Scope)
+			json.ReadScope(iter, ms.orig.Scope)
 		case "metrics":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
 				ms.Metrics().AppendEmpty().unmarshalJsoniter(iter)
@@ -260,7 +259,8 @@ func (ms HistogramDataPoint) unmarshalJsoniter(iter *jsoniter.Iterator) {
 		case "count":
 			ms.orig.Count = json.ReadUint64(iter)
 		case "sum":
-			ms.orig.Sum_ = &otlpmetrics.HistogramDataPoint_Sum{Sum: json.ReadFloat64(iter)}
+			sum := json.ReadFloat64(iter)
+			ms.orig.Sum = &sum
 		case "bucket_counts", "bucketCounts":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
 				ms.orig.BucketCounts = append(ms.orig.BucketCounts, json.ReadUint64(iter))
@@ -279,13 +279,11 @@ func (ms HistogramDataPoint) unmarshalJsoniter(iter *jsoniter.Iterator) {
 		case "flags":
 			ms.orig.Flags = json.ReadUint32(iter)
 		case "max":
-			ms.orig.Max_ = &otlpmetrics.HistogramDataPoint_Max{
-				Max: json.ReadFloat64(iter),
-			}
+			maxVal := json.ReadFloat64(iter)
+			ms.orig.Max = &maxVal
 		case "min":
-			ms.orig.Min_ = &otlpmetrics.HistogramDataPoint_Min{
-				Min: json.ReadFloat64(iter),
-			}
+			minVal := json.ReadFloat64(iter)
+			ms.orig.Min = &minVal
 		default:
 			iter.Skip()
 		}
@@ -308,9 +306,9 @@ func (ms ExponentialHistogramDataPoint) unmarshalJsoniter(iter *jsoniter.Iterato
 		case "count":
 			ms.orig.Count = json.ReadUint64(iter)
 		case "sum":
-			ms.orig.Sum_ = &otlpmetrics.ExponentialHistogramDataPoint_Sum{
-				Sum: json.ReadFloat64(iter),
-			}
+			sum := json.ReadFloat64(iter)
+			ms.orig.Sum = &sum
+
 		case "scale":
 			ms.orig.Scale = iter.ReadInt32()
 		case "zero_count", "zeroCount":
@@ -327,13 +325,11 @@ func (ms ExponentialHistogramDataPoint) unmarshalJsoniter(iter *jsoniter.Iterato
 		case "flags":
 			ms.orig.Flags = json.ReadUint32(iter)
 		case "max":
-			ms.orig.Max_ = &otlpmetrics.ExponentialHistogramDataPoint_Max{
-				Max: json.ReadFloat64(iter),
-			}
+			maxVal := json.ReadFloat64(iter)
+			ms.orig.Max = &maxVal
 		case "min":
-			ms.orig.Min_ = &otlpmetrics.ExponentialHistogramDataPoint_Min{
-				Min: json.ReadFloat64(iter),
-			}
+			minVal := json.ReadFloat64(iter)
+			ms.orig.Min = &minVal
 		default:
 			iter.Skip()
 		}
@@ -421,13 +417,13 @@ func (ms Exemplar) unmarshalJsoniter(iter *jsoniter.Iterator) {
 				AsDouble: json.ReadFloat64(iter),
 			}
 		case "traceId", "trace_id":
-			if err := ms.orig.TraceId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-				iter.ReportError("exemplar.traceId", fmt.Sprintf("parse trace_id:%v", err))
-			}
+			//if err := ms.orig.TraceId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
+			//	iter.ReportError("exemplar.traceId", fmt.Sprintf("parse trace_id:%v", err))
+			//}
 		case "spanId", "span_id":
-			if err := ms.orig.SpanId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-				iter.ReportError("exemplar.spanId", fmt.Sprintf("parse span_id:%v", err))
-			}
+			//if err := ms.orig.SpanId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
+			//	iter.ReportError("exemplar.spanId", fmt.Sprintf("parse span_id:%v", err))
+			//}
 		default:
 			iter.Skip()
 		}

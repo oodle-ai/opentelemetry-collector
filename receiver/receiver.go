@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package receiver // import "go.opentelemetry.io/collector/receiver"
+package receiver // import "github.com/oodle-ai/opentelemetry-collector/receiver"
 
 import (
 	"context"
@@ -10,8 +10,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
 )
 
 var (

@@ -1,10 +1,10 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pcommon // import "go.opentelemetry.io/collector/pdata/pcommon"
+package pcommon // import "github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 )
 
 // TraceState represents the trace state from the w3c-trace-context.

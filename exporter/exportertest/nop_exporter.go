@@ -1,17 +1,17 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package exportertest // import "go.opentelemetry.io/collector/exporter/exportertest"
+package exportertest // import "github.com/oodle-ai/opentelemetry-collector/exporter/exportertest"
 
 import (
 	"context"
 
 	"github.com/google/uuid"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/component/componenttest"
-	"go.opentelemetry.io/collector/consumer/consumertest"
-	"go.opentelemetry.io/collector/exporter"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component/componenttest"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumertest"
+	"github.com/oodle-ai/opentelemetry-collector/exporter"
 )
 
 var nopType = component.MustNewType("nop")

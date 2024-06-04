@@ -3,13 +3,13 @@
 // Copyright (c) 2017 Uber Technologies, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-package queue // import "go.opentelemetry.io/collector/exporter/internal/queue"
+package queue // import "github.com/oodle-ai/opentelemetry-collector/exporter/internal/queue"
 
 import (
 	"context"
 	"errors"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 var (

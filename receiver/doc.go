@@ -43,4 +43,4 @@
 // Similarly, receivers that use checkpointing to remember the position of last processed
 // data (e.g. via storage extension) MUST store the checkpoint only AFTER the Consume*()
 // call returns.
-package receiver // import "go.opentelemetry.io/collector/receiver"
+package receiver // import "github.com/oodle-ai/opentelemetry-collector/receiver"

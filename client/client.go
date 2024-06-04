@@ -75,7 +75,7 @@
 //	      receivers: [otlp]
 //	      processors: [authprinter]
 //	      exporters: [debug]
-package client // import "go.opentelemetry.io/collector/client"
+package client // import "github.com/oodle-ai/opentelemetry-collector/client"
 
 import (
 	"context"

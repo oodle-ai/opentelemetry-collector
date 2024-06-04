@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pmetric // import "go.opentelemetry.io/collector/pdata/pmetric"
+package pmetric // import "github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 
 // ExemplarValueType specifies the type of Exemplar measurement value.
 type ExemplarValueType int32

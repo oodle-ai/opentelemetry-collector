@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/service/telemetry/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/service/telemetry/internal"
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	tracenoop "go.opentelemetry.io/otel/trace/noop"
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 // CreateSettings holds configuration for building Telemetry.

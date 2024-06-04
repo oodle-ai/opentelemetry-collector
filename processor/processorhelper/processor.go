@@ -3,7 +3,7 @@
 
 //go:generate mdatagen metadata.yaml
 
-package processorhelper // import "go.opentelemetry.io/collector/processor/processorhelper"
+package processorhelper // import "github.com/oodle-ai/opentelemetry-collector/processor/processorhelper"
 
 import (
 	"errors"
@@ -11,9 +11,9 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/internal/obsreportconfig/obsmetrics"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/internal/obsreportconfig/obsmetrics"
 )
 
 // ErrSkipProcessingData is a sentinel value to indicate when traces or metrics should intentionally be dropped

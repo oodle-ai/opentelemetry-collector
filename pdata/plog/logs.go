@@ -1,11 +1,11 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package plog // import "go.opentelemetry.io/collector/pdata/plog"
+package plog // import "github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpcollectorlog "go.opentelemetry.io/collector/pdata/internal/data/protogen/collector/logs/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcollectorlog "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/logs/v1"
 )
 
 // Logs is the top-level struct that is propagated through the logs pipeline.

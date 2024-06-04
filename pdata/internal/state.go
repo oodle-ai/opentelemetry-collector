@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/pdata/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 
 // State defines an ownership state of pmetric.Metrics, plog.Logs or ptrace.Traces.
 type State int32

@@ -8,9 +8,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/pdata/pcommon"
-	"go.opentelemetry.io/collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 )
 
 func TestLoadMetadata(t *testing.T) {
@@ -265,7 +265,7 @@ func TestLoadMetadata(t *testing.T) {
 						},
 					},
 				},
-				ScopeName:       "go.opentelemetry.io/collector/internal/receiver/samplereceiver",
+				ScopeName:       "github.com/oodle-ai/opentelemetry-collector/internal/receiver/samplereceiver",
 				ShortFolderName: "sample",
 			},
 		},
@@ -274,7 +274,7 @@ func TestLoadMetadata(t *testing.T) {
 			want: metadata{
 				Type:            "subcomponent",
 				Parent:          "parentComponent",
-				ScopeName:       "go.opentelemetry.io/collector/cmd/mdatagen",
+				ScopeName:       "github.com/oodle-ai/opentelemetry-collector/cmd/mdatagen",
 				ShortFolderName: "testdata",
 			},
 		},

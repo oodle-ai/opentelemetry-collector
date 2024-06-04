@@ -1,16 +1,16 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package plogotlp // import "go.opentelemetry.io/collector/pdata/plog/plogotlp"
+package plogotlp // import "github.com/oodle-ai/opentelemetry-collector/pdata/plog/plogotlp"
 
 import (
 	"bytes"
 
 	jsoniter "github.com/json-iterator/go"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpcollectorlog "go.opentelemetry.io/collector/pdata/internal/data/protogen/collector/logs/v1"
-	"go.opentelemetry.io/collector/pdata/internal/json"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcollectorlog "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/logs/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
 )
 
 // ExportResponse represents the response for gRPC/HTTP client/server.

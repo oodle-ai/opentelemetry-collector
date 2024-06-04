@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package json // import "go.opentelemetry.io/collector/pdata/internal/json"
+package json // import "github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
 
 import (
 	"encoding/base64"
@@ -9,24 +9,24 @@ import (
 
 	jsoniter "github.com/json-iterator/go"
 
-	otlpcommon "go.opentelemetry.io/collector/pdata/internal/data/protogen/common/v1"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 )
 
 // ReadAttribute Unmarshal JSON data and return otlpcommon.KeyValue
-func ReadAttribute(iter *jsoniter.Iterator) otlpcommon.KeyValue {
+func ReadAttribute(iter *jsoniter.Iterator) *otlpcommon.KeyValue {
 	kv := otlpcommon.KeyValue{}
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "key":
 			kv.Key = iter.ReadString()
 		case "value":
-			ReadValue(iter, &kv.Value)
+			ReadValue(iter, kv.Value)
 		default:
 			iter.Skip()
 		}
 		return true
 	})
-	return kv
+	return &kv
 }
 
 // ReadValue Unmarshal JSON data and return otlpcommon.AnyValue
@@ -80,8 +80,8 @@ func readArray(iter *jsoniter.Iterator) *otlpcommon.ArrayValue {
 		switch f {
 		case "values":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
-				v.Values = append(v.Values, otlpcommon.AnyValue{})
-				ReadValue(iter, &v.Values[len(v.Values)-1])
+				v.Values = append(v.Values, &otlpcommon.AnyValue{})
+				ReadValue(iter, v.Values[len(v.Values)-1])
 				return true
 			})
 		default:

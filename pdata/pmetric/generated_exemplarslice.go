@@ -7,8 +7,8 @@
 package pmetric
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpmetrics "go.opentelemetry.io/collector/pdata/internal/data/protogen/metrics/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
 )
 
 // ExemplarSlice logically represents a slice of Exemplar.
@@ -19,18 +19,18 @@ import (
 // Must use NewExemplarSlice function to create new instances.
 // Important: zero-initialized instance is not valid for use.
 type ExemplarSlice struct {
-	orig  *[]otlpmetrics.Exemplar
+	orig  *[]*otlpmetrics.Exemplar
 	state *internal.State
 }
 
-func newExemplarSlice(orig *[]otlpmetrics.Exemplar, state *internal.State) ExemplarSlice {
+func newExemplarSlice(orig *[]*otlpmetrics.Exemplar, state *internal.State) ExemplarSlice {
 	return ExemplarSlice{orig: orig, state: state}
 }
 
 // NewExemplarSlice creates a ExemplarSlice with 0 elements.
 // Can use "EnsureCapacity" to initialize with a given capacity.
 func NewExemplarSlice() ExemplarSlice {
-	orig := []otlpmetrics.Exemplar(nil)
+	orig := []*otlpmetrics.Exemplar(nil)
 	state := internal.StateMutable
 	return newExemplarSlice(&orig, &state)
 }
@@ -51,7 +51,7 @@ func (es ExemplarSlice) Len() int {
 //	    ... // Do something with the element
 //	}
 func (es ExemplarSlice) At(i int) Exemplar {
-	return newExemplar(&(*es.orig)[i], es.state)
+	return newExemplar((*es.orig)[i], es.state)
 }
 
 // EnsureCapacity is an operation that ensures the slice has at least the specified capacity.
@@ -73,7 +73,7 @@ func (es ExemplarSlice) EnsureCapacity(newCap int) {
 		return
 	}
 
-	newOrig := make([]otlpmetrics.Exemplar, len(*es.orig), newCap)
+	newOrig := make([]*otlpmetrics.Exemplar, len(*es.orig), newCap)
 	copy(newOrig, *es.orig)
 	*es.orig = newOrig
 }
@@ -82,7 +82,7 @@ func (es ExemplarSlice) EnsureCapacity(newCap int) {
 // It returns the newly added Exemplar.
 func (es ExemplarSlice) AppendEmpty() Exemplar {
 	es.state.AssertMutable()
-	*es.orig = append(*es.orig, otlpmetrics.Exemplar{})
+	*es.orig = append(*es.orig, &otlpmetrics.Exemplar{})
 	return es.At(es.Len() - 1)
 }
 
@@ -128,9 +128,9 @@ func (es ExemplarSlice) CopyTo(dest ExemplarSlice) {
 	if srcLen <= destCap {
 		(*dest.orig) = (*dest.orig)[:srcLen:destCap]
 	} else {
-		(*dest.orig) = make([]otlpmetrics.Exemplar, srcLen)
+		(*dest.orig) = make([]*otlpmetrics.Exemplar, srcLen)
 	}
 	for i := range *es.orig {
-		newExemplar(&(*es.orig)[i], es.state).CopyTo(newExemplar(&(*dest.orig)[i], dest.state))
+		newExemplar((*es.orig)[i], es.state).CopyTo(newExemplar((*dest.orig)[i], dest.state))
 	}
 }

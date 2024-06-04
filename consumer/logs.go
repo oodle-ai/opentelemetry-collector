@@ -1,12 +1,12 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package consumer // import "go.opentelemetry.io/collector/consumer"
+package consumer // import "github.com/oodle-ai/opentelemetry-collector/consumer"
 
 import (
 	"context"
 
-	"go.opentelemetry.io/collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 )
 
 // Logs is an interface that receives plog.Logs, processes it

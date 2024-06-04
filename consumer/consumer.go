@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package consumer // import "go.opentelemetry.io/collector/consumer"
+package consumer // import "github.com/oodle-ai/opentelemetry-collector/consumer"
 
 import (
 	"errors"

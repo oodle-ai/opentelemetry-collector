@@ -7,8 +7,8 @@
 package pcommon
 
 import (
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpresource "go.opentelemetry.io/collector/pdata/internal/data/protogen/resource/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 )
 
 // Resource is a message representing the resource information.

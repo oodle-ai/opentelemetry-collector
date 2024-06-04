@@ -5,18 +5,18 @@
 // to the Debug exporter in /exporter/debugexporter/exporter.go, which has similar logic.
 // This is especially important for security issues.
 
-package common // import "go.opentelemetry.io/collector/exporter/internal/common"
+package common // import "github.com/oodle-ai/opentelemetry-collector/exporter/internal/common"
 
 import (
 	"context"
 
 	"go.uber.org/zap"
 
-	"go.opentelemetry.io/collector/config/configtelemetry"
-	"go.opentelemetry.io/collector/exporter/internal/otlptext"
-	"go.opentelemetry.io/collector/pdata/plog"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"go.opentelemetry.io/collector/pdata/ptrace"
+	"github.com/oodle-ai/opentelemetry-collector/config/configtelemetry"
+	"github.com/oodle-ai/opentelemetry-collector/exporter/internal/otlptext"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/ptrace"
 )
 
 type loggingExporter struct {

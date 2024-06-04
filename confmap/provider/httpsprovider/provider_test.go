@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"go.opentelemetry.io/collector/confmap/confmaptest"
+	"github.com/oodle-ai/opentelemetry-collector/confmap/confmaptest"
 )
 
 func TestSupportedScheme(t *testing.T) {

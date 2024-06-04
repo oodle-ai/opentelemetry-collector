@@ -7,7 +7,7 @@
 package internal
 
 import (
-	otlpresource "go.opentelemetry.io/collector/pdata/internal/data/protogen/resource/v1"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 )
 
 type Resource struct {

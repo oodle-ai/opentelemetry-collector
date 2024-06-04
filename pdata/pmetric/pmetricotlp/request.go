@@ -1,15 +1,15 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package pmetricotlp // import "go.opentelemetry.io/collector/pdata/pmetric/pmetricotlp"
+package pmetricotlp // import "github.com/oodle-ai/opentelemetry-collector/pdata/pmetric/pmetricotlp"
 
 import (
 	"bytes"
 
-	"go.opentelemetry.io/collector/pdata/internal"
-	otlpcollectormetrics "go.opentelemetry.io/collector/pdata/internal/data/protogen/collector/metrics/v1"
-	"go.opentelemetry.io/collector/pdata/internal/json"
-	"go.opentelemetry.io/collector/pdata/pmetric"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcollectormetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/metrics/v1"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/pmetric"
 )
 
 var jsonUnmarshaler = &pmetric.JSONUnmarshaler{}
@@ -25,7 +25,7 @@ type ExportRequest struct {
 func NewExportRequest() ExportRequest {
 	state := internal.StateMutable
 	return ExportRequest{
-		orig:  &otlpcollectormetrics.ExportMetricsServiceRequest{},
+		orig:  otlpcollectormetrics.ExportMetricsServiceRequestFromVTPool(),
 		state: &state,
 	}
 }
@@ -41,13 +41,32 @@ func NewExportRequestFromMetrics(md pmetric.Metrics) ExportRequest {
 }
 
 // MarshalProto marshals ExportRequest into proto bytes.
-func (ms ExportRequest) MarshalProto() ([]byte, error) {
-	return ms.orig.Marshal()
+func (ms ExportRequest) MarshalProto(buf *bytes.Buffer) error {
+	size := ms.orig.SizeVT()
+	buf.Grow(size)
+	availableBuf := buf.AvailableBuffer()
+	availableBuf = availableBuf[:size]
+	_, err := ms.orig.MarshalToVT(availableBuf)
+	if err != nil {
+		return err
+	}
+
+	_, err = buf.Write(availableBuf)
+	return err
 }
 
 // UnmarshalProto unmarshalls ExportRequest from proto bytes.
 func (ms ExportRequest) UnmarshalProto(data []byte) error {
-	return ms.orig.Unmarshal(data)
+	return ms.orig.UnmarshalVT(data)
+}
+
+// UnmarshalProtoUnsafe unmarshalls ExportRequest from proto bytes.
+func (ms ExportRequest) UnmarshalProtoUnsafe(data []byte) error {
+	return ms.orig.UnmarshalVTUnsafe(data)
+}
+
+func (ms ExportRequest) ReturnToPool() {
+	ms.orig.ReturnToVTPool()
 }
 
 // MarshalJSON marshals ExportRequest into JSON bytes.

@@ -20,7 +20,7 @@ CMD?=
 RUN_CONFIG?=examples/local/otel-config.yaml
 CONTRIB_PATH=$(CURDIR)/../opentelemetry-collector-contrib
 COMP_REL_PATH=cmd/otelcorecol/components.go
-MOD_NAME=go.opentelemetry.io/collector
+MOD_NAME=github.com/oodle-ai/opentelemetry-collector
 
 # Function to execute a command. Note the empty line before endef to make sure each command
 # gets executed separately instead of concatenated with previous one.
@@ -166,14 +166,15 @@ OPENTELEMETRY_PROTO_FILES := $(subst $(OPENTELEMETRY_PROTO_SRC_DIR)/,,$(wildcard
 PROTO_TARGET_GEN_DIR=pdata/internal/data/protogen
 
 # Go package name to use for generated files.
-PROTO_PACKAGE=go.opentelemetry.io/collector/$(PROTO_TARGET_GEN_DIR)
+PROTO_PACKAGE=github.com/oodle-ai/opentelemetry-collector/$(PROTO_TARGET_GEN_DIR)
 
 # Intermediate directory used during generation.
 PROTO_INTERMEDIATE_DIR=pdata/internal/.patched-otlp-proto
 
 DOCKER_PROTOBUF ?= otel/build-protobuf:0.23.0
 PROTOC := docker run --rm -u ${shell id -u} -v${PWD}:${PWD} -w${PWD}/$(PROTO_INTERMEDIATE_DIR) ${DOCKER_PROTOBUF} --proto_path=${PWD}
-PROTO_INCLUDES := -I/usr/include/github.com/gogo/protobuf -I./
+OPWD := ${PWD}
+PROTO_INCLUDES := -I./
 
 # Cleanup temporary directory
 genproto-cleanup:
@@ -211,9 +212,12 @@ genproto_sub:
 	# reserved 1000 -> repeated ScopeSpans deprecated_scope_spans = 1000;
 	sed 's/reserved 1000;/repeated ScopeSpans deprecated_scope_spans = 1000;/g' $(PROTO_INTERMEDIATE_DIR)/opentelemetry/proto/trace/v1/trace.proto 1<> $(PROTO_INTERMEDIATE_DIR)/opentelemetry/proto/trace/v1/trace.proto
 
+    # Oodle changes
+	$(foreach file,$(OPENTELEMETRY_PROTO_FILES),$(call exec-command,sed -e 's/import "gogoproto\/gogo.proto";//g' $(OPENTELEMETRY_PROTO_SRC_DIR)/$(file) > $(PROTO_INTERMEDIATE_DIR)/$(file)))
 
 	@echo Generate Go code from .proto files in intermediate directory.
-	$(foreach file,$(OPENTELEMETRY_PROTO_FILES),$(call exec-command,$(PROTOC) $(PROTO_INCLUDES) --gogofaster_out=plugins=grpc:./ $(file)))
+
+	$(foreach file,$(OPENTELEMETRY_PROTO_FILES),$(call exec-command,cd $(PROTO_INTERMEDIATE_DIR) && protoc --proto_path=${OPWD} --go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" --go-grpc_out=. --plugin protoc-gen-go-grpc="${GOBIN}/protoc-gen-go-grpc" --go-vtproto_out=. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto"  $(PROTO_INCLUDES)  $(file)))
 
 	@echo Move generated code to target directory.
 	mkdir -p $(PROTO_TARGET_GEN_DIR)
@@ -246,51 +250,51 @@ gensemconv: $(SEMCONVGEN) $(SEMCONVKIT)
 check-contrib:
 	@echo Setting contrib at $(CONTRIB_PATH) to use this core checkout
 	@$(MAKE) -C $(CONTRIB_PATH) for-all CMD="$(GOCMD) mod edit \
-		-replace go.opentelemetry.io/collector=$(CURDIR) \
-		-replace go.opentelemetry.io/collector/component=$(CURDIR)/component  \
-		-replace go.opentelemetry.io/collector/config/configauth=$(CURDIR)/config/configauth  \
-		-replace go.opentelemetry.io/collector/config/configcompression=$(CURDIR)/config/configcompression  \
-		-replace go.opentelemetry.io/collector/config/configgrpc=$(CURDIR)/config/configgrpc  \
-		-replace go.opentelemetry.io/collector/config/confighttp=$(CURDIR)/config/confighttp  \
-		-replace go.opentelemetry.io/collector/config/confignet=$(CURDIR)/config/confignet  \
-		-replace go.opentelemetry.io/collector/config/configopaque=$(CURDIR)/config/configopaque  \
-		-replace go.opentelemetry.io/collector/config/configretry=$(CURDIR)/config/configretry  \
-		-replace go.opentelemetry.io/collector/config/configtelemetry=$(CURDIR)/config/configtelemetry  \
-		-replace go.opentelemetry.io/collector/config/configtls=$(CURDIR)/config/configtls  \
-		-replace go.opentelemetry.io/collector/config/internal=$(CURDIR)/config/internal  \
-		-replace go.opentelemetry.io/collector/confmap=$(CURDIR)/confmap  \
-		-replace go.opentelemetry.io/collector/confmap/converter/expandconverter=$(CURDIR)/confmap/converter/expandconverter  \
-		-replace go.opentelemetry.io/collector/confmap/provider/envprovider=$(CURDIR)/confmap/provider/envprovider  \
-		-replace go.opentelemetry.io/collector/confmap/provider/fileprovider=$(CURDIR)/confmap/provider/fileprovider  \
-		-replace go.opentelemetry.io/collector/confmap/provider/httpprovider=$(CURDIR)/confmap/provider/httpprovider  \
-		-replace go.opentelemetry.io/collector/confmap/provider/httpsprovider=$(CURDIR)/confmap/provider/httpsprovider  \
-		-replace go.opentelemetry.io/collector/confmap/provider/yamlprovider=$(CURDIR)/confmap/provider/yamlprovider  \
-		-replace go.opentelemetry.io/collector/connector=$(CURDIR)/connector  \
-		-replace go.opentelemetry.io/collector/connector/forwardconnector=$(CURDIR)/connector/forwardconnector  \
-		-replace go.opentelemetry.io/collector/consumer=$(CURDIR)/consumer  \
-		-replace go.opentelemetry.io/collector/exporter=$(CURDIR)/exporter  \
-		-replace go.opentelemetry.io/collector/exporter/debugexporter=$(CURDIR)/exporter/debugexporter  \
-		-replace go.opentelemetry.io/collector/exporter/loggingexporter=$(CURDIR)/exporter/loggingexporter  \
-		-replace go.opentelemetry.io/collector/exporter/nopexporter=$(CURDIR)/exporter/nopexporter  \
-		-replace go.opentelemetry.io/collector/exporter/otlpexporter=$(CURDIR)/exporter/otlpexporter  \
-		-replace go.opentelemetry.io/collector/exporter/otlphttpexporter=$(CURDIR)/exporter/otlphttpexporter  \
-		-replace go.opentelemetry.io/collector/extension=$(CURDIR)/extension  \
-		-replace go.opentelemetry.io/collector/extension/auth=$(CURDIR)/extension/auth  \
-		-replace go.opentelemetry.io/collector/extension/ballastextension=$(CURDIR)/extension/ballastextension  \
-		-replace go.opentelemetry.io/collector/extension/memorylimiterextension=$(CURDIR)/extension/memorylimiterextension  \
-		-replace go.opentelemetry.io/collector/extension/zpagesextension=$(CURDIR)/extension/zpagesextension  \
-		-replace go.opentelemetry.io/collector/featuregate=$(CURDIR)/featuregate  \
-		-replace go.opentelemetry.io/collector/otelcol=$(CURDIR)/otelcol  \
-		-replace go.opentelemetry.io/collector/pdata=$(CURDIR)/pdata  \
-		-replace go.opentelemetry.io/collector/pdata/testdata=$(CURDIR)/pdata/testdata  \
-		-replace go.opentelemetry.io/collector/processor=$(CURDIR)/processor  \
-		-replace go.opentelemetry.io/collector/processor/batchprocessor=$(CURDIR)/processor/batchprocessor  \
-		-replace go.opentelemetry.io/collector/processor/memorylimiterprocessor=$(CURDIR)/processor/memorylimiterprocessor  \
-		-replace go.opentelemetry.io/collector/receiver=$(CURDIR)/receiver  \
-		-replace go.opentelemetry.io/collector/receiver/nopreceiver=$(CURDIR)/receiver/nopreceiver  \
-		-replace go.opentelemetry.io/collector/receiver/otlpreceiver=$(CURDIR)/receiver/otlpreceiver  \
-		-replace go.opentelemetry.io/collector/semconv=$(CURDIR)/semconv  \
-		-replace go.opentelemetry.io/collector/service=$(CURDIR)/service"
+		-replace github.com/oodle-ai/opentelemetry-collector=$(CURDIR) \
+		-replace github.com/oodle-ai/opentelemetry-collector/component=$(CURDIR)/component  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/configauth=$(CURDIR)/config/configauth  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/configcompression=$(CURDIR)/config/configcompression  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/configgrpc=$(CURDIR)/config/configgrpc  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/confighttp=$(CURDIR)/config/confighttp  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/confignet=$(CURDIR)/config/confignet  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/configopaque=$(CURDIR)/config/configopaque  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/configretry=$(CURDIR)/config/configretry  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/configtelemetry=$(CURDIR)/config/configtelemetry  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/configtls=$(CURDIR)/config/configtls  \
+		-replace github.com/oodle-ai/opentelemetry-collector/config/internal=$(CURDIR)/config/internal  \
+		-replace github.com/oodle-ai/opentelemetry-collector/confmap=$(CURDIR)/confmap  \
+		-replace github.com/oodle-ai/opentelemetry-collector/confmap/converter/expandconverter=$(CURDIR)/confmap/converter/expandconverter  \
+		-replace github.com/oodle-ai/opentelemetry-collector/confmap/provider/envprovider=$(CURDIR)/confmap/provider/envprovider  \
+		-replace github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider=$(CURDIR)/confmap/provider/fileprovider  \
+		-replace github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpprovider=$(CURDIR)/confmap/provider/httpprovider  \
+		-replace github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpsprovider=$(CURDIR)/confmap/provider/httpsprovider  \
+		-replace github.com/oodle-ai/opentelemetry-collector/confmap/provider/yamlprovider=$(CURDIR)/confmap/provider/yamlprovider  \
+		-replace github.com/oodle-ai/opentelemetry-collector/connector=$(CURDIR)/connector  \
+		-replace github.com/oodle-ai/opentelemetry-collector/connector/forwardconnector=$(CURDIR)/connector/forwardconnector  \
+		-replace github.com/oodle-ai/opentelemetry-collector/consumer=$(CURDIR)/consumer  \
+		-replace github.com/oodle-ai/opentelemetry-collector/exporter=$(CURDIR)/exporter  \
+		-replace github.com/oodle-ai/opentelemetry-collector/exporter/debugexporter=$(CURDIR)/exporter/debugexporter  \
+		-replace github.com/oodle-ai/opentelemetry-collector/exporter/loggingexporter=$(CURDIR)/exporter/loggingexporter  \
+		-replace github.com/oodle-ai/opentelemetry-collector/exporter/nopexporter=$(CURDIR)/exporter/nopexporter  \
+		-replace github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter=$(CURDIR)/exporter/otlpexporter  \
+		-replace github.com/oodle-ai/opentelemetry-collector/exporter/otlphttpexporter=$(CURDIR)/exporter/otlphttpexporter  \
+		-replace github.com/oodle-ai/opentelemetry-collector/extension=$(CURDIR)/extension  \
+		-replace github.com/oodle-ai/opentelemetry-collector/extension/auth=$(CURDIR)/extension/auth  \
+		-replace github.com/oodle-ai/opentelemetry-collector/extension/ballastextension=$(CURDIR)/extension/ballastextension  \
+		-replace github.com/oodle-ai/opentelemetry-collector/extension/memorylimiterextension=$(CURDIR)/extension/memorylimiterextension  \
+		-replace github.com/oodle-ai/opentelemetry-collector/extension/zpagesextension=$(CURDIR)/extension/zpagesextension  \
+		-replace github.com/oodle-ai/opentelemetry-collector/featuregate=$(CURDIR)/featuregate  \
+		-replace github.com/oodle-ai/opentelemetry-collector/otelcol=$(CURDIR)/otelcol  \
+		-replace github.com/oodle-ai/opentelemetry-collector/pdata=$(CURDIR)/pdata  \
+		-replace github.com/oodle-ai/opentelemetry-collector/pdata/testdata=$(CURDIR)/pdata/testdata  \
+		-replace github.com/oodle-ai/opentelemetry-collector/processor=$(CURDIR)/processor  \
+		-replace github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor=$(CURDIR)/processor/batchprocessor  \
+		-replace github.com/oodle-ai/opentelemetry-collector/processor/memorylimiterprocessor=$(CURDIR)/processor/memorylimiterprocessor  \
+		-replace github.com/oodle-ai/opentelemetry-collector/receiver=$(CURDIR)/receiver  \
+		-replace github.com/oodle-ai/opentelemetry-collector/receiver/nopreceiver=$(CURDIR)/receiver/nopreceiver  \
+		-replace github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver=$(CURDIR)/receiver/otlpreceiver  \
+		-replace github.com/oodle-ai/opentelemetry-collector/semconv=$(CURDIR)/semconv  \
+		-replace github.com/oodle-ai/opentelemetry-collector/service=$(CURDIR)/service"
 	@$(MAKE) -C $(CONTRIB_PATH) gotidy
 	@$(MAKE) -C $(CONTRIB_PATH) gotest
 	@if [ -z "$(SKIP_RESTORE_CONTRIB)" ]; then \
@@ -302,51 +306,51 @@ check-contrib:
 restore-contrib:
 	@echo Restoring contrib at $(CONTRIB_PATH) to its original state
 	@$(MAKE) -C $(CONTRIB_PATH) for-all CMD="$(GOCMD) mod edit \
-		-dropreplace go.opentelemetry.io/collector \
-		-dropreplace go.opentelemetry.io/collector/component \
-		-dropreplace go.opentelemetry.io/collector/config/configauth  \
-		-dropreplace go.opentelemetry.io/collector/config/configcompression  \
-		-dropreplace go.opentelemetry.io/collector/config/configgrpc  \
-		-dropreplace go.opentelemetry.io/collector/config/confighttp  \
-		-dropreplace go.opentelemetry.io/collector/config/confignet  \
-		-dropreplace go.opentelemetry.io/collector/config/configopaque  \
-		-dropreplace go.opentelemetry.io/collector/config/configretry  \
-		-dropreplace go.opentelemetry.io/collector/config/configtelemetry  \
-		-dropreplace go.opentelemetry.io/collector/config/configtls  \
-		-dropreplace go.opentelemetry.io/collector/config/internal  \
-		-dropreplace go.opentelemetry.io/collector/confmap  \
-		-dropreplace go.opentelemetry.io/collector/confmap/converter/expandconverter  \
-		-dropreplace go.opentelemetry.io/collector/confmap/provider/envprovider  \
-		-dropreplace go.opentelemetry.io/collector/confmap/provider/fileprovider  \
-		-dropreplace go.opentelemetry.io/collector/confmap/provider/httpprovider  \
-		-dropreplace go.opentelemetry.io/collector/confmap/provider/httpsprovider  \
-		-dropreplace go.opentelemetry.io/collector/confmap/provider/yamlprovider  \
-		-dropreplace go.opentelemetry.io/collector/connector  \
-		-dropreplace go.opentelemetry.io/collector/connector/forwardconnector  \
-		-dropreplace go.opentelemetry.io/collector/consumer  \
-		-dropreplace go.opentelemetry.io/collector/exporter  \
-		-dropreplace go.opentelemetry.io/collector/exporter/debugexporter  \
-		-dropreplace go.opentelemetry.io/collector/exporter/loggingexporter  \
-		-dropreplace go.opentelemetry.io/collector/exporter/nopexporter  \
-		-dropreplace go.opentelemetry.io/collector/exporter/otlpexporter  \
-		-dropreplace go.opentelemetry.io/collector/exporter/otlphttpexporter  \
-		-dropreplace go.opentelemetry.io/collector/extension  \
-		-dropreplace go.opentelemetry.io/collector/extension/auth  \
-		-dropreplace go.opentelemetry.io/collector/extension/ballastextension  \
-		-dropreplace go.opentelemetry.io/collector/extension/memorylimiterextension  \
-		-dropreplace go.opentelemetry.io/collector/extension/zpagesextension  \
-		-dropreplace go.opentelemetry.io/collector/featuregate  \
-		-dropreplace go.opentelemetry.io/collector/otelcol  \
-		-dropreplace go.opentelemetry.io/collector/pdata  \
-		-dropreplace go.opentelemetry.io/collector/pdata/testdata  \
-		-dropreplace go.opentelemetry.io/collector/processor  \
-		-dropreplace go.opentelemetry.io/collector/processor/batchprocessor  \
-		-dropreplace go.opentelemetry.io/collector/processor/memorylimiterprocessor  \
-		-dropreplace go.opentelemetry.io/collector/receiver  \
-		-dropreplace go.opentelemetry.io/collector/receiver/nopreceiver  \
-		-dropreplace go.opentelemetry.io/collector/receiver/otlpreceiver  \
-		-dropreplace go.opentelemetry.io/collector/semconv  \
-		-dropreplace go.opentelemetry.io/collector/service"
+		-dropreplace github.com/oodle-ai/opentelemetry-collector \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/component \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/configauth  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/configcompression  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/configgrpc  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/confighttp  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/confignet  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/configopaque  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/configretry  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/configtelemetry  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/configtls  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/config/internal  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/confmap  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/confmap/converter/expandconverter  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/confmap/provider/envprovider  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/confmap/provider/fileprovider  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpprovider  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/confmap/provider/httpsprovider  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/confmap/provider/yamlprovider  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/connector  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/connector/forwardconnector  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/consumer  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/exporter  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/exporter/debugexporter  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/exporter/loggingexporter  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/exporter/nopexporter  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/exporter/otlpexporter  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/exporter/otlphttpexporter  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/extension  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/extension/auth  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/extension/ballastextension  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/extension/memorylimiterextension  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/extension/zpagesextension  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/featuregate  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/otelcol  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/pdata  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/pdata/testdata  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/processor  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/processor/batchprocessor  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/processor/memorylimiterprocessor  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/receiver  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/receiver/nopreceiver  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/receiver/otlpreceiver  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/semconv  \
+		-dropreplace github.com/oodle-ai/opentelemetry-collector/service"
 	@$(MAKE) -C $(CONTRIB_PATH) -j2 gotidy
 
 # List of directories where certificates are stored for unit tests.

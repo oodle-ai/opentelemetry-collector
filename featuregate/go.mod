@@ -1,4 +1,4 @@
-module go.opentelemetry.io/collector/featuregate
+module github.com/oodle-ai/opentelemetry-collector/featuregate
 
 go 1.21.0
 

@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package authtest // import "go.opentelemetry.io/collector/extension/auth/authtest"
+package authtest // import "github.com/oodle-ai/opentelemetry-collector/extension/auth/authtest"
 
 import (
 	"context"
@@ -10,8 +10,8 @@ import (
 
 	"google.golang.org/grpc/credentials"
 
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/extension/auth"
+	"github.com/oodle-ai/opentelemetry-collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/extension/auth"
 )
 
 var (

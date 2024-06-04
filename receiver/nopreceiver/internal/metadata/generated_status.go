@@ -3,7 +3,7 @@
 package metadata
 
 import (
-	"go.opentelemetry.io/collector/component"
+	"github.com/oodle-ai/opentelemetry-collector/component"
 )
 
 var (

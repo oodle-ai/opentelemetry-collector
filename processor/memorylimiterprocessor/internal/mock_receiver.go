@@ -1,16 +1,16 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package internal // import "go.opentelemetry.io/collector/processor/memorylimiterprocessor/internal"
+package internal // import "github.com/oodle-ai/opentelemetry-collector/processor/memorylimiterprocessor/internal"
 
 import (
 	"context"
 	"strings"
 	"sync"
 
-	"go.opentelemetry.io/collector/consumer"
-	"go.opentelemetry.io/collector/consumer/consumererror"
-	"go.opentelemetry.io/collector/pdata/plog"
+	"github.com/oodle-ai/opentelemetry-collector/consumer"
+	"github.com/oodle-ai/opentelemetry-collector/consumer/consumererror"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 )
 
 type MockReceiver struct {
