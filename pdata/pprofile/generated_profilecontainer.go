@@ -46,6 +46,11 @@ func (ms ProfileContainer) MoveTo(dest ProfileContainer) {
 	*ms.orig = otlpprofiles.ProfileContainer{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ProfileContainer) IsNil() bool {
+	return ms.orig == nil
+}
+
 // ProfileID returns the ProfileId associated with this ProfileContainer.
 func (ms ProfileContainer) ProfileID() pcommon.ByteSlice {
 	return pcommon.ByteSlice(internal.NewByteSlice(&ms.orig.ProfileId, ms.state))

@@ -45,6 +45,11 @@ func (ms ExportPartialSuccess) MoveTo(dest ExportPartialSuccess) {
 	*ms.orig = otlpcollectortrace.ExportTracePartialSuccess{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ExportPartialSuccess) IsNil() bool {
+	return ms.orig == nil
+}
+
 // RejectedSpans returns the rejectedspans associated with this ExportPartialSuccess.
 func (ms ExportPartialSuccess) RejectedSpans() int64 {
 	return ms.orig.RejectedSpans

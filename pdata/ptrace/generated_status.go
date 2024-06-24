@@ -46,6 +46,11 @@ func (ms Status) MoveTo(dest Status) {
 	*ms.orig = otlptrace.Status{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Status) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Code returns the code associated with this Status.
 func (ms Status) Code() StatusCode {
 	return StatusCode(ms.orig.Code)

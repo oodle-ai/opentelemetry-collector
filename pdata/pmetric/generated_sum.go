@@ -45,6 +45,11 @@ func (ms Sum) MoveTo(dest Sum) {
 	*ms.orig = otlpmetrics.Sum{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Sum) IsNil() bool {
+	return ms.orig == nil
+}
+
 // AggregationTemporality returns the aggregationtemporality associated with this Sum.
 func (ms Sum) AggregationTemporality() AggregationTemporality {
 	return AggregationTemporality(ms.orig.AggregationTemporality)

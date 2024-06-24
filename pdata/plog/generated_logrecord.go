@@ -47,6 +47,11 @@ func (ms LogRecord) MoveTo(dest LogRecord) {
 	*ms.orig = otlplogs.LogRecord{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms LogRecord) IsNil() bool {
+	return ms.orig == nil
+}
+
 // ObservedTimestamp returns the observedtimestamp associated with this LogRecord.
 func (ms LogRecord) ObservedTimestamp() pcommon.Timestamp {
 	return pcommon.Timestamp(ms.orig.ObservedTimeUnixNano)

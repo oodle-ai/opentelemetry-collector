@@ -46,6 +46,11 @@ func (ms ResourceMetrics) MoveTo(dest ResourceMetrics) {
 	*ms.orig = otlpmetrics.ResourceMetrics{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ResourceMetrics) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Resource returns the resource associated with this ResourceMetrics.
 func (ms ResourceMetrics) Resource() pcommon.Resource {
 	return pcommon.Resource(internal.NewResource(ms.orig.Resource, ms.state))

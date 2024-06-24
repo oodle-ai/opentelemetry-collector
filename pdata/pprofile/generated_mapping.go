@@ -46,6 +46,11 @@ func (ms Mapping) MoveTo(dest Mapping) {
 	*ms.orig = otlpprofiles.Mapping{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Mapping) IsNil() bool {
+	return ms.orig == nil
+}
+
 // ID returns the id associated with this Mapping.
 func (ms Mapping) ID() uint64 {
 	return ms.orig.Id

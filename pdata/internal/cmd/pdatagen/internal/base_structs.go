@@ -51,6 +51,11 @@ func (ms {{ .structName }}) MoveTo(dest {{ .structName }}) {
 	*ms.{{ .origAccessor }} = {{ .originName }}{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms {{ .structName }}) IsNil() bool {
+    return ms.orig == nil
+}
+
 {{ if .isCommon -}}
 func (ms {{ .structName }}) getOrig() *{{ .originName }} {
 	return internal.GetOrig{{ .structName }}(internal.{{ .structName }}(ms))

@@ -47,6 +47,11 @@ func (ms Link) MoveTo(dest Link) {
 	*ms.orig = otlpprofiles.Link{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Link) IsNil() bool {
+	return ms.orig == nil
+}
+
 // TraceID returns the traceid associated with this Link.
 func (ms Link) TraceID() pcommon.TraceID {
 	return pcommon.TraceID(ms.orig.TraceId)

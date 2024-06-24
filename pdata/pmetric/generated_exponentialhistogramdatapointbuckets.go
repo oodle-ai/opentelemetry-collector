@@ -46,6 +46,11 @@ func (ms ExponentialHistogramDataPointBuckets) MoveTo(dest ExponentialHistogramD
 	*ms.orig = otlpmetrics.ExponentialHistogramDataPoint_Buckets{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ExponentialHistogramDataPointBuckets) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Offset returns the offset associated with this ExponentialHistogramDataPointBuckets.
 func (ms ExponentialHistogramDataPointBuckets) Offset() int32 {
 	return ms.orig.Offset

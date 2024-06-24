@@ -46,6 +46,11 @@ func (ms Location) MoveTo(dest Location) {
 	*ms.orig = otlpprofiles.Location{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Location) IsNil() bool {
+	return ms.orig == nil
+}
+
 // ID returns the id associated with this Location.
 func (ms Location) ID() uint64 {
 	return ms.orig.Id

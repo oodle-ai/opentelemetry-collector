@@ -45,6 +45,11 @@ func (ms Gauge) MoveTo(dest Gauge) {
 	*ms.orig = otlpmetrics.Gauge{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Gauge) IsNil() bool {
+	return ms.orig == nil
+}
+
 // DataPoints returns the DataPoints associated with this Gauge.
 func (ms Gauge) DataPoints() NumberDataPointSlice {
 	return newNumberDataPointSlice(&ms.orig.DataPoints, ms.state)

@@ -48,6 +48,11 @@ func (ms Span) MoveTo(dest Span) {
 	*ms.orig = otlptrace.Span{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Span) IsNil() bool {
+	return ms.orig == nil
+}
+
 // TraceID returns the traceid associated with this Span.
 func (ms Span) TraceID() pcommon.TraceID {
 	return pcommon.TraceID(ms.orig.TraceId)

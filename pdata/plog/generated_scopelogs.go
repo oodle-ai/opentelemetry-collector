@@ -46,6 +46,11 @@ func (ms ScopeLogs) MoveTo(dest ScopeLogs) {
 	*ms.orig = otlplogs.ScopeLogs{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ScopeLogs) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Scope returns the scope associated with this ScopeLogs.
 func (ms ScopeLogs) Scope() pcommon.InstrumentationScope {
 	return pcommon.InstrumentationScope(internal.NewInstrumentationScope(&ms.orig.Scope, ms.state))

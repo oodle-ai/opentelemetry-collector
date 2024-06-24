@@ -42,6 +42,11 @@ func (ms Resource) MoveTo(dest Resource) {
 	*ms.getOrig() = otlpresource.Resource{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Resource) IsNil() bool {
+	return ms.getOrig() == nil
+}
+
 func (ms Resource) getOrig() *otlpresource.Resource {
 	return internal.GetOrigResource(internal.Resource(ms))
 }

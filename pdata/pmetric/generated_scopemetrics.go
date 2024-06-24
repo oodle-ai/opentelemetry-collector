@@ -46,6 +46,11 @@ func (ms ScopeMetrics) MoveTo(dest ScopeMetrics) {
 	*ms.orig = otlpmetrics.ScopeMetrics{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ScopeMetrics) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Scope returns the scope associated with this ScopeMetrics.
 func (ms ScopeMetrics) Scope() pcommon.InstrumentationScope {
 	return pcommon.InstrumentationScope(internal.NewInstrumentationScope(ms.orig.Scope, ms.state))

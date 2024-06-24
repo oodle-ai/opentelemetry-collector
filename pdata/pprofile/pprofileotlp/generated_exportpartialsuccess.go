@@ -45,6 +45,11 @@ func (ms ExportPartialSuccess) MoveTo(dest ExportPartialSuccess) {
 	*ms.orig = otlpcollectorprofile.ExportProfilesPartialSuccess{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ExportPartialSuccess) IsNil() bool {
+	return ms.orig == nil
+}
+
 // RejectedProfiles returns the rejectedprofiles associated with this ExportPartialSuccess.
 func (ms ExportPartialSuccess) RejectedProfiles() int64 {
 	return ms.orig.RejectedProfiles

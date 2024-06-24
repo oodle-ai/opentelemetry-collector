@@ -47,6 +47,11 @@ func (ms SpanEvent) MoveTo(dest SpanEvent) {
 	*ms.orig = otlptrace.Span_Event{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms SpanEvent) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Timestamp returns the timestamp associated with this SpanEvent.
 func (ms SpanEvent) Timestamp() pcommon.Timestamp {
 	return pcommon.Timestamp(ms.orig.TimeUnixNano)

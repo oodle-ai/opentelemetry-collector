@@ -46,6 +46,11 @@ func (ms ExponentialHistogram) MoveTo(dest ExponentialHistogram) {
 	*ms.orig = otlpmetrics.ExponentialHistogram{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ExponentialHistogram) IsNil() bool {
+	return ms.orig == nil
+}
+
 // AggregationTemporality returns the aggregationtemporality associated with this ExponentialHistogram.
 func (ms ExponentialHistogram) AggregationTemporality() AggregationTemporality {
 	return AggregationTemporality(ms.orig.AggregationTemporality)

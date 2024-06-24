@@ -45,6 +45,11 @@ func (ms ExportPartialSuccess) MoveTo(dest ExportPartialSuccess) {
 	*ms.orig = otlpcollectorlog.ExportLogsPartialSuccess{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ExportPartialSuccess) IsNil() bool {
+	return ms.orig == nil
+}
+
 // RejectedLogRecords returns the rejectedlogrecords associated with this ExportPartialSuccess.
 func (ms ExportPartialSuccess) RejectedLogRecords() int64 {
 	return ms.orig.RejectedLogRecords

@@ -46,6 +46,11 @@ func (ms ResourceProfiles) MoveTo(dest ResourceProfiles) {
 	*ms.orig = otlpprofiles.ResourceProfiles{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ResourceProfiles) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Resource returns the resource associated with this ResourceProfiles.
 func (ms ResourceProfiles) Resource() pcommon.Resource {
 	return pcommon.Resource(internal.NewResource(&ms.orig.Resource, ms.state))

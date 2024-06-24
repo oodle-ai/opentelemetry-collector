@@ -46,6 +46,11 @@ func (ms Sample) MoveTo(dest Sample) {
 	*ms.orig = otlpprofiles.Sample{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Sample) IsNil() bool {
+	return ms.orig == nil
+}
+
 // LocationIndex returns the LocationIndex associated with this Sample.
 func (ms Sample) LocationIndex() pcommon.UInt64Slice {
 	return pcommon.UInt64Slice(internal.NewUInt64Slice(&ms.orig.LocationIndex, ms.state))
