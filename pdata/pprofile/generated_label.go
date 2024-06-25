@@ -45,6 +45,11 @@ func (ms Label) MoveTo(dest Label) {
 	*ms.orig = otlpprofiles.Label{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Label) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Key returns the key associated with this Label.
 func (ms Label) Key() int64 {
 	return ms.orig.Key

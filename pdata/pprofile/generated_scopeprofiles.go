@@ -46,6 +46,11 @@ func (ms ScopeProfiles) MoveTo(dest ScopeProfiles) {
 	*ms.orig = otlpprofiles.ScopeProfiles{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ScopeProfiles) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Scope returns the scope associated with this ScopeProfiles.
 func (ms ScopeProfiles) Scope() pcommon.InstrumentationScope {
 	return pcommon.InstrumentationScope(internal.NewInstrumentationScope(&ms.orig.Scope, ms.state))

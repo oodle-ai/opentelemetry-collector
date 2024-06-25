@@ -45,6 +45,11 @@ func (ms ValueType) MoveTo(dest ValueType) {
 	*ms.orig = otlpprofiles.ValueType{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ValueType) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Type returns the type associated with this ValueType.
 func (ms ValueType) Type() int64 {
 	return ms.orig.Type

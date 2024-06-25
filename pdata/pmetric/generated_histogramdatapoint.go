@@ -46,6 +46,11 @@ func (ms HistogramDataPoint) MoveTo(dest HistogramDataPoint) {
 	*ms.orig = otlpmetrics.HistogramDataPoint{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms HistogramDataPoint) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Attributes returns the Attributes associated with this HistogramDataPoint.
 func (ms HistogramDataPoint) Attributes() pcommon.Map {
 	return pcommon.Map(internal.NewMap(&ms.orig.Attributes, ms.state))

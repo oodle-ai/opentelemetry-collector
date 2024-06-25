@@ -45,6 +45,11 @@ func (ms Summary) MoveTo(dest Summary) {
 	*ms.orig = otlpmetrics.Summary{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Summary) IsNil() bool {
+	return ms.orig == nil
+}
+
 // DataPoints returns the DataPoints associated with this Summary.
 func (ms Summary) DataPoints() SummaryDataPointSlice {
 	return newSummaryDataPointSlice(&ms.orig.DataPoints, ms.state)

@@ -47,6 +47,11 @@ func (ms Metric) MoveTo(dest Metric) {
 	*ms.orig = otlpmetrics.Metric{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Metric) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Name returns the name associated with this Metric.
 func (ms Metric) Name() string {
 	return ms.orig.Name

@@ -46,6 +46,11 @@ func (ms Profile) MoveTo(dest Profile) {
 	*ms.orig = otlpprofiles.Profile{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Profile) IsNil() bool {
+	return ms.orig == nil
+}
+
 // SampleType returns the SampleType associated with this Profile.
 func (ms Profile) SampleType() ValueTypeSlice {
 	return newValueTypeSlice(&ms.orig.SampleType, ms.state)

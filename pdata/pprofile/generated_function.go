@@ -45,6 +45,11 @@ func (ms Function) MoveTo(dest Function) {
 	*ms.orig = otlpprofiles.Function{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Function) IsNil() bool {
+	return ms.orig == nil
+}
+
 // ID returns the id associated with this Function.
 func (ms Function) ID() uint64 {
 	return ms.orig.Id

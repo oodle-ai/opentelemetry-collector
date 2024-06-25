@@ -45,6 +45,11 @@ func (ms SummaryDataPointValueAtQuantile) MoveTo(dest SummaryDataPointValueAtQua
 	*ms.orig = otlpmetrics.SummaryDataPoint_ValueAtQuantile{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms SummaryDataPointValueAtQuantile) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Quantile returns the quantile associated with this SummaryDataPointValueAtQuantile.
 func (ms SummaryDataPointValueAtQuantile) Quantile() float64 {
 	return ms.orig.Quantile

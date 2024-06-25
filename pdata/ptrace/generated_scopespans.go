@@ -46,6 +46,11 @@ func (ms ScopeSpans) MoveTo(dest ScopeSpans) {
 	*ms.orig = otlptrace.ScopeSpans{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ScopeSpans) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Scope returns the scope associated with this ScopeSpans.
 func (ms ScopeSpans) Scope() pcommon.InstrumentationScope {
 	return pcommon.InstrumentationScope(internal.NewInstrumentationScope(&ms.orig.Scope, ms.state))

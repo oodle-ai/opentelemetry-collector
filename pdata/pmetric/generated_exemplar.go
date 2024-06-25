@@ -49,6 +49,11 @@ func (ms Exemplar) MoveTo(dest Exemplar) {
 	*ms.orig = otlpmetrics.Exemplar{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Exemplar) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Timestamp returns the timestamp associated with this Exemplar.
 func (ms Exemplar) Timestamp() pcommon.Timestamp {
 	return pcommon.Timestamp(ms.orig.TimeUnixNano)

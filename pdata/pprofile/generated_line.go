@@ -45,6 +45,11 @@ func (ms Line) MoveTo(dest Line) {
 	*ms.orig = otlpprofiles.Line{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms Line) IsNil() bool {
+	return ms.orig == nil
+}
+
 // FunctionIndex returns the functionindex associated with this Line.
 func (ms Line) FunctionIndex() uint64 {
 	return ms.orig.FunctionIndex

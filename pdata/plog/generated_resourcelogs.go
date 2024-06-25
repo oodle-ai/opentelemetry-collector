@@ -46,6 +46,11 @@ func (ms ResourceLogs) MoveTo(dest ResourceLogs) {
 	*ms.orig = otlplogs.ResourceLogs{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms ResourceLogs) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Resource returns the resource associated with this ResourceLogs.
 func (ms ResourceLogs) Resource() pcommon.Resource {
 	return pcommon.Resource(internal.NewResource(&ms.orig.Resource, ms.state))

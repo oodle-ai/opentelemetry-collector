@@ -46,6 +46,11 @@ func (ms SummaryDataPoint) MoveTo(dest SummaryDataPoint) {
 	*ms.orig = otlpmetrics.SummaryDataPoint{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms SummaryDataPoint) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Attributes returns the Attributes associated with this SummaryDataPoint.
 func (ms SummaryDataPoint) Attributes() pcommon.Map {
 	return pcommon.Map(internal.NewMap(&ms.orig.Attributes, ms.state))

@@ -45,6 +45,11 @@ func (ms AttributeUnit) MoveTo(dest AttributeUnit) {
 	*ms.orig = otlpprofiles.AttributeUnit{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms AttributeUnit) IsNil() bool {
+	return ms.orig == nil
+}
+
 // AttributeKey returns the attributekey associated with this AttributeUnit.
 func (ms AttributeUnit) AttributeKey() int64 {
 	return ms.orig.AttributeKey

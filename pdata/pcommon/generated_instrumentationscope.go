@@ -42,6 +42,11 @@ func (ms InstrumentationScope) MoveTo(dest InstrumentationScope) {
 	*ms.getOrig() = otlpcommon.InstrumentationScope{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms InstrumentationScope) IsNil() bool {
+	return ms.getOrig() == nil
+}
+
 func (ms InstrumentationScope) getOrig() *otlpcommon.InstrumentationScope {
 	return internal.GetOrigInstrumentationScope(internal.InstrumentationScope(ms))
 }

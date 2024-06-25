@@ -46,6 +46,11 @@ func (ms NumberDataPoint) MoveTo(dest NumberDataPoint) {
 	*ms.orig = otlpmetrics.NumberDataPoint{}
 }
 
+// IsNil returns whether the struct is nil value.
+func (ms NumberDataPoint) IsNil() bool {
+	return ms.orig == nil
+}
+
 // Attributes returns the Attributes associated with this NumberDataPoint.
 func (ms NumberDataPoint) Attributes() pcommon.Map {
 	return pcommon.Map(internal.NewMap(&ms.orig.Attributes, ms.state))
