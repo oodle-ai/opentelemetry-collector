@@ -29,7 +29,7 @@ func (m *MetricsData) CloneVT() *MetricsData {
 	if m == nil {
 		return (*MetricsData)(nil)
 	}
-	r := new(MetricsData)
+	r := MetricsDataFromVTPool()
 	if rhs := m.ResourceMetrics; rhs != nil {
 		tmpContainer := make([]*ResourceMetrics, len(rhs))
 		for k, v := range rhs {
@@ -194,7 +194,7 @@ func (m *Gauge) CloneVT() *Gauge {
 	if m == nil {
 		return (*Gauge)(nil)
 	}
-	r := new(Gauge)
+	r := GaugeFromVTPool()
 	if rhs := m.DataPoints; rhs != nil {
 		tmpContainer := make([]*NumberDataPoint, len(rhs))
 		for k, v := range rhs {
@@ -217,7 +217,7 @@ func (m *Sum) CloneVT() *Sum {
 	if m == nil {
 		return (*Sum)(nil)
 	}
-	r := new(Sum)
+	r := SumFromVTPool()
 	r.AggregationTemporality = m.AggregationTemporality
 	r.IsMonotonic = m.IsMonotonic
 	if rhs := m.DataPoints; rhs != nil {
@@ -242,7 +242,7 @@ func (m *Histogram) CloneVT() *Histogram {
 	if m == nil {
 		return (*Histogram)(nil)
 	}
-	r := new(Histogram)
+	r := HistogramFromVTPool()
 	r.AggregationTemporality = m.AggregationTemporality
 	if rhs := m.DataPoints; rhs != nil {
 		tmpContainer := make([]*HistogramDataPoint, len(rhs))
@@ -266,7 +266,7 @@ func (m *ExponentialHistogram) CloneVT() *ExponentialHistogram {
 	if m == nil {
 		return (*ExponentialHistogram)(nil)
 	}
-	r := new(ExponentialHistogram)
+	r := ExponentialHistogramFromVTPool()
 	r.AggregationTemporality = m.AggregationTemporality
 	if rhs := m.DataPoints; rhs != nil {
 		tmpContainer := make([]*ExponentialHistogramDataPoint, len(rhs))
@@ -290,7 +290,7 @@ func (m *Summary) CloneVT() *Summary {
 	if m == nil {
 		return (*Summary)(nil)
 	}
-	r := new(Summary)
+	r := SummaryFromVTPool()
 	if rhs := m.DataPoints; rhs != nil {
 		tmpContainer := make([]*SummaryDataPoint, len(rhs))
 		for k, v := range rhs {
@@ -313,7 +313,7 @@ func (m *NumberDataPoint) CloneVT() *NumberDataPoint {
 	if m == nil {
 		return (*NumberDataPoint)(nil)
 	}
-	r := new(NumberDataPoint)
+	r := NumberDataPointFromVTPool()
 	r.StartTimeUnixNano = m.StartTimeUnixNano
 	r.TimeUnixNano = m.TimeUnixNano
 	r.Flags = m.Flags
@@ -373,7 +373,7 @@ func (m *HistogramDataPoint) CloneVT() *HistogramDataPoint {
 	if m == nil {
 		return (*HistogramDataPoint)(nil)
 	}
-	r := new(HistogramDataPoint)
+	r := HistogramDataPointFromVTPool()
 	r.StartTimeUnixNano = m.StartTimeUnixNano
 	r.TimeUnixNano = m.TimeUnixNano
 	r.Count = m.Count
@@ -455,7 +455,7 @@ func (m *ExponentialHistogramDataPoint) CloneVT() *ExponentialHistogramDataPoint
 	if m == nil {
 		return (*ExponentialHistogramDataPoint)(nil)
 	}
-	r := new(ExponentialHistogramDataPoint)
+	r := ExponentialHistogramDataPointFromVTPool()
 	r.StartTimeUnixNano = m.StartTimeUnixNano
 	r.TimeUnixNano = m.TimeUnixNano
 	r.Count = m.Count
@@ -528,7 +528,7 @@ func (m *SummaryDataPoint) CloneVT() *SummaryDataPoint {
 	if m == nil {
 		return (*SummaryDataPoint)(nil)
 	}
-	r := new(SummaryDataPoint)
+	r := SummaryDataPointFromVTPool()
 	r.StartTimeUnixNano = m.StartTimeUnixNano
 	r.TimeUnixNano = m.TimeUnixNano
 	r.Count = m.Count
@@ -567,7 +567,7 @@ func (m *Exemplar) CloneVT() *Exemplar {
 	if m == nil {
 		return (*Exemplar)(nil)
 	}
-	r := new(Exemplar)
+	r := ExemplarFromVTPool()
 	r.TimeUnixNano = m.TimeUnixNano
 	if rhs := m.FilteredAttributes; rhs != nil {
 		tmpContainer := make([]*v11.KeyValue, len(rhs))
@@ -4309,6 +4309,32 @@ func (m *Exemplar_AsInt) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_MetricsData = sync.Pool{
+	New: func() interface{} {
+		return &MetricsData{}
+	},
+}
+
+func (m *MetricsData) ResetVT() {
+	if m != nil {
+		for _, mm := range m.ResourceMetrics {
+			mm.ResetVT()
+		}
+		f0 := m.ResourceMetrics[:0]
+		m.Reset()
+		m.ResourceMetrics = f0
+	}
+}
+func (m *MetricsData) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_MetricsData.Put(m)
+	}
+}
+func MetricsDataFromVTPool() *MetricsData {
+	return vtprotoPool_MetricsData.Get().(*MetricsData)
+}
+
 var vtprotoPool_ResourceMetrics = sync.Pool{
 	New: func() interface{} {
 		return &ResourceMetrics{}
@@ -4344,6 +4370,7 @@ var vtprotoPool_ScopeMetrics = sync.Pool{
 
 func (m *ScopeMetrics) ResetVT() {
 	if m != nil {
+		m.Scope.ReturnToVTPool()
 		for _, mm := range m.Metrics {
 			mm.ResetVT()
 		}
@@ -4370,8 +4397,23 @@ var vtprotoPool_Metric = sync.Pool{
 
 func (m *Metric) ResetVT() {
 	if m != nil {
+		if oneof, ok := m.Data.(*Metric_Gauge); ok {
+			oneof.Gauge.ReturnToVTPool()
+		}
+		if oneof, ok := m.Data.(*Metric_Sum); ok {
+			oneof.Sum.ReturnToVTPool()
+		}
+		if oneof, ok := m.Data.(*Metric_Histogram); ok {
+			oneof.Histogram.ReturnToVTPool()
+		}
+		if oneof, ok := m.Data.(*Metric_ExponentialHistogram); ok {
+			oneof.ExponentialHistogram.ReturnToVTPool()
+		}
+		if oneof, ok := m.Data.(*Metric_Summary); ok {
+			oneof.Summary.ReturnToVTPool()
+		}
 		for _, mm := range m.Metadata {
-			mm.Reset()
+			mm.ResetVT()
 		}
 		f0 := m.Metadata[:0]
 		m.Reset()
@@ -4386,6 +4428,294 @@ func (m *Metric) ReturnToVTPool() {
 }
 func MetricFromVTPool() *Metric {
 	return vtprotoPool_Metric.Get().(*Metric)
+}
+
+var vtprotoPool_Gauge = sync.Pool{
+	New: func() interface{} {
+		return &Gauge{}
+	},
+}
+
+func (m *Gauge) ResetVT() {
+	if m != nil {
+		for _, mm := range m.DataPoints {
+			mm.ResetVT()
+		}
+		f0 := m.DataPoints[:0]
+		m.Reset()
+		m.DataPoints = f0
+	}
+}
+func (m *Gauge) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Gauge.Put(m)
+	}
+}
+func GaugeFromVTPool() *Gauge {
+	return vtprotoPool_Gauge.Get().(*Gauge)
+}
+
+var vtprotoPool_Sum = sync.Pool{
+	New: func() interface{} {
+		return &Sum{}
+	},
+}
+
+func (m *Sum) ResetVT() {
+	if m != nil {
+		for _, mm := range m.DataPoints {
+			mm.ResetVT()
+		}
+		f0 := m.DataPoints[:0]
+		m.Reset()
+		m.DataPoints = f0
+	}
+}
+func (m *Sum) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Sum.Put(m)
+	}
+}
+func SumFromVTPool() *Sum {
+	return vtprotoPool_Sum.Get().(*Sum)
+}
+
+var vtprotoPool_Histogram = sync.Pool{
+	New: func() interface{} {
+		return &Histogram{}
+	},
+}
+
+func (m *Histogram) ResetVT() {
+	if m != nil {
+		for _, mm := range m.DataPoints {
+			mm.ResetVT()
+		}
+		f0 := m.DataPoints[:0]
+		m.Reset()
+		m.DataPoints = f0
+	}
+}
+func (m *Histogram) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Histogram.Put(m)
+	}
+}
+func HistogramFromVTPool() *Histogram {
+	return vtprotoPool_Histogram.Get().(*Histogram)
+}
+
+var vtprotoPool_ExponentialHistogram = sync.Pool{
+	New: func() interface{} {
+		return &ExponentialHistogram{}
+	},
+}
+
+func (m *ExponentialHistogram) ResetVT() {
+	if m != nil {
+		for _, mm := range m.DataPoints {
+			mm.ResetVT()
+		}
+		f0 := m.DataPoints[:0]
+		m.Reset()
+		m.DataPoints = f0
+	}
+}
+func (m *ExponentialHistogram) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ExponentialHistogram.Put(m)
+	}
+}
+func ExponentialHistogramFromVTPool() *ExponentialHistogram {
+	return vtprotoPool_ExponentialHistogram.Get().(*ExponentialHistogram)
+}
+
+var vtprotoPool_Summary = sync.Pool{
+	New: func() interface{} {
+		return &Summary{}
+	},
+}
+
+func (m *Summary) ResetVT() {
+	if m != nil {
+		for _, mm := range m.DataPoints {
+			mm.ResetVT()
+		}
+		f0 := m.DataPoints[:0]
+		m.Reset()
+		m.DataPoints = f0
+	}
+}
+func (m *Summary) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Summary.Put(m)
+	}
+}
+func SummaryFromVTPool() *Summary {
+	return vtprotoPool_Summary.Get().(*Summary)
+}
+
+var vtprotoPool_NumberDataPoint = sync.Pool{
+	New: func() interface{} {
+		return &NumberDataPoint{}
+	},
+}
+
+func (m *NumberDataPoint) ResetVT() {
+	if m != nil {
+		for _, mm := range m.Exemplars {
+			mm.ResetVT()
+		}
+		f0 := m.Exemplars[:0]
+		for _, mm := range m.Attributes {
+			mm.ResetVT()
+		}
+		f1 := m.Attributes[:0]
+		m.Reset()
+		m.Exemplars = f0
+		m.Attributes = f1
+	}
+}
+func (m *NumberDataPoint) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_NumberDataPoint.Put(m)
+	}
+}
+func NumberDataPointFromVTPool() *NumberDataPoint {
+	return vtprotoPool_NumberDataPoint.Get().(*NumberDataPoint)
+}
+
+var vtprotoPool_HistogramDataPoint = sync.Pool{
+	New: func() interface{} {
+		return &HistogramDataPoint{}
+	},
+}
+
+func (m *HistogramDataPoint) ResetVT() {
+	if m != nil {
+		f0 := m.BucketCounts[:0]
+		f1 := m.ExplicitBounds[:0]
+		for _, mm := range m.Exemplars {
+			mm.ResetVT()
+		}
+		f2 := m.Exemplars[:0]
+		for _, mm := range m.Attributes {
+			mm.ResetVT()
+		}
+		f3 := m.Attributes[:0]
+		m.Reset()
+		m.BucketCounts = f0
+		m.ExplicitBounds = f1
+		m.Exemplars = f2
+		m.Attributes = f3
+	}
+}
+func (m *HistogramDataPoint) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_HistogramDataPoint.Put(m)
+	}
+}
+func HistogramDataPointFromVTPool() *HistogramDataPoint {
+	return vtprotoPool_HistogramDataPoint.Get().(*HistogramDataPoint)
+}
+
+var vtprotoPool_ExponentialHistogramDataPoint = sync.Pool{
+	New: func() interface{} {
+		return &ExponentialHistogramDataPoint{}
+	},
+}
+
+func (m *ExponentialHistogramDataPoint) ResetVT() {
+	if m != nil {
+		for _, mm := range m.Attributes {
+			mm.ResetVT()
+		}
+		f0 := m.Attributes[:0]
+		for _, mm := range m.Exemplars {
+			mm.ResetVT()
+		}
+		f1 := m.Exemplars[:0]
+		m.Reset()
+		m.Attributes = f0
+		m.Exemplars = f1
+	}
+}
+func (m *ExponentialHistogramDataPoint) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ExponentialHistogramDataPoint.Put(m)
+	}
+}
+func ExponentialHistogramDataPointFromVTPool() *ExponentialHistogramDataPoint {
+	return vtprotoPool_ExponentialHistogramDataPoint.Get().(*ExponentialHistogramDataPoint)
+}
+
+var vtprotoPool_SummaryDataPoint = sync.Pool{
+	New: func() interface{} {
+		return &SummaryDataPoint{}
+	},
+}
+
+func (m *SummaryDataPoint) ResetVT() {
+	if m != nil {
+		for _, mm := range m.QuantileValues {
+			mm.Reset()
+		}
+		f0 := m.QuantileValues[:0]
+		for _, mm := range m.Attributes {
+			mm.ResetVT()
+		}
+		f1 := m.Attributes[:0]
+		m.Reset()
+		m.QuantileValues = f0
+		m.Attributes = f1
+	}
+}
+func (m *SummaryDataPoint) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_SummaryDataPoint.Put(m)
+	}
+}
+func SummaryDataPointFromVTPool() *SummaryDataPoint {
+	return vtprotoPool_SummaryDataPoint.Get().(*SummaryDataPoint)
+}
+
+var vtprotoPool_Exemplar = sync.Pool{
+	New: func() interface{} {
+		return &Exemplar{}
+	},
+}
+
+func (m *Exemplar) ResetVT() {
+	if m != nil {
+		f0 := m.SpanId[:0]
+		f1 := m.TraceId[:0]
+		for _, mm := range m.FilteredAttributes {
+			mm.ResetVT()
+		}
+		f2 := m.FilteredAttributes[:0]
+		m.Reset()
+		m.SpanId = f0
+		m.TraceId = f1
+		m.FilteredAttributes = f2
+	}
+}
+func (m *Exemplar) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Exemplar.Put(m)
+	}
+}
+func ExemplarFromVTPool() *Exemplar {
+	return vtprotoPool_Exemplar.Get().(*Exemplar)
 }
 func (m *MetricsData) SizeVT() (n int) {
 	if m == nil {
@@ -5022,7 +5352,14 @@ func (m *MetricsData) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceMetrics = append(m.ResourceMetrics, &ResourceMetrics{})
+			if len(m.ResourceMetrics) == cap(m.ResourceMetrics) {
+				m.ResourceMetrics = append(m.ResourceMetrics, &ResourceMetrics{})
+			} else {
+				m.ResourceMetrics = m.ResourceMetrics[:len(m.ResourceMetrics)+1]
+				if m.ResourceMetrics[len(m.ResourceMetrics)-1] == nil {
+					m.ResourceMetrics[len(m.ResourceMetrics)-1] = &ResourceMetrics{}
+				}
+			}
 			if err := m.ResourceMetrics[len(m.ResourceMetrics)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -5276,7 +5613,7 @@ func (m *ScopeMetrics) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Scope == nil {
-				m.Scope = &v11.InstrumentationScope{}
+				m.Scope = v11.InstrumentationScopeFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Scope).(interface {
 				UnmarshalVT([]byte) error
@@ -5544,7 +5881,7 @@ func (m *Metric) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &Gauge{}
+				v := GaugeFromVTPool()
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -5585,7 +5922,7 @@ func (m *Metric) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &Sum{}
+				v := SumFromVTPool()
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -5626,7 +5963,7 @@ func (m *Metric) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &Histogram{}
+				v := HistogramFromVTPool()
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -5667,7 +6004,7 @@ func (m *Metric) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &ExponentialHistogram{}
+				v := ExponentialHistogramFromVTPool()
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -5708,7 +6045,7 @@ func (m *Metric) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &Summary{}
+				v := SummaryFromVTPool()
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -5844,7 +6181,14 @@ func (m *Gauge) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &NumberDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &NumberDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &NumberDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -5929,7 +6273,14 @@ func (m *Sum) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &NumberDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &NumberDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &NumberDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6053,7 +6404,14 @@ func (m *Histogram) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &HistogramDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &HistogramDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &HistogramDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6157,7 +6515,14 @@ func (m *ExponentialHistogram) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &ExponentialHistogramDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &ExponentialHistogramDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &ExponentialHistogramDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6261,7 +6626,14 @@ func (m *Summary) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &SummaryDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &SummaryDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &SummaryDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6377,7 +6749,14 @@ func (m *NumberDataPoint) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Exemplars = append(m.Exemplars, &Exemplar{})
+			if len(m.Exemplars) == cap(m.Exemplars) {
+				m.Exemplars = append(m.Exemplars, &Exemplar{})
+			} else {
+				m.Exemplars = m.Exemplars[:len(m.Exemplars)+1]
+				if m.Exemplars[len(m.Exemplars)-1] == nil {
+					m.Exemplars[len(m.Exemplars)-1] = &Exemplar{}
+				}
+			}
 			if err := m.Exemplars[len(m.Exemplars)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6422,7 +6801,14 @@ func (m *NumberDataPoint) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -6584,7 +6970,7 @@ func (m *HistogramDataPoint) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if elementCount != 0 && len(m.BucketCounts) == 0 {
+				if elementCount != 0 && len(m.BucketCounts) == 0 && cap(m.BucketCounts) < elementCount {
 					m.BucketCounts = make([]uint64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -6637,7 +7023,7 @@ func (m *HistogramDataPoint) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if elementCount != 0 && len(m.ExplicitBounds) == 0 {
+				if elementCount != 0 && len(m.ExplicitBounds) == 0 && cap(m.ExplicitBounds) < elementCount {
 					m.ExplicitBounds = make([]float64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -6682,7 +7068,14 @@ func (m *HistogramDataPoint) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Exemplars = append(m.Exemplars, &Exemplar{})
+			if len(m.Exemplars) == cap(m.Exemplars) {
+				m.Exemplars = append(m.Exemplars, &Exemplar{})
+			} else {
+				m.Exemplars = m.Exemplars[:len(m.Exemplars)+1]
+				if m.Exemplars[len(m.Exemplars)-1] == nil {
+					m.Exemplars[len(m.Exemplars)-1] = &Exemplar{}
+				}
+			}
 			if err := m.Exemplars[len(m.Exemplars)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6716,7 +7109,14 @@ func (m *HistogramDataPoint) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -7000,7 +7400,14 @@ func (m *ExponentialHistogramDataPoint) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -7206,7 +7613,14 @@ func (m *ExponentialHistogramDataPoint) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Exemplars = append(m.Exemplars, &Exemplar{})
+			if len(m.Exemplars) == cap(m.Exemplars) {
+				m.Exemplars = append(m.Exemplars, &Exemplar{})
+			} else {
+				m.Exemplars = m.Exemplars[:len(m.Exemplars)+1]
+				if m.Exemplars[len(m.Exemplars)-1] == nil {
+					m.Exemplars[len(m.Exemplars)-1] = &Exemplar{}
+				}
+			}
 			if err := m.Exemplars[len(m.Exemplars)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7440,7 +7854,14 @@ func (m *SummaryDataPoint) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.QuantileValues = append(m.QuantileValues, &SummaryDataPoint_ValueAtQuantile{})
+			if len(m.QuantileValues) == cap(m.QuantileValues) {
+				m.QuantileValues = append(m.QuantileValues, &SummaryDataPoint_ValueAtQuantile{})
+			} else {
+				m.QuantileValues = m.QuantileValues[:len(m.QuantileValues)+1]
+				if m.QuantileValues[len(m.QuantileValues)-1] == nil {
+					m.QuantileValues[len(m.QuantileValues)-1] = &SummaryDataPoint_ValueAtQuantile{}
+				}
+			}
 			if err := m.QuantileValues[len(m.QuantileValues)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7474,7 +7895,14 @@ func (m *SummaryDataPoint) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -7686,7 +8114,14 @@ func (m *Exemplar) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FilteredAttributes = append(m.FilteredAttributes, &v11.KeyValue{})
+			if len(m.FilteredAttributes) == cap(m.FilteredAttributes) {
+				m.FilteredAttributes = append(m.FilteredAttributes, &v11.KeyValue{})
+			} else {
+				m.FilteredAttributes = m.FilteredAttributes[:len(m.FilteredAttributes)+1]
+				if m.FilteredAttributes[len(m.FilteredAttributes)-1] == nil {
+					m.FilteredAttributes[len(m.FilteredAttributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.FilteredAttributes[len(m.FilteredAttributes)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -7779,7 +8214,14 @@ func (m *MetricsData) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceMetrics = append(m.ResourceMetrics, &ResourceMetrics{})
+			if len(m.ResourceMetrics) == cap(m.ResourceMetrics) {
+				m.ResourceMetrics = append(m.ResourceMetrics, &ResourceMetrics{})
+			} else {
+				m.ResourceMetrics = m.ResourceMetrics[:len(m.ResourceMetrics)+1]
+				if m.ResourceMetrics[len(m.ResourceMetrics)-1] == nil {
+					m.ResourceMetrics[len(m.ResourceMetrics)-1] = &ResourceMetrics{}
+				}
+			}
 			if err := m.ResourceMetrics[len(m.ResourceMetrics)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8037,7 +8479,7 @@ func (m *ScopeMetrics) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Scope == nil {
-				m.Scope = &v11.InstrumentationScope{}
+				m.Scope = v11.InstrumentationScopeFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Scope).(interface {
 				UnmarshalVTUnsafe([]byte) error
@@ -8321,7 +8763,7 @@ func (m *Metric) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &Gauge{}
+				v := GaugeFromVTPool()
 				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -8362,7 +8804,7 @@ func (m *Metric) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &Sum{}
+				v := SumFromVTPool()
 				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -8403,7 +8845,7 @@ func (m *Metric) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &Histogram{}
+				v := HistogramFromVTPool()
 				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -8444,7 +8886,7 @@ func (m *Metric) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &ExponentialHistogram{}
+				v := ExponentialHistogramFromVTPool()
 				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -8485,7 +8927,7 @@ func (m *Metric) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &Summary{}
+				v := SummaryFromVTPool()
 				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -8621,7 +9063,14 @@ func (m *Gauge) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &NumberDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &NumberDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &NumberDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8706,7 +9155,14 @@ func (m *Sum) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &NumberDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &NumberDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &NumberDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8830,7 +9286,14 @@ func (m *Histogram) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &HistogramDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &HistogramDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &HistogramDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8934,7 +9397,14 @@ func (m *ExponentialHistogram) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &ExponentialHistogramDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &ExponentialHistogramDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &ExponentialHistogramDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -9038,7 +9508,14 @@ func (m *Summary) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DataPoints = append(m.DataPoints, &SummaryDataPoint{})
+			if len(m.DataPoints) == cap(m.DataPoints) {
+				m.DataPoints = append(m.DataPoints, &SummaryDataPoint{})
+			} else {
+				m.DataPoints = m.DataPoints[:len(m.DataPoints)+1]
+				if m.DataPoints[len(m.DataPoints)-1] == nil {
+					m.DataPoints[len(m.DataPoints)-1] = &SummaryDataPoint{}
+				}
+			}
 			if err := m.DataPoints[len(m.DataPoints)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -9154,7 +9631,14 @@ func (m *NumberDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Exemplars = append(m.Exemplars, &Exemplar{})
+			if len(m.Exemplars) == cap(m.Exemplars) {
+				m.Exemplars = append(m.Exemplars, &Exemplar{})
+			} else {
+				m.Exemplars = m.Exemplars[:len(m.Exemplars)+1]
+				if m.Exemplars[len(m.Exemplars)-1] == nil {
+					m.Exemplars[len(m.Exemplars)-1] = &Exemplar{}
+				}
+			}
 			if err := m.Exemplars[len(m.Exemplars)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -9199,7 +9683,14 @@ func (m *NumberDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {
@@ -9361,7 +9852,7 @@ func (m *HistogramDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if elementCount != 0 && len(m.BucketCounts) == 0 {
+				if elementCount != 0 && len(m.BucketCounts) == 0 && cap(m.BucketCounts) < elementCount {
 					m.BucketCounts = make([]uint64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -9414,7 +9905,7 @@ func (m *HistogramDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if elementCount != 0 && len(m.ExplicitBounds) == 0 {
+				if elementCount != 0 && len(m.ExplicitBounds) == 0 && cap(m.ExplicitBounds) < elementCount {
 					m.ExplicitBounds = make([]float64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -9459,7 +9950,14 @@ func (m *HistogramDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Exemplars = append(m.Exemplars, &Exemplar{})
+			if len(m.Exemplars) == cap(m.Exemplars) {
+				m.Exemplars = append(m.Exemplars, &Exemplar{})
+			} else {
+				m.Exemplars = m.Exemplars[:len(m.Exemplars)+1]
+				if m.Exemplars[len(m.Exemplars)-1] == nil {
+					m.Exemplars[len(m.Exemplars)-1] = &Exemplar{}
+				}
+			}
 			if err := m.Exemplars[len(m.Exemplars)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -9493,7 +9991,14 @@ func (m *HistogramDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {
@@ -9777,7 +10282,14 @@ func (m *ExponentialHistogramDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {
@@ -9983,7 +10495,14 @@ func (m *ExponentialHistogramDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Exemplars = append(m.Exemplars, &Exemplar{})
+			if len(m.Exemplars) == cap(m.Exemplars) {
+				m.Exemplars = append(m.Exemplars, &Exemplar{})
+			} else {
+				m.Exemplars = m.Exemplars[:len(m.Exemplars)+1]
+				if m.Exemplars[len(m.Exemplars)-1] == nil {
+					m.Exemplars[len(m.Exemplars)-1] = &Exemplar{}
+				}
+			}
 			if err := m.Exemplars[len(m.Exemplars)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -10217,7 +10736,14 @@ func (m *SummaryDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.QuantileValues = append(m.QuantileValues, &SummaryDataPoint_ValueAtQuantile{})
+			if len(m.QuantileValues) == cap(m.QuantileValues) {
+				m.QuantileValues = append(m.QuantileValues, &SummaryDataPoint_ValueAtQuantile{})
+			} else {
+				m.QuantileValues = m.QuantileValues[:len(m.QuantileValues)+1]
+				if m.QuantileValues[len(m.QuantileValues)-1] == nil {
+					m.QuantileValues[len(m.QuantileValues)-1] = &SummaryDataPoint_ValueAtQuantile{}
+				}
+			}
 			if err := m.QuantileValues[len(m.QuantileValues)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -10251,7 +10777,14 @@ func (m *SummaryDataPoint) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {
@@ -10457,7 +10990,14 @@ func (m *Exemplar) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FilteredAttributes = append(m.FilteredAttributes, &v11.KeyValue{})
+			if len(m.FilteredAttributes) == cap(m.FilteredAttributes) {
+				m.FilteredAttributes = append(m.FilteredAttributes, &v11.KeyValue{})
+			} else {
+				m.FilteredAttributes = m.FilteredAttributes[:len(m.FilteredAttributes)+1]
+				if m.FilteredAttributes[len(m.FilteredAttributes)-1] == nil {
+					m.FilteredAttributes[len(m.FilteredAttributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.FilteredAttributes[len(m.FilteredAttributes)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {

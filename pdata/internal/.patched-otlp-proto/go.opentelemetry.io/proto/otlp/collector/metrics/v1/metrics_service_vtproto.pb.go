@@ -15,6 +15,7 @@ import (
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -29,7 +30,7 @@ func (m *ExportMetricsServiceRequest) CloneVT() *ExportMetricsServiceRequest {
 	if m == nil {
 		return (*ExportMetricsServiceRequest)(nil)
 	}
-	r := new(ExportMetricsServiceRequest)
+	r := ExportMetricsServiceRequestFromVTPool()
 	if rhs := m.ResourceMetrics; rhs != nil {
 		tmpContainer := make([]*v1.ResourceMetrics, len(rhs))
 		for k, v := range rhs {
@@ -230,7 +231,7 @@ func RegisterMetricsServiceServer(s grpc.ServiceRegistrar, srv MetricsServiceSer
 }
 
 func _MetricsService_Export_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ExportMetricsServiceRequest)
+	in := ExportMetricsServiceRequestFromVTPool()
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -553,6 +554,31 @@ func (m *ExportMetricsPartialSuccess) MarshalToSizedBufferVTStrict(dAtA []byte) 
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_ExportMetricsServiceRequest = sync.Pool{
+	New: func() interface{} {
+		return &ExportMetricsServiceRequest{}
+	},
+}
+
+func (m *ExportMetricsServiceRequest) ResetVT() {
+	if m != nil {
+		for _, mm := range m.ResourceMetrics {
+			mm.ResetVT()
+		}
+		f0 := m.ResourceMetrics[:0]
+		m.Reset()
+		m.ResourceMetrics = f0
+	}
+}
+func (m *ExportMetricsServiceRequest) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ExportMetricsServiceRequest.Put(m)
+	}
+}
+func ExportMetricsServiceRequestFromVTPool() *ExportMetricsServiceRequest {
+	return vtprotoPool_ExportMetricsServiceRequest.Get().(*ExportMetricsServiceRequest)
+}
 func (m *ExportMetricsServiceRequest) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -664,7 +690,14 @@ func (m *ExportMetricsServiceRequest) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceMetrics = append(m.ResourceMetrics, &v1.ResourceMetrics{})
+			if len(m.ResourceMetrics) == cap(m.ResourceMetrics) {
+				m.ResourceMetrics = append(m.ResourceMetrics, &v1.ResourceMetrics{})
+			} else {
+				m.ResourceMetrics = m.ResourceMetrics[:len(m.ResourceMetrics)+1]
+				if m.ResourceMetrics[len(m.ResourceMetrics)-1] == nil {
+					m.ResourceMetrics[len(m.ResourceMetrics)-1] = &v1.ResourceMetrics{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.ResourceMetrics[len(m.ResourceMetrics)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -946,7 +979,14 @@ func (m *ExportMetricsServiceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceMetrics = append(m.ResourceMetrics, &v1.ResourceMetrics{})
+			if len(m.ResourceMetrics) == cap(m.ResourceMetrics) {
+				m.ResourceMetrics = append(m.ResourceMetrics, &v1.ResourceMetrics{})
+			} else {
+				m.ResourceMetrics = m.ResourceMetrics[:len(m.ResourceMetrics)+1]
+				if m.ResourceMetrics[len(m.ResourceMetrics)-1] == nil {
+					m.ResourceMetrics[len(m.ResourceMetrics)-1] = &v1.ResourceMetrics{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.ResourceMetrics[len(m.ResourceMetrics)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {
