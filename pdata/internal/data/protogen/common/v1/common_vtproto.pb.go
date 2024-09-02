@@ -9,6 +9,7 @@ import (
 	fmt "fmt"
 	io "io"
 	math "math"
+	"sync"
 	unsafe "unsafe"
 
 	protohelpers "github.com/planetscale/vtprotobuf/protohelpers"
@@ -27,7 +28,7 @@ func (m *AnyValue) CloneVT() *AnyValue {
 	if m == nil {
 		return (*AnyValue)(nil)
 	}
-	r := new(AnyValue)
+	r := AnyValueFromVTPool()
 	if m.Value != nil {
 		r.Value = m.Value.(interface{ CloneVT() isAnyValue_Value }).CloneVT()
 	}
@@ -113,7 +114,7 @@ func (m *ArrayValue) CloneVT() *ArrayValue {
 	if m == nil {
 		return (*ArrayValue)(nil)
 	}
-	r := new(ArrayValue)
+	r := ArrayValueFromVTPool()
 	if rhs := m.Values; rhs != nil {
 		tmpContainer := make([]*AnyValue, len(rhs))
 		for k, v := range rhs {
@@ -136,7 +137,7 @@ func (m *KeyValueList) CloneVT() *KeyValueList {
 	if m == nil {
 		return (*KeyValueList)(nil)
 	}
-	r := new(KeyValueList)
+	r := KeyValueListFromVTPool()
 	if rhs := m.Values; rhs != nil {
 		tmpContainer := make([]*KeyValue, len(rhs))
 		for k, v := range rhs {
@@ -159,7 +160,7 @@ func (m *KeyValue) CloneVT() *KeyValue {
 	if m == nil {
 		return (*KeyValue)(nil)
 	}
-	r := new(KeyValue)
+	r := KeyValueFromVTPool()
 	r.Key = m.Key
 	r.Value = m.Value.CloneVT()
 	if len(m.unknownFields) > 0 {
@@ -177,7 +178,7 @@ func (m *InstrumentationScope) CloneVT() *InstrumentationScope {
 	if m == nil {
 		return (*InstrumentationScope)(nil)
 	}
-	r := new(InstrumentationScope)
+	r := InstrumentationScopeFromVTPool()
 	r.Name = m.Name
 	r.Version = m.Version
 	r.DroppedAttributesCount = m.DroppedAttributesCount
@@ -1238,6 +1239,132 @@ func (m *InstrumentationScope) MarshalToSizedBufferVTStrict(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_AnyValue = sync.Pool{
+	New: func() interface{} {
+		return &AnyValue{}
+	},
+}
+
+func (m *AnyValue) ResetVT() {
+	if m != nil {
+		if oneof, ok := m.Value.(*AnyValue_ArrayValue); ok {
+			oneof.ArrayValue.ReturnToVTPool()
+		}
+		if oneof, ok := m.Value.(*AnyValue_KvlistValue); ok {
+			oneof.KvlistValue.ReturnToVTPool()
+		}
+		m.Reset()
+	}
+}
+func (m *AnyValue) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_AnyValue.Put(m)
+	}
+}
+func AnyValueFromVTPool() *AnyValue {
+	return vtprotoPool_AnyValue.Get().(*AnyValue)
+}
+
+var vtprotoPool_ArrayValue = sync.Pool{
+	New: func() interface{} {
+		return &ArrayValue{}
+	},
+}
+
+func (m *ArrayValue) ResetVT() {
+	if m != nil {
+		for _, mm := range m.Values {
+			mm.ResetVT()
+		}
+		f0 := m.Values[:0]
+		m.Reset()
+		m.Values = f0
+	}
+}
+func (m *ArrayValue) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ArrayValue.Put(m)
+	}
+}
+func ArrayValueFromVTPool() *ArrayValue {
+	return vtprotoPool_ArrayValue.Get().(*ArrayValue)
+}
+
+var vtprotoPool_KeyValueList = sync.Pool{
+	New: func() interface{} {
+		return &KeyValueList{}
+	},
+}
+
+func (m *KeyValueList) ResetVT() {
+	if m != nil {
+		for _, mm := range m.Values {
+			mm.ResetVT()
+		}
+		f0 := m.Values[:0]
+		m.Reset()
+		m.Values = f0
+	}
+}
+func (m *KeyValueList) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_KeyValueList.Put(m)
+	}
+}
+func KeyValueListFromVTPool() *KeyValueList {
+	return vtprotoPool_KeyValueList.Get().(*KeyValueList)
+}
+
+var vtprotoPool_KeyValue = sync.Pool{
+	New: func() interface{} {
+		return &KeyValue{}
+	},
+}
+
+func (m *KeyValue) ResetVT() {
+	if m != nil {
+		m.Value.ReturnToVTPool()
+		m.Reset()
+	}
+}
+func (m *KeyValue) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_KeyValue.Put(m)
+	}
+}
+func KeyValueFromVTPool() *KeyValue {
+	return vtprotoPool_KeyValue.Get().(*KeyValue)
+}
+
+var vtprotoPool_InstrumentationScope = sync.Pool{
+	New: func() interface{} {
+		return &InstrumentationScope{}
+	},
+}
+
+func (m *InstrumentationScope) ResetVT() {
+	if m != nil {
+		for _, mm := range m.Attributes {
+			mm.ResetVT()
+		}
+		f0 := m.Attributes[:0]
+		m.Reset()
+		m.Attributes = f0
+	}
+}
+func (m *InstrumentationScope) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_InstrumentationScope.Put(m)
+	}
+}
+func InstrumentationScopeFromVTPool() *InstrumentationScope {
+	return vtprotoPool_InstrumentationScope.Get().(*InstrumentationScope)
+}
 func (m *AnyValue) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -1546,7 +1673,7 @@ func (m *AnyValue) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &ArrayValue{}
+				v := ArrayValueFromVTPool()
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -1587,7 +1714,7 @@ func (m *AnyValue) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &KeyValueList{}
+				v := KeyValueListFromVTPool()
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -1707,7 +1834,14 @@ func (m *ArrayValue) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Values = append(m.Values, &AnyValue{})
+			if len(m.Values) == cap(m.Values) {
+				m.Values = append(m.Values, &AnyValue{})
+			} else {
+				m.Values = m.Values[:len(m.Values)+1]
+				if m.Values[len(m.Values)-1] == nil {
+					m.Values[len(m.Values)-1] = &AnyValue{}
+				}
+			}
 			if err := m.Values[len(m.Values)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -1792,7 +1926,14 @@ func (m *KeyValueList) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Values = append(m.Values, &KeyValue{})
+			if len(m.Values) == cap(m.Values) {
+				m.Values = append(m.Values, &KeyValue{})
+			} else {
+				m.Values = m.Values[:len(m.Values)+1]
+				if m.Values[len(m.Values)-1] == nil {
+					m.Values[len(m.Values)-1] = &KeyValue{}
+				}
+			}
 			if err := m.Values[len(m.Values)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -1910,7 +2051,7 @@ func (m *KeyValue) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Value == nil {
-				m.Value = &AnyValue{}
+				m.Value = AnyValueFromVTPool()
 			}
 			if err := m.Value.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2060,7 +2201,14 @@ func (m *InstrumentationScope) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &KeyValue{}
+				}
+			}
 			if err := m.Attributes[len(m.Attributes)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2257,7 +2405,7 @@ func (m *AnyValue) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &ArrayValue{}
+				v := ArrayValueFromVTPool()
 				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -2298,7 +2446,7 @@ func (m *AnyValue) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &KeyValueList{}
+				v := KeyValueListFromVTPool()
 				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
@@ -2417,7 +2565,14 @@ func (m *ArrayValue) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Values = append(m.Values, &AnyValue{})
+			if len(m.Values) == cap(m.Values) {
+				m.Values = append(m.Values, &AnyValue{})
+			} else {
+				m.Values = m.Values[:len(m.Values)+1]
+				if m.Values[len(m.Values)-1] == nil {
+					m.Values[len(m.Values)-1] = &AnyValue{}
+				}
+			}
 			if err := m.Values[len(m.Values)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2502,7 +2657,14 @@ func (m *KeyValueList) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Values = append(m.Values, &KeyValue{})
+			if len(m.Values) == cap(m.Values) {
+				m.Values = append(m.Values, &KeyValue{})
+			} else {
+				m.Values = m.Values[:len(m.Values)+1]
+				if m.Values[len(m.Values)-1] == nil {
+					m.Values[len(m.Values)-1] = &KeyValue{}
+				}
+			}
 			if err := m.Values[len(m.Values)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2624,7 +2786,7 @@ func (m *KeyValue) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Value == nil {
-				m.Value = &AnyValue{}
+				m.Value = AnyValueFromVTPool()
 			}
 			if err := m.Value.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2782,7 +2944,14 @@ func (m *InstrumentationScope) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &KeyValue{}
+				}
+			}
 			if err := m.Attributes[len(m.Attributes)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}

@@ -224,7 +224,7 @@ var vtprotoPool_Resource = sync.Pool{
 func (m *Resource) ResetVT() {
 	if m != nil {
 		for _, mm := range m.Attributes {
-			mm.Reset()
+			mm.ResetVT()
 		}
 		f0 := m.Attributes[:0]
 		m.Reset()
