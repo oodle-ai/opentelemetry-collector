@@ -189,7 +189,6 @@ genproto: genproto-cleanup
 	$(MAKE) fmt
 	$(MAKE) genproto-cleanup
 
-GOBIN=/Users/vijay/workspace/go/bin
 genproto_sub:
 	@echo Generating code for the following files:
 	@$(foreach file,$(OPENTELEMETRY_PROTO_FILES),$(call exec-command,echo $(file)))
