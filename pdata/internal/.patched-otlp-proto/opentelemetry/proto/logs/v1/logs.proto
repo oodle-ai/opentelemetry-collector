@@ -18,6 +18,7 @@ package opentelemetry.proto.logs.v1;
 
 import "opentelemetry/proto/common/v1/common.proto";
 import "opentelemetry/proto/resource/v1/resource.proto";
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
 option csharp_namespace = "OpenTelemetry.Proto.Logs.V1";
 option java_multiple_files = true;
@@ -36,6 +37,7 @@ option go_package = "go.opentelemetry.io/proto/otlp/logs/v1";
 // When new fields are added into this message, the OTLP request MUST be updated
 // as well.
 message LogsData {
+  option (vtproto.mempool) = true;
   // An array of ResourceLogs.
   // For data coming from a single resource this array will typically contain
   // one element. Intermediary nodes that receive data from multiple origins
@@ -46,6 +48,7 @@ message LogsData {
 
 // A collection of ScopeLogs from a Resource.
 message ResourceLogs {
+  option (vtproto.mempool) = true;
   reserved 1000;
 
   // The resource for the logs in this message.
@@ -65,6 +68,7 @@ message ResourceLogs {
 
 // A collection of Logs produced by a Scope.
 message ScopeLogs {
+  option (vtproto.mempool) = true;
   // The instrumentation scope information for the logs in this message.
   // Semantically when InstrumentationScope isn't set, it is equivalent with
   // an empty instrumentation scope name (unknown).
@@ -132,6 +136,7 @@ enum LogRecordFlags {
 // A log record according to OpenTelemetry Log Data Model:
 // https://github.com/open-telemetry/oteps/blob/main/text/logs/0097-log-data-model.md
 message LogRecord {
+  option (vtproto.mempool) = true;
   reserved 4;
 
   // time_unix_nano is the time when the event occurred.

@@ -15,6 +15,7 @@ import (
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -29,7 +30,7 @@ func (m *ExportLogsServiceRequest) CloneVT() *ExportLogsServiceRequest {
 	if m == nil {
 		return (*ExportLogsServiceRequest)(nil)
 	}
-	r := new(ExportLogsServiceRequest)
+	r := ExportLogsServiceRequestFromVTPool()
 	if rhs := m.ResourceLogs; rhs != nil {
 		tmpContainer := make([]*v1.ResourceLogs, len(rhs))
 		for k, v := range rhs {
@@ -228,7 +229,7 @@ func RegisterLogsServiceServer(s grpc.ServiceRegistrar, srv LogsServiceServer) {
 }
 
 func _LogsService_Export_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ExportLogsServiceRequest)
+	in := ExportLogsServiceRequestFromVTPool()
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -551,6 +552,31 @@ func (m *ExportLogsPartialSuccess) MarshalToSizedBufferVTStrict(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_ExportLogsServiceRequest = sync.Pool{
+	New: func() interface{} {
+		return &ExportLogsServiceRequest{}
+	},
+}
+
+func (m *ExportLogsServiceRequest) ResetVT() {
+	if m != nil {
+		for _, mm := range m.ResourceLogs {
+			mm.ResetVT()
+		}
+		f0 := m.ResourceLogs[:0]
+		m.Reset()
+		m.ResourceLogs = f0
+	}
+}
+func (m *ExportLogsServiceRequest) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ExportLogsServiceRequest.Put(m)
+	}
+}
+func ExportLogsServiceRequestFromVTPool() *ExportLogsServiceRequest {
+	return vtprotoPool_ExportLogsServiceRequest.Get().(*ExportLogsServiceRequest)
+}
 func (m *ExportLogsServiceRequest) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -662,7 +688,14 @@ func (m *ExportLogsServiceRequest) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceLogs = append(m.ResourceLogs, &v1.ResourceLogs{})
+			if len(m.ResourceLogs) == cap(m.ResourceLogs) {
+				m.ResourceLogs = append(m.ResourceLogs, &v1.ResourceLogs{})
+			} else {
+				m.ResourceLogs = m.ResourceLogs[:len(m.ResourceLogs)+1]
+				if m.ResourceLogs[len(m.ResourceLogs)-1] == nil {
+					m.ResourceLogs[len(m.ResourceLogs)-1] = &v1.ResourceLogs{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.ResourceLogs[len(m.ResourceLogs)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -944,7 +977,14 @@ func (m *ExportLogsServiceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceLogs = append(m.ResourceLogs, &v1.ResourceLogs{})
+			if len(m.ResourceLogs) == cap(m.ResourceLogs) {
+				m.ResourceLogs = append(m.ResourceLogs, &v1.ResourceLogs{})
+			} else {
+				m.ResourceLogs = m.ResourceLogs[:len(m.ResourceLogs)+1]
+				if m.ResourceLogs[len(m.ResourceLogs)-1] == nil {
+					m.ResourceLogs[len(m.ResourceLogs)-1] = &v1.ResourceLogs{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.ResourceLogs[len(m.ResourceLogs)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {

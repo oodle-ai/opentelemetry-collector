@@ -26,7 +26,7 @@ type ExportRequest struct {
 func NewExportRequest() ExportRequest {
 	state := internal.StateMutable
 	return ExportRequest{
-		orig:  &otlpcollectorlog.ExportLogsServiceRequest{},
+		orig:  otlpcollectorlog.ExportLogsServiceRequestFromVTPool(),
 		state: &state,
 	}
 }
@@ -42,13 +42,32 @@ func NewExportRequestFromLogs(ld plog.Logs) ExportRequest {
 }
 
 // MarshalProto marshals ExportRequest into proto bytes.
-func (ms ExportRequest) MarshalProto() ([]byte, error) {
-	return ms.orig.Marshal()
+func (ms ExportRequest) MarshalProto(buf *bytes.Buffer) error {
+	size := ms.orig.SizeVT()
+	buf.Grow(size)
+	availableBuf := buf.AvailableBuffer()
+	availableBuf = availableBuf[:size]
+	_, err := ms.orig.MarshalToVT(availableBuf)
+	if err != nil {
+		return err
+	}
+
+	_, err = buf.Write(availableBuf)
+	return err
+}
+
+// UnmarshalProtoUnsafe unmarshalls ExportRequest from proto bytes.
+func (ms ExportRequest) UnmarshalProtoUnsafe(data []byte) error {
+	return ms.orig.UnmarshalVTUnsafe(data)
+}
+
+func (ms ExportRequest) ReturnToPool() {
+	ms.orig.ReturnToVTPool()
 }
 
 // UnmarshalProto unmarshalls ExportRequest from proto bytes.
 func (ms ExportRequest) UnmarshalProto(data []byte) error {
-	if err := ms.orig.Unmarshal(data); err != nil {
+	if err := ms.orig.UnmarshalVT(data); err != nil {
 		return err
 	}
 	otlp.MigrateLogs(ms.orig.ResourceLogs)

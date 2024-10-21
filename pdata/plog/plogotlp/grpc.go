@@ -79,6 +79,7 @@ func RegisterGRPCServer(s *grpc.Server, srv GRPCServer) {
 }
 
 type rawLogsServer struct {
+	otlpcollectorlog.UnimplementedLogsServiceServer
 	srv GRPCServer
 }
 
