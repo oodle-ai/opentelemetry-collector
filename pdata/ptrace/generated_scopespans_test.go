@@ -70,7 +70,7 @@ func generateTestScopeSpans() ScopeSpans {
 }
 
 func fillTestScopeSpans(tv ScopeSpans) {
-	internal.FillTestInstrumentationScope(internal.NewInstrumentationScope(&tv.orig.Scope, tv.state))
+	internal.FillTestInstrumentationScope(internal.NewInstrumentationScope(tv.orig.Scope, tv.state))
 	tv.orig.SchemaUrl = "https://opentelemetry.io/schemas/1.5.0"
 	fillTestSpanSlice(newSpanSlice(&tv.orig.Spans, tv.state))
 }

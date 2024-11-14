@@ -8,7 +8,6 @@ package ptrace
 
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
-	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"
 	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -61,7 +60,7 @@ func (ms Span) TraceID() pcommon.TraceID {
 // SetTraceID replaces the traceid associated with this Span.
 func (ms Span) SetTraceID(v pcommon.TraceID) {
 	ms.state.AssertMutable()
-	ms.orig.TraceId = data.TraceID(v)
+	ms.orig.TraceId = v[:]
 }
 
 // SpanID returns the spanid associated with this Span.
@@ -72,7 +71,7 @@ func (ms Span) SpanID() pcommon.SpanID {
 // SetSpanID replaces the spanid associated with this Span.
 func (ms Span) SetSpanID(v pcommon.SpanID) {
 	ms.state.AssertMutable()
-	ms.orig.SpanId = data.SpanID(v)
+	ms.orig.SpanId = v[:]
 }
 
 // TraceState returns the tracestate associated with this Span.
@@ -88,7 +87,7 @@ func (ms Span) ParentSpanID() pcommon.SpanID {
 // SetParentSpanID replaces the parentspanid associated with this Span.
 func (ms Span) SetParentSpanID(v pcommon.SpanID) {
 	ms.state.AssertMutable()
-	ms.orig.ParentSpanId = data.SpanID(v)
+	ms.orig.ParentSpanId = v[:]
 }
 
 // Name returns the name associated with this Span.
@@ -196,7 +195,7 @@ func (ms Span) SetDroppedLinksCount(v uint32) {
 
 // Status returns the status associated with this Span.
 func (ms Span) Status() Status {
-	return newStatus(&ms.orig.Status, ms.state)
+	return newStatus(ms.orig.Status, ms.state)
 }
 
 // CopyTo copies all properties from the current struct overriding the destination.

@@ -80,6 +80,7 @@ func RegisterGRPCServer(s *grpc.Server, srv GRPCServer) {
 }
 
 type rawTracesServer struct {
+	otlpcollectortrace.UnimplementedTraceServiceServer
 	srv GRPCServer
 }
 

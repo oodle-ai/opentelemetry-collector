@@ -53,7 +53,7 @@ func (ms ScopeSpans) IsNil() bool {
 
 // Scope returns the scope associated with this ScopeSpans.
 func (ms ScopeSpans) Scope() pcommon.InstrumentationScope {
-	return pcommon.InstrumentationScope(internal.NewInstrumentationScope(&ms.orig.Scope, ms.state))
+	return pcommon.InstrumentationScope(internal.NewInstrumentationScope(ms.orig.Scope, ms.state))
 }
 
 // SchemaUrl returns the schemaurl associated with this ScopeSpans.

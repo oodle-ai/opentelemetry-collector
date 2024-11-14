@@ -173,10 +173,10 @@ func generateTestSpan() Span {
 }
 
 func fillTestSpan(tv Span) {
-	tv.orig.TraceId = data.TraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1})
-	tv.orig.SpanId = data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1})
+	tv.orig.TraceId = []byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1}
+	tv.orig.SpanId = []byte{8, 7, 6, 5, 4, 3, 2, 1}
 	internal.FillTestTraceState(internal.NewTraceState(&tv.orig.TraceState, tv.state))
-	tv.orig.ParentSpanId = data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1})
+	tv.orig.ParentSpanId = []byte{8, 7, 6, 5, 4, 3, 2, 1}
 	tv.orig.Name = "test_name"
 	tv.orig.Flags = uint32(0xf)
 	tv.orig.Kind = otlptrace.Span_SpanKind(3)
@@ -188,5 +188,5 @@ func fillTestSpan(tv Span) {
 	tv.orig.DroppedEventsCount = uint32(17)
 	fillTestSpanLinkSlice(newSpanLinkSlice(&tv.orig.Links, tv.state))
 	tv.orig.DroppedLinksCount = uint32(17)
-	fillTestStatus(newStatus(&tv.orig.Status, tv.state))
+	fillTestStatus(newStatus(tv.orig.Status, tv.state))
 }

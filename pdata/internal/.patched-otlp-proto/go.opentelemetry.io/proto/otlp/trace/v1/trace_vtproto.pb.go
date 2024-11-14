@@ -13,6 +13,7 @@ import (
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -27,7 +28,7 @@ func (m *TracesData) CloneVT() *TracesData {
 	if m == nil {
 		return (*TracesData)(nil)
 	}
-	r := new(TracesData)
+	r := TracesDataFromVTPool()
 	if rhs := m.ResourceSpans; rhs != nil {
 		tmpContainer := make([]*ResourceSpans, len(rhs))
 		for k, v := range rhs {
@@ -50,7 +51,7 @@ func (m *ResourceSpans) CloneVT() *ResourceSpans {
 	if m == nil {
 		return (*ResourceSpans)(nil)
 	}
-	r := new(ResourceSpans)
+	r := ResourceSpansFromVTPool()
 	r.SchemaUrl = m.SchemaUrl
 	if rhs := m.Resource; rhs != nil {
 		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *v1.Resource }); ok {
@@ -81,7 +82,7 @@ func (m *ScopeSpans) CloneVT() *ScopeSpans {
 	if m == nil {
 		return (*ScopeSpans)(nil)
 	}
-	r := new(ScopeSpans)
+	r := ScopeSpansFromVTPool()
 	r.SchemaUrl = m.SchemaUrl
 	if rhs := m.Scope; rhs != nil {
 		if vtpb, ok := interface{}(rhs).(interface {
@@ -114,7 +115,7 @@ func (m *Span_Event) CloneVT() *Span_Event {
 	if m == nil {
 		return (*Span_Event)(nil)
 	}
-	r := new(Span_Event)
+	r := Span_EventFromVTPool()
 	r.TimeUnixNano = m.TimeUnixNano
 	r.Name = m.Name
 	r.DroppedAttributesCount = m.DroppedAttributesCount
@@ -144,7 +145,7 @@ func (m *Span_Link) CloneVT() *Span_Link {
 	if m == nil {
 		return (*Span_Link)(nil)
 	}
-	r := new(Span_Link)
+	r := Span_LinkFromVTPool()
 	r.TraceState = m.TraceState
 	r.DroppedAttributesCount = m.DroppedAttributesCount
 	r.Flags = m.Flags
@@ -184,7 +185,7 @@ func (m *Span) CloneVT() *Span {
 	if m == nil {
 		return (*Span)(nil)
 	}
-	r := new(Span)
+	r := SpanFromVTPool()
 	r.TraceState = m.TraceState
 	r.Flags = m.Flags
 	r.Name = m.Name
@@ -1751,6 +1752,183 @@ func (m *Status) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_TracesData = sync.Pool{
+	New: func() interface{} {
+		return &TracesData{}
+	},
+}
+
+func (m *TracesData) ResetVT() {
+	if m != nil {
+		for _, mm := range m.ResourceSpans {
+			mm.ResetVT()
+		}
+		f0 := m.ResourceSpans[:0]
+		m.Reset()
+		m.ResourceSpans = f0
+	}
+}
+func (m *TracesData) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_TracesData.Put(m)
+	}
+}
+func TracesDataFromVTPool() *TracesData {
+	return vtprotoPool_TracesData.Get().(*TracesData)
+}
+
+var vtprotoPool_ResourceSpans = sync.Pool{
+	New: func() interface{} {
+		return &ResourceSpans{}
+	},
+}
+
+func (m *ResourceSpans) ResetVT() {
+	if m != nil {
+		m.Resource.ReturnToVTPool()
+		for _, mm := range m.ScopeSpans {
+			mm.ResetVT()
+		}
+		f0 := m.ScopeSpans[:0]
+		m.Reset()
+		m.ScopeSpans = f0
+	}
+}
+func (m *ResourceSpans) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ResourceSpans.Put(m)
+	}
+}
+func ResourceSpansFromVTPool() *ResourceSpans {
+	return vtprotoPool_ResourceSpans.Get().(*ResourceSpans)
+}
+
+var vtprotoPool_ScopeSpans = sync.Pool{
+	New: func() interface{} {
+		return &ScopeSpans{}
+	},
+}
+
+func (m *ScopeSpans) ResetVT() {
+	if m != nil {
+		m.Scope.ReturnToVTPool()
+		for _, mm := range m.Spans {
+			mm.ResetVT()
+		}
+		f0 := m.Spans[:0]
+		m.Reset()
+		m.Spans = f0
+	}
+}
+func (m *ScopeSpans) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ScopeSpans.Put(m)
+	}
+}
+func ScopeSpansFromVTPool() *ScopeSpans {
+	return vtprotoPool_ScopeSpans.Get().(*ScopeSpans)
+}
+
+var vtprotoPool_Span_Event = sync.Pool{
+	New: func() interface{} {
+		return &Span_Event{}
+	},
+}
+
+func (m *Span_Event) ResetVT() {
+	if m != nil {
+		for _, mm := range m.Attributes {
+			mm.ResetVT()
+		}
+		f0 := m.Attributes[:0]
+		m.Reset()
+		m.Attributes = f0
+	}
+}
+func (m *Span_Event) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Span_Event.Put(m)
+	}
+}
+func Span_EventFromVTPool() *Span_Event {
+	return vtprotoPool_Span_Event.Get().(*Span_Event)
+}
+
+var vtprotoPool_Span_Link = sync.Pool{
+	New: func() interface{} {
+		return &Span_Link{}
+	},
+}
+
+func (m *Span_Link) ResetVT() {
+	if m != nil {
+		f0 := m.TraceId[:0]
+		f1 := m.SpanId[:0]
+		for _, mm := range m.Attributes {
+			mm.ResetVT()
+		}
+		f2 := m.Attributes[:0]
+		m.Reset()
+		m.TraceId = f0
+		m.SpanId = f1
+		m.Attributes = f2
+	}
+}
+func (m *Span_Link) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Span_Link.Put(m)
+	}
+}
+func Span_LinkFromVTPool() *Span_Link {
+	return vtprotoPool_Span_Link.Get().(*Span_Link)
+}
+
+var vtprotoPool_Span = sync.Pool{
+	New: func() interface{} {
+		return &Span{}
+	},
+}
+
+func (m *Span) ResetVT() {
+	if m != nil {
+		f0 := m.TraceId[:0]
+		f1 := m.SpanId[:0]
+		f2 := m.ParentSpanId[:0]
+		for _, mm := range m.Attributes {
+			mm.ResetVT()
+		}
+		f3 := m.Attributes[:0]
+		for _, mm := range m.Events {
+			mm.ResetVT()
+		}
+		f4 := m.Events[:0]
+		for _, mm := range m.Links {
+			mm.ResetVT()
+		}
+		f5 := m.Links[:0]
+		m.Reset()
+		m.TraceId = f0
+		m.SpanId = f1
+		m.ParentSpanId = f2
+		m.Attributes = f3
+		m.Events = f4
+		m.Links = f5
+	}
+}
+func (m *Span) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Span.Put(m)
+	}
+}
+func SpanFromVTPool() *Span {
+	return vtprotoPool_Span.Get().(*Span)
+}
 func (m *TracesData) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -2053,7 +2231,14 @@ func (m *TracesData) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceSpans = append(m.ResourceSpans, &ResourceSpans{})
+			if len(m.ResourceSpans) == cap(m.ResourceSpans) {
+				m.ResourceSpans = append(m.ResourceSpans, &ResourceSpans{})
+			} else {
+				m.ResourceSpans = m.ResourceSpans[:len(m.ResourceSpans)+1]
+				if m.ResourceSpans[len(m.ResourceSpans)-1] == nil {
+					m.ResourceSpans[len(m.ResourceSpans)-1] = &ResourceSpans{}
+				}
+			}
 			if err := m.ResourceSpans[len(m.ResourceSpans)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2139,7 +2324,7 @@ func (m *ResourceSpans) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Resource == nil {
-				m.Resource = &v1.Resource{}
+				m.Resource = v1.ResourceFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Resource).(interface {
 				UnmarshalVT([]byte) error
@@ -2182,7 +2367,14 @@ func (m *ResourceSpans) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ScopeSpans = append(m.ScopeSpans, &ScopeSpans{})
+			if len(m.ScopeSpans) == cap(m.ScopeSpans) {
+				m.ScopeSpans = append(m.ScopeSpans, &ScopeSpans{})
+			} else {
+				m.ScopeSpans = m.ScopeSpans[:len(m.ScopeSpans)+1]
+				if m.ScopeSpans[len(m.ScopeSpans)-1] == nil {
+					m.ScopeSpans[len(m.ScopeSpans)-1] = &ScopeSpans{}
+				}
+			}
 			if err := m.ScopeSpans[len(m.ScopeSpans)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2300,7 +2492,7 @@ func (m *ScopeSpans) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Scope == nil {
-				m.Scope = &v11.InstrumentationScope{}
+				m.Scope = v11.InstrumentationScopeFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Scope).(interface {
 				UnmarshalVT([]byte) error
@@ -2343,7 +2535,14 @@ func (m *ScopeSpans) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Spans = append(m.Spans, &Span{})
+			if len(m.Spans) == cap(m.Spans) {
+				m.Spans = append(m.Spans, &Span{})
+			} else {
+				m.Spans = m.Spans[:len(m.Spans)+1]
+				if m.Spans[len(m.Spans)-1] == nil {
+					m.Spans[len(m.Spans)-1] = &Span{}
+				}
+			}
 			if err := m.Spans[len(m.Spans)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2502,7 +2701,14 @@ func (m *Span_Event) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -2714,7 +2920,14 @@ func (m *Span_Link) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -3041,7 +3254,14 @@ func (m *Span) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -3102,7 +3322,14 @@ func (m *Span) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Events = append(m.Events, &Span_Event{})
+			if len(m.Events) == cap(m.Events) {
+				m.Events = append(m.Events, &Span_Event{})
+			} else {
+				m.Events = m.Events[:len(m.Events)+1]
+				if m.Events[len(m.Events)-1] == nil {
+					m.Events[len(m.Events)-1] = &Span_Event{}
+				}
+			}
 			if err := m.Events[len(m.Events)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -3155,7 +3382,14 @@ func (m *Span) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Links = append(m.Links, &Span_Link{})
+			if len(m.Links) == cap(m.Links) {
+				m.Links = append(m.Links, &Span_Link{})
+			} else {
+				m.Links = m.Links[:len(m.Links)+1]
+				if m.Links[len(m.Links)-1] == nil {
+					m.Links[len(m.Links)-1] = &Span_Link{}
+				}
+			}
 			if err := m.Links[len(m.Links)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -3407,7 +3641,14 @@ func (m *TracesData) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceSpans = append(m.ResourceSpans, &ResourceSpans{})
+			if len(m.ResourceSpans) == cap(m.ResourceSpans) {
+				m.ResourceSpans = append(m.ResourceSpans, &ResourceSpans{})
+			} else {
+				m.ResourceSpans = m.ResourceSpans[:len(m.ResourceSpans)+1]
+				if m.ResourceSpans[len(m.ResourceSpans)-1] == nil {
+					m.ResourceSpans[len(m.ResourceSpans)-1] = &ResourceSpans{}
+				}
+			}
 			if err := m.ResourceSpans[len(m.ResourceSpans)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -3493,7 +3734,7 @@ func (m *ResourceSpans) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Resource == nil {
-				m.Resource = &v1.Resource{}
+				m.Resource = v1.ResourceFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Resource).(interface {
 				UnmarshalVTUnsafe([]byte) error
@@ -3536,7 +3777,14 @@ func (m *ResourceSpans) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ScopeSpans = append(m.ScopeSpans, &ScopeSpans{})
+			if len(m.ScopeSpans) == cap(m.ScopeSpans) {
+				m.ScopeSpans = append(m.ScopeSpans, &ScopeSpans{})
+			} else {
+				m.ScopeSpans = m.ScopeSpans[:len(m.ScopeSpans)+1]
+				if m.ScopeSpans[len(m.ScopeSpans)-1] == nil {
+					m.ScopeSpans[len(m.ScopeSpans)-1] = &ScopeSpans{}
+				}
+			}
 			if err := m.ScopeSpans[len(m.ScopeSpans)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -3658,7 +3906,7 @@ func (m *ScopeSpans) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Scope == nil {
-				m.Scope = &v11.InstrumentationScope{}
+				m.Scope = v11.InstrumentationScopeFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Scope).(interface {
 				UnmarshalVTUnsafe([]byte) error
@@ -3701,7 +3949,14 @@ func (m *ScopeSpans) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Spans = append(m.Spans, &Span{})
+			if len(m.Spans) == cap(m.Spans) {
+				m.Spans = append(m.Spans, &Span{})
+			} else {
+				m.Spans = m.Spans[:len(m.Spans)+1]
+				if m.Spans[len(m.Spans)-1] == nil {
+					m.Spans[len(m.Spans)-1] = &Span{}
+				}
+			}
 			if err := m.Spans[len(m.Spans)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -3868,7 +4123,14 @@ func (m *Span_Event) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {
@@ -4078,7 +4340,14 @@ func (m *Span_Link) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {
@@ -4404,7 +4673,14 @@ func (m *Span) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {
@@ -4465,7 +4741,14 @@ func (m *Span) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Events = append(m.Events, &Span_Event{})
+			if len(m.Events) == cap(m.Events) {
+				m.Events = append(m.Events, &Span_Event{})
+			} else {
+				m.Events = m.Events[:len(m.Events)+1]
+				if m.Events[len(m.Events)-1] == nil {
+					m.Events[len(m.Events)-1] = &Span_Event{}
+				}
+			}
 			if err := m.Events[len(m.Events)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -4518,7 +4801,14 @@ func (m *Span) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Links = append(m.Links, &Span_Link{})
+			if len(m.Links) == cap(m.Links) {
+				m.Links = append(m.Links, &Span_Link{})
+			} else {
+				m.Links = m.Links[:len(m.Links)+1]
+				if m.Links[len(m.Links)-1] == nil {
+					m.Links[len(m.Links)-1] = &Span_Link{}
+				}
+			}
 			if err := m.Links[len(m.Links)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}

@@ -53,7 +53,7 @@ func (ms ResourceSpans) IsNil() bool {
 
 // Resource returns the resource associated with this ResourceSpans.
 func (ms ResourceSpans) Resource() pcommon.Resource {
-	return pcommon.Resource(internal.NewResource(&ms.orig.Resource, ms.state))
+	return pcommon.Resource(internal.NewResource(ms.orig.Resource, ms.state))
 }
 
 // SchemaUrl returns the schemaurl associated with this ResourceSpans.
