@@ -94,8 +94,8 @@ func generateTestSpanLink() SpanLink {
 }
 
 func fillTestSpanLink(tv SpanLink) {
-	tv.orig.TraceId = data.TraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1})
-	tv.orig.SpanId = data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1})
+	tv.orig.TraceId = []byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1}
+	tv.orig.SpanId = []byte{8, 7, 6, 5, 4, 3, 2, 1}
 	internal.FillTestTraceState(internal.NewTraceState(&tv.orig.TraceState, tv.state))
 	tv.orig.Flags = uint32(0xf)
 	internal.FillTestMap(internal.NewMap(&tv.orig.Attributes, tv.state))

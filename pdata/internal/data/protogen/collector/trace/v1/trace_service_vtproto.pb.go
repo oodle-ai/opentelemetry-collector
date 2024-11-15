@@ -15,6 +15,7 @@ import (
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -29,7 +30,7 @@ func (m *ExportTraceServiceRequest) CloneVT() *ExportTraceServiceRequest {
 	if m == nil {
 		return (*ExportTraceServiceRequest)(nil)
 	}
-	r := new(ExportTraceServiceRequest)
+	r := ExportTraceServiceRequestFromVTPool()
 	if rhs := m.ResourceSpans; rhs != nil {
 		tmpContainer := make([]*v1.ResourceSpans, len(rhs))
 		for k, v := range rhs {
@@ -228,7 +229,7 @@ func RegisterTraceServiceServer(s grpc.ServiceRegistrar, srv TraceServiceServer)
 }
 
 func _TraceService_Export_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ExportTraceServiceRequest)
+	in := ExportTraceServiceRequestFromVTPool()
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -551,6 +552,31 @@ func (m *ExportTracePartialSuccess) MarshalToSizedBufferVTStrict(dAtA []byte) (i
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_ExportTraceServiceRequest = sync.Pool{
+	New: func() interface{} {
+		return &ExportTraceServiceRequest{}
+	},
+}
+
+func (m *ExportTraceServiceRequest) ResetVT() {
+	if m != nil {
+		for _, mm := range m.ResourceSpans {
+			mm.ResetVT()
+		}
+		f0 := m.ResourceSpans[:0]
+		m.Reset()
+		m.ResourceSpans = f0
+	}
+}
+func (m *ExportTraceServiceRequest) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ExportTraceServiceRequest.Put(m)
+	}
+}
+func ExportTraceServiceRequestFromVTPool() *ExportTraceServiceRequest {
+	return vtprotoPool_ExportTraceServiceRequest.Get().(*ExportTraceServiceRequest)
+}
 func (m *ExportTraceServiceRequest) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -662,7 +688,14 @@ func (m *ExportTraceServiceRequest) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceSpans = append(m.ResourceSpans, &v1.ResourceSpans{})
+			if len(m.ResourceSpans) == cap(m.ResourceSpans) {
+				m.ResourceSpans = append(m.ResourceSpans, &v1.ResourceSpans{})
+			} else {
+				m.ResourceSpans = m.ResourceSpans[:len(m.ResourceSpans)+1]
+				if m.ResourceSpans[len(m.ResourceSpans)-1] == nil {
+					m.ResourceSpans[len(m.ResourceSpans)-1] = &v1.ResourceSpans{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.ResourceSpans[len(m.ResourceSpans)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -944,7 +977,14 @@ func (m *ExportTraceServiceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceSpans = append(m.ResourceSpans, &v1.ResourceSpans{})
+			if len(m.ResourceSpans) == cap(m.ResourceSpans) {
+				m.ResourceSpans = append(m.ResourceSpans, &v1.ResourceSpans{})
+			} else {
+				m.ResourceSpans = m.ResourceSpans[:len(m.ResourceSpans)+1]
+				if m.ResourceSpans[len(m.ResourceSpans)-1] == nil {
+					m.ResourceSpans[len(m.ResourceSpans)-1] = &v1.ResourceSpans{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.ResourceSpans[len(m.ResourceSpans)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {

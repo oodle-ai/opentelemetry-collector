@@ -13,6 +13,7 @@ import (
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -27,7 +28,7 @@ func (m *LogsData) CloneVT() *LogsData {
 	if m == nil {
 		return (*LogsData)(nil)
 	}
-	r := new(LogsData)
+	r := LogsDataFromVTPool()
 	if rhs := m.ResourceLogs; rhs != nil {
 		tmpContainer := make([]*ResourceLogs, len(rhs))
 		for k, v := range rhs {
@@ -50,7 +51,7 @@ func (m *ResourceLogs) CloneVT() *ResourceLogs {
 	if m == nil {
 		return (*ResourceLogs)(nil)
 	}
-	r := new(ResourceLogs)
+	r := ResourceLogsFromVTPool()
 	r.SchemaUrl = m.SchemaUrl
 	if rhs := m.Resource; rhs != nil {
 		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *v1.Resource }); ok {
@@ -81,7 +82,7 @@ func (m *ScopeLogs) CloneVT() *ScopeLogs {
 	if m == nil {
 		return (*ScopeLogs)(nil)
 	}
-	r := new(ScopeLogs)
+	r := ScopeLogsFromVTPool()
 	r.SchemaUrl = m.SchemaUrl
 	if rhs := m.Scope; rhs != nil {
 		if vtpb, ok := interface{}(rhs).(interface {
@@ -114,7 +115,7 @@ func (m *LogRecord) CloneVT() *LogRecord {
 	if m == nil {
 		return (*LogRecord)(nil)
 	}
-	r := new(LogRecord)
+	r := LogRecordFromVTPool()
 	r.TimeUnixNano = m.TimeUnixNano
 	r.ObservedTimeUnixNano = m.ObservedTimeUnixNano
 	r.SeverityNumber = m.SeverityNumber
@@ -991,6 +992,116 @@ func (m *LogRecord) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_LogsData = sync.Pool{
+	New: func() interface{} {
+		return &LogsData{}
+	},
+}
+
+func (m *LogsData) ResetVT() {
+	if m != nil {
+		for _, mm := range m.ResourceLogs {
+			mm.ResetVT()
+		}
+		f0 := m.ResourceLogs[:0]
+		m.Reset()
+		m.ResourceLogs = f0
+	}
+}
+func (m *LogsData) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_LogsData.Put(m)
+	}
+}
+func LogsDataFromVTPool() *LogsData {
+	return vtprotoPool_LogsData.Get().(*LogsData)
+}
+
+var vtprotoPool_ResourceLogs = sync.Pool{
+	New: func() interface{} {
+		return &ResourceLogs{}
+	},
+}
+
+func (m *ResourceLogs) ResetVT() {
+	if m != nil {
+		m.Resource.ReturnToVTPool()
+		for _, mm := range m.ScopeLogs {
+			mm.ResetVT()
+		}
+		f0 := m.ScopeLogs[:0]
+		m.Reset()
+		m.ScopeLogs = f0
+	}
+}
+func (m *ResourceLogs) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ResourceLogs.Put(m)
+	}
+}
+func ResourceLogsFromVTPool() *ResourceLogs {
+	return vtprotoPool_ResourceLogs.Get().(*ResourceLogs)
+}
+
+var vtprotoPool_ScopeLogs = sync.Pool{
+	New: func() interface{} {
+		return &ScopeLogs{}
+	},
+}
+
+func (m *ScopeLogs) ResetVT() {
+	if m != nil {
+		m.Scope.ReturnToVTPool()
+		for _, mm := range m.LogRecords {
+			mm.ResetVT()
+		}
+		f0 := m.LogRecords[:0]
+		m.Reset()
+		m.LogRecords = f0
+	}
+}
+func (m *ScopeLogs) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ScopeLogs.Put(m)
+	}
+}
+func ScopeLogsFromVTPool() *ScopeLogs {
+	return vtprotoPool_ScopeLogs.Get().(*ScopeLogs)
+}
+
+var vtprotoPool_LogRecord = sync.Pool{
+	New: func() interface{} {
+		return &LogRecord{}
+	},
+}
+
+func (m *LogRecord) ResetVT() {
+	if m != nil {
+		m.Body.ReturnToVTPool()
+		for _, mm := range m.Attributes {
+			mm.ResetVT()
+		}
+		f0 := m.Attributes[:0]
+		f1 := m.TraceId[:0]
+		f2 := m.SpanId[:0]
+		m.Reset()
+		m.Attributes = f0
+		m.TraceId = f1
+		m.SpanId = f2
+	}
+}
+func (m *LogRecord) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_LogRecord.Put(m)
+	}
+}
+func LogRecordFromVTPool() *LogRecord {
+	return vtprotoPool_LogRecord.Get().(*LogRecord)
+}
 func (m *LogsData) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -1184,7 +1295,14 @@ func (m *LogsData) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceLogs = append(m.ResourceLogs, &ResourceLogs{})
+			if len(m.ResourceLogs) == cap(m.ResourceLogs) {
+				m.ResourceLogs = append(m.ResourceLogs, &ResourceLogs{})
+			} else {
+				m.ResourceLogs = m.ResourceLogs[:len(m.ResourceLogs)+1]
+				if m.ResourceLogs[len(m.ResourceLogs)-1] == nil {
+					m.ResourceLogs[len(m.ResourceLogs)-1] = &ResourceLogs{}
+				}
+			}
 			if err := m.ResourceLogs[len(m.ResourceLogs)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -1270,7 +1388,7 @@ func (m *ResourceLogs) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Resource == nil {
-				m.Resource = &v1.Resource{}
+				m.Resource = v1.ResourceFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Resource).(interface {
 				UnmarshalVT([]byte) error
@@ -1313,7 +1431,14 @@ func (m *ResourceLogs) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ScopeLogs = append(m.ScopeLogs, &ScopeLogs{})
+			if len(m.ScopeLogs) == cap(m.ScopeLogs) {
+				m.ScopeLogs = append(m.ScopeLogs, &ScopeLogs{})
+			} else {
+				m.ScopeLogs = m.ScopeLogs[:len(m.ScopeLogs)+1]
+				if m.ScopeLogs[len(m.ScopeLogs)-1] == nil {
+					m.ScopeLogs[len(m.ScopeLogs)-1] = &ScopeLogs{}
+				}
+			}
 			if err := m.ScopeLogs[len(m.ScopeLogs)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -1431,7 +1556,7 @@ func (m *ScopeLogs) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Scope == nil {
-				m.Scope = &v11.InstrumentationScope{}
+				m.Scope = v11.InstrumentationScopeFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Scope).(interface {
 				UnmarshalVT([]byte) error
@@ -1474,7 +1599,14 @@ func (m *ScopeLogs) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LogRecords = append(m.LogRecords, &LogRecord{})
+			if len(m.LogRecords) == cap(m.LogRecords) {
+				m.LogRecords = append(m.LogRecords, &LogRecord{})
+			} else {
+				m.LogRecords = m.LogRecords[:len(m.LogRecords)+1]
+				if m.LogRecords[len(m.LogRecords)-1] == nil {
+					m.LogRecords[len(m.LogRecords)-1] = &LogRecord{}
+				}
+			}
 			if err := m.LogRecords[len(m.LogRecords)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -1653,7 +1785,7 @@ func (m *LogRecord) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Body == nil {
-				m.Body = &v11.AnyValue{}
+				m.Body = v11.AnyValueFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Body).(interface {
 				UnmarshalVT([]byte) error
@@ -1696,7 +1828,14 @@ func (m *LogRecord) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVT([]byte) error
 			}); ok {
@@ -1896,7 +2035,14 @@ func (m *LogsData) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ResourceLogs = append(m.ResourceLogs, &ResourceLogs{})
+			if len(m.ResourceLogs) == cap(m.ResourceLogs) {
+				m.ResourceLogs = append(m.ResourceLogs, &ResourceLogs{})
+			} else {
+				m.ResourceLogs = m.ResourceLogs[:len(m.ResourceLogs)+1]
+				if m.ResourceLogs[len(m.ResourceLogs)-1] == nil {
+					m.ResourceLogs[len(m.ResourceLogs)-1] = &ResourceLogs{}
+				}
+			}
 			if err := m.ResourceLogs[len(m.ResourceLogs)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -1982,7 +2128,7 @@ func (m *ResourceLogs) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Resource == nil {
-				m.Resource = &v1.Resource{}
+				m.Resource = v1.ResourceFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Resource).(interface {
 				UnmarshalVTUnsafe([]byte) error
@@ -2025,7 +2171,14 @@ func (m *ResourceLogs) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ScopeLogs = append(m.ScopeLogs, &ScopeLogs{})
+			if len(m.ScopeLogs) == cap(m.ScopeLogs) {
+				m.ScopeLogs = append(m.ScopeLogs, &ScopeLogs{})
+			} else {
+				m.ScopeLogs = m.ScopeLogs[:len(m.ScopeLogs)+1]
+				if m.ScopeLogs[len(m.ScopeLogs)-1] == nil {
+					m.ScopeLogs[len(m.ScopeLogs)-1] = &ScopeLogs{}
+				}
+			}
 			if err := m.ScopeLogs[len(m.ScopeLogs)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2147,7 +2300,7 @@ func (m *ScopeLogs) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Scope == nil {
-				m.Scope = &v11.InstrumentationScope{}
+				m.Scope = v11.InstrumentationScopeFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Scope).(interface {
 				UnmarshalVTUnsafe([]byte) error
@@ -2190,7 +2343,14 @@ func (m *ScopeLogs) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LogRecords = append(m.LogRecords, &LogRecord{})
+			if len(m.LogRecords) == cap(m.LogRecords) {
+				m.LogRecords = append(m.LogRecords, &LogRecord{})
+			} else {
+				m.LogRecords = m.LogRecords[:len(m.LogRecords)+1]
+				if m.LogRecords[len(m.LogRecords)-1] == nil {
+					m.LogRecords[len(m.LogRecords)-1] = &LogRecord{}
+				}
+			}
 			if err := m.LogRecords[len(m.LogRecords)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2377,7 +2537,7 @@ func (m *LogRecord) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Body == nil {
-				m.Body = &v11.AnyValue{}
+				m.Body = v11.AnyValueFromVTPool()
 			}
 			if unmarshal, ok := interface{}(m.Body).(interface {
 				UnmarshalVTUnsafe([]byte) error
@@ -2420,7 +2580,14 @@ func (m *LogRecord) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			if len(m.Attributes) == cap(m.Attributes) {
+				m.Attributes = append(m.Attributes, &v11.KeyValue{})
+			} else {
+				m.Attributes = m.Attributes[:len(m.Attributes)+1]
+				if m.Attributes[len(m.Attributes)-1] == nil {
+					m.Attributes[len(m.Attributes)-1] = &v11.KeyValue{}
+				}
+			}
 			if unmarshal, ok := interface{}(m.Attributes[len(m.Attributes)-1]).(interface {
 				UnmarshalVTUnsafe([]byte) error
 			}); ok {

@@ -5,8 +5,6 @@ package ptrace // import "github.com/oodle-ai/opentelemetry-collector/pdata/ptra
 
 import (
 	"bytes"
-	"fmt"
-
 	jsoniter "github.com/json-iterator/go"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
@@ -80,7 +78,7 @@ func (ms ScopeSpans) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "scope":
-			json.ReadScope(iter, &ms.orig.Scope)
+			json.ReadScope(iter, ms.orig.Scope)
 		case "spans":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
 				ms.Spans().AppendEmpty().unmarshalJsoniter(iter)
@@ -99,19 +97,13 @@ func (dest Span) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "traceId", "trace_id":
-			if err := dest.orig.TraceId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-				iter.ReportError("readSpan.traceId", fmt.Sprintf("parse trace_id:%v", err))
-			}
+			dest.orig.TraceId = []byte(iter.ReadString())
 		case "spanId", "span_id":
-			if err := dest.orig.SpanId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-				iter.ReportError("readSpan.spanId", fmt.Sprintf("parse span_id:%v", err))
-			}
+			dest.orig.SpanId = []byte(iter.ReadString())
 		case "traceState", "trace_state":
 			dest.TraceState().FromRaw(iter.ReadString())
 		case "parentSpanId", "parent_span_id":
-			if err := dest.orig.ParentSpanId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-				iter.ReportError("readSpan.parentSpanId", fmt.Sprintf("parse parent_span_id:%v", err))
-			}
+			dest.orig.ParentSpanId = []byte(iter.ReadString())
 		case "name":
 			dest.orig.Name = iter.ReadString()
 		case "kind":
@@ -168,13 +160,9 @@ func (dest SpanLink) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "traceId", "trace_id":
-			if err := dest.orig.TraceId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-				iter.ReportError("readSpanLink", fmt.Sprintf("parse trace_id:%v", err))
-			}
+			dest.orig.TraceId = []byte(iter.ReadString())
 		case "spanId", "span_id":
-			if err := dest.orig.SpanId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-				iter.ReportError("readSpanLink", fmt.Sprintf("parse span_id:%v", err))
-			}
+			dest.orig.SpanId = []byte(iter.ReadString())
 		case "traceState", "trace_state":
 			dest.orig.TraceState = iter.ReadString()
 		case "attributes":

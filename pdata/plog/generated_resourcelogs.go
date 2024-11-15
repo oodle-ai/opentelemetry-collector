@@ -53,7 +53,7 @@ func (ms ResourceLogs) IsNil() bool {
 
 // Resource returns the resource associated with this ResourceLogs.
 func (ms ResourceLogs) Resource() pcommon.Resource {
-	return pcommon.Resource(internal.NewResource(&ms.orig.Resource, ms.state))
+	return pcommon.Resource(internal.NewResource(ms.orig.Resource, ms.state))
 }
 
 // SchemaUrl returns the schemaurl associated with this ResourceLogs.

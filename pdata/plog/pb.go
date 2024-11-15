@@ -14,12 +14,12 @@ type ProtoMarshaler struct{}
 
 func (e *ProtoMarshaler) MarshalLogs(ld Logs) ([]byte, error) {
 	pb := internal.LogsToProto(internal.Logs(ld))
-	return pb.Marshal()
+	return pb.MarshalVT()
 }
 
 func (e *ProtoMarshaler) LogsSize(ld Logs) int {
 	pb := internal.LogsToProto(internal.Logs(ld))
-	return pb.Size()
+	return pb.SizeVT()
 }
 
 var _ Unmarshaler = (*ProtoUnmarshaler)(nil)
@@ -28,6 +28,6 @@ type ProtoUnmarshaler struct{}
 
 func (d *ProtoUnmarshaler) UnmarshalLogs(buf []byte) (Logs, error) {
 	pb := otlplogs.LogsData{}
-	err := pb.Unmarshal(buf)
+	err := pb.UnmarshalVT(buf)
 	return Logs(internal.LogsFromProto(pb)), err
 }

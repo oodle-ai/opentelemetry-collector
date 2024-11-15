@@ -8,7 +8,6 @@ package ptrace
 
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
-	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"
 	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -62,7 +61,7 @@ func (ms SpanLink) TraceID() pcommon.TraceID {
 // SetTraceID replaces the traceid associated with this SpanLink.
 func (ms SpanLink) SetTraceID(v pcommon.TraceID) {
 	ms.state.AssertMutable()
-	ms.orig.TraceId = data.TraceID(v)
+	ms.orig.TraceId = v[:]
 }
 
 // SpanID returns the spanid associated with this SpanLink.
@@ -73,7 +72,7 @@ func (ms SpanLink) SpanID() pcommon.SpanID {
 // SetSpanID replaces the spanid associated with this SpanLink.
 func (ms SpanLink) SetSpanID(v pcommon.SpanID) {
 	ms.state.AssertMutable()
-	ms.orig.SpanId = data.SpanID(v)
+	ms.orig.SpanId = v[:]
 }
 
 // TraceState returns the tracestate associated with this SpanLink.

@@ -14,18 +14,18 @@ type ProtoMarshaler struct{}
 
 func (e *ProtoMarshaler) MarshalTraces(td Traces) ([]byte, error) {
 	pb := internal.TracesToProto(internal.Traces(td))
-	return pb.Marshal()
+	return pb.MarshalVT()
 }
 
 func (e *ProtoMarshaler) TracesSize(td Traces) int {
 	pb := internal.TracesToProto(internal.Traces(td))
-	return pb.Size()
+	return pb.SizeVT()
 }
 
 type ProtoUnmarshaler struct{}
 
 func (d *ProtoUnmarshaler) UnmarshalTraces(buf []byte) (Traces, error) {
 	pb := otlptrace.TracesData{}
-	err := pb.Unmarshal(buf)
+	err := pb.UnmarshalVT(buf)
 	return Traces(internal.TracesFromProto(pb)), err
 }

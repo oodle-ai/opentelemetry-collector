@@ -30,12 +30,12 @@ func NewExportResponse() ExportResponse {
 
 // MarshalProto marshals ExportResponse into proto bytes.
 func (ms ExportResponse) MarshalProto() ([]byte, error) {
-	return ms.orig.Marshal()
+	return ms.orig.MarshalVT()
 }
 
 // UnmarshalProto unmarshalls ExportResponse from proto bytes.
 func (ms ExportResponse) UnmarshalProto(data []byte) error {
-	return ms.orig.Unmarshal(data)
+	return ms.orig.UnmarshalVT(data)
 }
 
 // MarshalJSON marshals ExportResponse into JSON bytes.
@@ -70,7 +70,7 @@ func (ms ExportResponse) unmarshalJsoniter(iter *jsoniter.Iterator) {
 
 // PartialSuccess returns the ExportLogsPartialSuccess associated with this ExportResponse.
 func (ms ExportResponse) PartialSuccess() ExportPartialSuccess {
-	return newExportPartialSuccess(&ms.orig.PartialSuccess, ms.state)
+	return newExportPartialSuccess(ms.orig.PartialSuccess, ms.state)
 }
 
 func (ms ExportPartialSuccess) unmarshalJsoniter(iter *jsoniter.Iterator) {

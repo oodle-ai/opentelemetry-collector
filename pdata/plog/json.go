@@ -5,8 +5,6 @@ package plog // import "github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 
 import (
 	"bytes"
-	"fmt"
-
 	jsoniter "github.com/json-iterator/go"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
@@ -63,7 +61,7 @@ func (ms ResourceLogs) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "resource":
-			json.ReadResource(iter, &ms.orig.Resource)
+			json.ReadResource(iter, ms.orig.Resource)
 		case "scope_logs", "scopeLogs":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
 				ms.ScopeLogs().AppendEmpty().unmarshalJsoniter(iter)
@@ -82,7 +80,7 @@ func (ms ScopeLogs) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "scope":
-			json.ReadScope(iter, &ms.orig.Scope)
+			json.ReadScope(iter, ms.orig.Scope)
 		case "log_records", "logRecords":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
 				ms.LogRecords().AppendEmpty().unmarshalJsoniter(iter)
@@ -109,7 +107,7 @@ func (ms LogRecord) unmarshalJsoniter(iter *jsoniter.Iterator) {
 		case "severity_text", "severityText":
 			ms.orig.SeverityText = iter.ReadString()
 		case "body":
-			json.ReadValue(iter, &ms.orig.Body)
+			json.ReadValue(iter, ms.orig.Body)
 		case "attributes":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
 				ms.orig.Attributes = append(ms.orig.Attributes, json.ReadAttribute(iter))
@@ -120,13 +118,9 @@ func (ms LogRecord) unmarshalJsoniter(iter *jsoniter.Iterator) {
 		case "flags":
 			ms.orig.Flags = json.ReadUint32(iter)
 		case "traceId", "trace_id":
-			if err := ms.orig.TraceId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-				iter.ReportError("readLog.traceId", fmt.Sprintf("parse trace_id:%v", err))
-			}
+			ms.orig.TraceId = []byte(iter.ReadString())
 		case "spanId", "span_id":
-			if err := ms.orig.SpanId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-				iter.ReportError("readLog.spanId", fmt.Sprintf("parse span_id:%v", err))
-			}
+			ms.orig.SpanId = []byte(iter.ReadString())
 		default:
 			iter.Skip()
 		}

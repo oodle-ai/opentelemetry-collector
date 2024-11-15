@@ -17,6 +17,7 @@ syntax = "proto3";
 package opentelemetry.proto.collector.trace.v1;
 
 import "opentelemetry/proto/trace/v1/trace.proto";
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
 option csharp_namespace = "OpenTelemetry.Proto.Collector.Trace.V1";
 option java_multiple_files = true;
@@ -34,6 +35,8 @@ service TraceService {
 }
 
 message ExportTraceServiceRequest {
+  option (vtproto.mempool) = true;
+
   // An array of ResourceSpans.
   // For data coming from a single resource this array will typically contain one
   // element. Intermediary nodes (such as OpenTelemetry Collector) that receive

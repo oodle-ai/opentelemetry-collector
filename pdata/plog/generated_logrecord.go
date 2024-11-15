@@ -8,7 +8,6 @@ package plog
 
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
-	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"
 	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -82,7 +81,7 @@ func (ms LogRecord) TraceID() pcommon.TraceID {
 // SetTraceID replaces the traceid associated with this LogRecord.
 func (ms LogRecord) SetTraceID(v pcommon.TraceID) {
 	ms.state.AssertMutable()
-	ms.orig.TraceId = data.TraceID(v)
+	ms.orig.TraceId = v[:]
 }
 
 // SpanID returns the spanid associated with this LogRecord.
@@ -93,7 +92,7 @@ func (ms LogRecord) SpanID() pcommon.SpanID {
 // SetSpanID replaces the spanid associated with this LogRecord.
 func (ms LogRecord) SetSpanID(v pcommon.SpanID) {
 	ms.state.AssertMutable()
-	ms.orig.SpanId = data.SpanID(v)
+	ms.orig.SpanId = v[:]
 }
 
 // Flags returns the flags associated with this LogRecord.
@@ -131,7 +130,7 @@ func (ms LogRecord) SetSeverityNumber(v SeverityNumber) {
 
 // Body returns the body associated with this LogRecord.
 func (ms LogRecord) Body() pcommon.Value {
-	return pcommon.Value(internal.NewValue(&ms.orig.Body, ms.state))
+	return pcommon.Value(internal.NewValue(ms.orig.Body, ms.state))
 }
 
 // Attributes returns the Attributes associated with this LogRecord.

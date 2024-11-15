@@ -18,6 +18,7 @@ package opentelemetry.proto.trace.v1;
 
 import "opentelemetry/proto/common/v1/common.proto";
 import "opentelemetry/proto/resource/v1/resource.proto";
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
 option csharp_namespace = "OpenTelemetry.Proto.Trace.V1";
 option java_multiple_files = true;
@@ -36,6 +37,8 @@ option go_package = "go.opentelemetry.io/proto/otlp/trace/v1";
 // When new fields are added into this message, the OTLP request MUST be updated
 // as well.
 message TracesData {
+  option (vtproto.mempool) = true;
+
   // An array of ResourceSpans.
   // For data coming from a single resource this array will typically contain
   // one element. Intermediary nodes that receive data from multiple origins
@@ -46,6 +49,8 @@ message TracesData {
 
 // A collection of ScopeSpans from a Resource.
 message ResourceSpans {
+  option (vtproto.mempool) = true;
+
   reserved 1000;
 
   // The resource for the spans in this message.
@@ -65,6 +70,8 @@ message ResourceSpans {
 
 // A collection of Spans produced by an InstrumentationScope.
 message ScopeSpans {
+  option (vtproto.mempool) = true;
+
   // The instrumentation scope information for the spans in this message.
   // Semantically when InstrumentationScope isn't set, it is equivalent with
   // an empty instrumentation scope name (unknown).
@@ -84,6 +91,8 @@ message ScopeSpans {
 //
 // The next available field id is 17.
 message Span {
+  option (vtproto.mempool) = true;
+
   // A unique identifier for a trace. All spans from the same trace share
   // the same `trace_id`. The ID is a 16-byte array. An ID with all zeroes OR
   // of length other than 16 bytes is considered invalid (empty string in OTLP/JSON
@@ -218,6 +227,8 @@ message Span {
   // Event is a time-stamped annotation of the span, consisting of user-supplied
   // text description and key-value pairs.
   message Event {
+    option (vtproto.mempool) = true;
+
     // time_unix_nano is the time the event occurred.
     fixed64 time_unix_nano = 1;
 
@@ -247,6 +258,8 @@ message Span {
   // where a single batch handler processes multiple requests from different
   // traces or when the handler receives a request from a different project.
   message Link {
+    option (vtproto.mempool) = true;
+
     // A unique identifier of a trace that this linked span is part of. The ID is a
     // 16-byte array.
     bytes trace_id = 1;

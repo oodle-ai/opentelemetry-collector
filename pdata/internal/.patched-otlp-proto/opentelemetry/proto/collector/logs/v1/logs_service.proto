@@ -17,6 +17,7 @@ syntax = "proto3";
 package opentelemetry.proto.collector.logs.v1;
 
 import "opentelemetry/proto/logs/v1/logs.proto";
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
 option csharp_namespace = "OpenTelemetry.Proto.Collector.Logs.V1";
 option java_multiple_files = true;
@@ -34,6 +35,8 @@ service LogsService {
 }
 
 message ExportLogsServiceRequest {
+  option (vtproto.mempool) = true;
+
   // An array of ResourceLogs.
   // For data coming from a single resource this array will typically contain one
   // element. Intermediary nodes (such as OpenTelemetry Collector) that receive
