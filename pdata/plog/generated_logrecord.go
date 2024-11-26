@@ -74,8 +74,12 @@ func (ms LogRecord) SetTimestamp(v pcommon.Timestamp) {
 }
 
 // TraceID returns the traceid associated with this LogRecord.
-func (ms LogRecord) TraceID() pcommon.TraceID {
-	return pcommon.TraceID(ms.orig.TraceId)
+func (ms LogRecord) TraceID() (pcommon.TraceID, bool) {
+	if len(ms.orig.TraceId) != 16 {
+		return pcommon.NewTraceIDEmpty(), false
+	}
+
+	return pcommon.TraceID(ms.orig.TraceId), true
 }
 
 // SetTraceID replaces the traceid associated with this LogRecord.
@@ -159,7 +163,10 @@ func (ms LogRecord) CopyTo(dest LogRecord) {
 	dest.state.AssertMutable()
 	dest.SetObservedTimestamp(ms.ObservedTimestamp())
 	dest.SetTimestamp(ms.Timestamp())
-	dest.SetTraceID(ms.TraceID())
+	tid, ok := ms.TraceID()
+	if ok {
+		dest.SetTraceID(tid)
+	}
 	sp, ok := ms.SpanID()
 	if ok {
 		dest.SetSpanID(sp)

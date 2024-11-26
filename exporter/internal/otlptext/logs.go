@@ -40,7 +40,10 @@ func (textLogsMarshaler) MarshalLogs(ld plog.Logs) ([]byte, error) {
 				buf.logEntry("SeverityNumber: %s(%d)", lr.SeverityNumber(), lr.SeverityNumber())
 				buf.logEntry("Body: %s", valueToString(lr.Body()))
 				buf.logAttributes("Attributes", lr.Attributes())
-				buf.logEntry("Trace ID: %s", lr.TraceID())
+				tid, ok := lr.TraceID()
+				if ok {
+					buf.logEntry("Trace ID: %s", tid)
+				}
 				sp, ok := lr.SpanID()
 				if ok {
 					buf.logEntry("Span ID: %s", sp)

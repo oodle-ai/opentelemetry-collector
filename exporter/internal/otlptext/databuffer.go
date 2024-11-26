@@ -249,7 +249,10 @@ func (b *dataBuffer) logLinks(description string, sl ptrace.SpanLinkSlice) {
 	for i := 0; i < sl.Len(); i++ {
 		l := sl.At(i)
 		b.logEntry("SpanLink #%d", i)
-		b.logEntry("     -> Trace ID: %s", l.TraceID())
+		tid, ok := l.TraceID()
+		if ok {
+			b.logEntry("     -> Trace ID: %s", tid)
+		}
 		sp, ok := l.SpanID()
 		if ok {
 			b.logEntry("     -> ID: %s", sp)
@@ -271,7 +274,10 @@ func (b *dataBuffer) logExemplars(description string, se pmetric.ExemplarSlice) 
 	for i := 0; i < se.Len(); i++ {
 		e := se.At(i)
 		b.logEntry("Exemplar #%d", i)
-		b.logEntry("     -> Trace ID: %s", e.TraceID())
+		tid, ok := e.TraceID()
+		if ok {
+			b.logEntry("     -> Trace ID: %s", tid)
+		}
 		sp, ok := e.SpanID()
 		if ok {
 			b.logEntry("     -> Span ID: %s", sp)

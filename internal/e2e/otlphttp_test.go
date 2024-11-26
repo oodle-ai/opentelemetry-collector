@@ -245,7 +245,7 @@ func TestIssue_4221(t *testing.T) {
 		tr := ptraceotlp.NewExportRequest()
 		require.NoError(t, tr.UnmarshalProto(unbase64Data))
 		span := tr.Traces().ResourceSpans().At(0).ScopeSpans().At(0).Spans().At(0)
-		traceID := span.TraceID()
+		traceID, _ := span.TraceID()
 		assert.Equal(t, "4303853f086f4f8c86cf198b6551df84", hex.EncodeToString(traceID[:]))
 		spanID, _ := span.SpanID()
 		assert.Equal(t, "e5513c32795c41b9", hex.EncodeToString(spanID[:]))
@@ -268,7 +268,7 @@ func TestIssue_4221(t *testing.T) {
 	require.NoError(t, err)
 	copy(traceIDBytes[:], traceIDBytesSlice)
 	span.SetTraceID(traceIDBytes)
-	traceID := span.TraceID()
+	traceID, _ := span.TraceID()
 	assert.Equal(t, "4303853f086f4f8c86cf198b6551df84", hex.EncodeToString(traceID[:]))
 
 	var spanIDBytes [8]byte
