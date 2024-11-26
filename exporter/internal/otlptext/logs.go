@@ -41,7 +41,10 @@ func (textLogsMarshaler) MarshalLogs(ld plog.Logs) ([]byte, error) {
 				buf.logEntry("Body: %s", valueToString(lr.Body()))
 				buf.logAttributes("Attributes", lr.Attributes())
 				buf.logEntry("Trace ID: %s", lr.TraceID())
-				buf.logEntry("Span ID: %s", lr.SpanID())
+				sp, ok := lr.SpanID()
+				if ok {
+					buf.logEntry("Span ID: %s", sp)
+				}
 				buf.logEntry("Flags: %d", lr.Flags())
 			}
 		}

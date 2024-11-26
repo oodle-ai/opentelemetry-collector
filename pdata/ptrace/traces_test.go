@@ -160,7 +160,8 @@ func BenchmarkTracesUsage(b *testing.B) {
 					s.SetTraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
 					assert.Equal(b, pcommon.TraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}), s.TraceID())
 					s.SetSpanID([8]byte{1, 2, 3, 4, 5, 6, 7, 8})
-					assert.Equal(b, pcommon.SpanID([8]byte{1, 2, 3, 4, 5, 6, 7, 8}), s.SpanID())
+					sp, _ := s.SpanID()
+					assert.Equal(b, pcommon.SpanID([8]byte{1, 2, 3, 4, 5, 6, 7, 8}), sp)
 				}
 				s := iss.Spans().AppendEmpty()
 				s.SetName("another_span")

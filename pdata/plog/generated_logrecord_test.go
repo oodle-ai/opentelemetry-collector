@@ -66,10 +66,12 @@ func TestLogRecord_TraceID(t *testing.T) {
 
 func TestLogRecord_SpanID(t *testing.T) {
 	ms := NewLogRecord()
-	assert.Equal(t, pcommon.SpanID(data.SpanID([8]byte{})), ms.SpanID())
+	sp, _ :=  ms.SpanID()
+	assert.Equal(t, pcommon.SpanID(data.SpanID([8]byte{})), sp)
 	testValSpanID := pcommon.SpanID(data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1}))
 	ms.SetSpanID(testValSpanID)
-	assert.Equal(t, testValSpanID, ms.SpanID())
+	sp, _ = ms.SpanID()
+	assert.Equal(t, testValSpanID, sp)
 }
 
 func TestLogRecord_Flags(t *testing.T) {

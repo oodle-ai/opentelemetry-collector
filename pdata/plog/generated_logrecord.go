@@ -85,8 +85,13 @@ func (ms LogRecord) SetTraceID(v pcommon.TraceID) {
 }
 
 // SpanID returns the spanid associated with this LogRecord.
-func (ms LogRecord) SpanID() pcommon.SpanID {
-	return pcommon.SpanID(ms.orig.SpanId)
+// Returns the span ID and whether it exists.
+func (ms LogRecord) SpanID() (pcommon.SpanID, bool) {
+	if len(ms.orig.SpanId) != 8 {
+		return pcommon.NewSpanIDEmpty(), false
+	}
+
+	return pcommon.SpanID(ms.orig.SpanId), true
 }
 
 // SetSpanID replaces the spanid associated with this LogRecord.
@@ -155,7 +160,10 @@ func (ms LogRecord) CopyTo(dest LogRecord) {
 	dest.SetObservedTimestamp(ms.ObservedTimestamp())
 	dest.SetTimestamp(ms.Timestamp())
 	dest.SetTraceID(ms.TraceID())
-	dest.SetSpanID(ms.SpanID())
+	sp, ok := ms.SpanID()
+	if ok {
+		dest.SetSpanID(sp)
+	}
 	dest.SetFlags(ms.Flags())
 	dest.SetSeverityText(ms.SeverityText())
 	dest.SetSeverityNumber(ms.SeverityNumber())

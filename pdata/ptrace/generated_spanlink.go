@@ -65,8 +65,11 @@ func (ms SpanLink) SetTraceID(v pcommon.TraceID) {
 }
 
 // SpanID returns the spanid associated with this SpanLink.
-func (ms SpanLink) SpanID() pcommon.SpanID {
-	return pcommon.SpanID(ms.orig.SpanId)
+func (ms SpanLink) SpanID() (pcommon.SpanID, bool) {
+	if len(ms.orig.SpanId) != 8 {
+		return pcommon.SpanID{}, false
+	}
+	return pcommon.SpanID(ms.orig.SpanId), true
 }
 
 // SetSpanID replaces the spanid associated with this SpanLink.
@@ -111,7 +114,10 @@ func (ms SpanLink) SetDroppedAttributesCount(v uint32) {
 func (ms SpanLink) CopyTo(dest SpanLink) {
 	dest.state.AssertMutable()
 	dest.SetTraceID(ms.TraceID())
-	dest.SetSpanID(ms.SpanID())
+	sp, ok := ms.SpanID()
+	if ok {
+		dest.SetSpanID(sp)
+	}
 	ms.TraceState().CopyTo(dest.TraceState())
 	dest.SetFlags(ms.Flags())
 	ms.Attributes().CopyTo(dest.Attributes())

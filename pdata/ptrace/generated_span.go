@@ -64,8 +64,13 @@ func (ms Span) SetTraceID(v pcommon.TraceID) {
 }
 
 // SpanID returns the spanid associated with this Span.
-func (ms Span) SpanID() pcommon.SpanID {
-	return pcommon.SpanID(ms.orig.SpanId)
+// Returns the span id and whether it exists.
+func (ms Span) SpanID() (pcommon.SpanID, bool) {
+	if len(ms.orig.SpanId) != 8 {
+		return pcommon.NewSpanIDEmpty(), false
+	}
+
+	return pcommon.SpanID(ms.orig.SpanId), true
 }
 
 // SetSpanID replaces the spanid associated with this Span.
@@ -80,8 +85,13 @@ func (ms Span) TraceState() pcommon.TraceState {
 }
 
 // ParentSpanID returns the parentspanid associated with this Span.
-func (ms Span) ParentSpanID() pcommon.SpanID {
-	return pcommon.SpanID(ms.orig.ParentSpanId)
+// Returns the span id and whether it exists.
+func (ms Span) ParentSpanID() (pcommon.SpanID, bool) {
+	if len(ms.orig.ParentSpanId) != 8 {
+		return pcommon.NewSpanIDEmpty(), false
+	}
+
+	return pcommon.SpanID(ms.orig.ParentSpanId), true
 }
 
 // SetParentSpanID replaces the parentspanid associated with this Span.
@@ -202,9 +212,15 @@ func (ms Span) Status() Status {
 func (ms Span) CopyTo(dest Span) {
 	dest.state.AssertMutable()
 	dest.SetTraceID(ms.TraceID())
-	dest.SetSpanID(ms.SpanID())
+	sp, ok := ms.SpanID()
+	if ok {
+		dest.SetSpanID(sp)
+	}
 	ms.TraceState().CopyTo(dest.TraceState())
-	dest.SetParentSpanID(ms.ParentSpanID())
+	psp, ok := ms.ParentSpanID()
+	if ok {
+		dest.SetParentSpanID(psp)
+	}
 	dest.SetName(ms.Name())
 	dest.SetFlags(ms.Flags())
 	dest.SetKind(ms.Kind())
