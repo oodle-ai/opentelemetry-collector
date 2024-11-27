@@ -109,8 +109,12 @@ func (ms Exemplar) FilteredAttributes() pcommon.Map {
 }
 
 // TraceID returns the traceid associated with this Exemplar.
-func (ms Exemplar) TraceID() pcommon.TraceID {
-	return pcommon.TraceID(ms.orig.TraceId)
+func (ms Exemplar) TraceID() (pcommon.TraceID, bool) {
+	if len(ms.orig.TraceId) != 16 {
+		return pcommon.NewTraceIDEmpty(), false
+	}
+
+	return pcommon.TraceID(ms.orig.TraceId), true
 }
 
 // SetTraceID replaces the traceid associated with this Exemplar.
@@ -120,8 +124,13 @@ func (ms Exemplar) SetTraceID(v pcommon.TraceID) {
 }
 
 // SpanID returns the spanid associated with this Exemplar.
-func (ms Exemplar) SpanID() pcommon.SpanID {
-	return pcommon.SpanID(ms.orig.SpanId)
+// Returns the span ID and whether it exists.
+func (ms Exemplar) SpanID() (pcommon.SpanID, bool) {
+	if len(ms.orig.SpanId) != 8 {
+		return pcommon.NewSpanIDEmpty(), false
+	}
+
+	return pcommon.SpanID(ms.orig.SpanId), true
 }
 
 // SetSpanID replaces the spanid associated with this Exemplar.
@@ -142,6 +151,12 @@ func (ms Exemplar) CopyTo(dest Exemplar) {
 	}
 
 	ms.FilteredAttributes().CopyTo(dest.FilteredAttributes())
-	dest.SetTraceID(ms.TraceID())
-	dest.SetSpanID(ms.SpanID())
+	tid, ok := ms.TraceID()
+	if ok {
+		dest.SetTraceID(tid)
+	}
+	sp, ok := ms.SpanID()
+	if ok {
+		dest.SetSpanID(sp)
+	}
 }

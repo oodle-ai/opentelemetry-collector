@@ -34,9 +34,18 @@ func (textTracesMarshaler) MarshalTraces(td ptrace.Traces) ([]byte, error) {
 			for k := 0; k < spans.Len(); k++ {
 				buf.logEntry("Span #%d", k)
 				span := spans.At(k)
-				buf.logAttr("Trace ID", span.TraceID())
-				buf.logAttr("Parent ID", span.ParentSpanID())
-				buf.logAttr("ID", span.SpanID())
+				tid, ok := span.TraceID()
+				if ok {
+					buf.logAttr("Trace ID", tid)
+				}
+				psp, ok := span.ParentSpanID()
+				if ok {
+					buf.logAttr("Parent ID", psp)
+				}
+				sp, ok := span.SpanID()
+				if ok {
+					buf.logAttr("ID", sp)
+				}
 				buf.logAttr("Name", span.Name())
 				buf.logAttr("Kind", span.Kind().String())
 				buf.logAttr("Start time", span.StartTimestamp().String())

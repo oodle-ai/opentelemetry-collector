@@ -42,18 +42,22 @@ func TestSpan_CopyTo(t *testing.T) {
 
 func TestSpan_TraceID(t *testing.T) {
 	ms := NewSpan()
-	assert.Equal(t, pcommon.TraceID(data.TraceID([16]byte{})), ms.TraceID())
+	tid, _ := ms.TraceID()
+	assert.Equal(t, pcommon.TraceID(data.TraceID([16]byte{})), tid)
 	testValTraceID := pcommon.TraceID(data.TraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1}))
 	ms.SetTraceID(testValTraceID)
-	assert.Equal(t, testValTraceID, ms.TraceID())
+	tid, _ = ms.TraceID()
+	assert.Equal(t, testValTraceID, tid)
 }
 
 func TestSpan_SpanID(t *testing.T) {
 	ms := NewSpan()
-	assert.Equal(t, pcommon.SpanID(data.SpanID([8]byte{})), ms.SpanID())
+	sp, _ := ms.SpanID()
+	assert.Equal(t, pcommon.SpanID(data.SpanID([8]byte{})), sp)
 	testValSpanID := pcommon.SpanID(data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1}))
 	ms.SetSpanID(testValSpanID)
-	assert.Equal(t, testValSpanID, ms.SpanID())
+	sp, _ = ms.SpanID()
+	assert.Equal(t, testValSpanID, sp)
 }
 
 func TestSpan_TraceState(t *testing.T) {
@@ -64,10 +68,12 @@ func TestSpan_TraceState(t *testing.T) {
 
 func TestSpan_ParentSpanID(t *testing.T) {
 	ms := NewSpan()
-	assert.Equal(t, pcommon.SpanID(data.SpanID([8]byte{})), ms.ParentSpanID())
+	sp, _ := ms.ParentSpanID()
+	assert.Equal(t, pcommon.SpanID(data.SpanID([8]byte{})), sp)
 	testValParentSpanID := pcommon.SpanID(data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1}))
 	ms.SetParentSpanID(testValParentSpanID)
-	assert.Equal(t, testValParentSpanID, ms.ParentSpanID())
+	sp, _ = ms.ParentSpanID()
+	assert.Equal(t, testValParentSpanID, sp)
 }
 
 func TestSpan_Name(t *testing.T) {

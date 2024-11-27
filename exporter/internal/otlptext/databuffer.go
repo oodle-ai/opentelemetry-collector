@@ -249,8 +249,15 @@ func (b *dataBuffer) logLinks(description string, sl ptrace.SpanLinkSlice) {
 	for i := 0; i < sl.Len(); i++ {
 		l := sl.At(i)
 		b.logEntry("SpanLink #%d", i)
-		b.logEntry("     -> Trace ID: %s", l.TraceID())
-		b.logEntry("     -> ID: %s", l.SpanID())
+		tid, ok := l.TraceID()
+		if ok {
+			b.logEntry("     -> Trace ID: %s", tid)
+		}
+		sp, ok := l.SpanID()
+		if ok {
+			b.logEntry("     -> ID: %s", sp)
+		}
+
 		b.logEntry("     -> TraceState: %s", l.TraceState().AsRaw())
 		b.logEntry("     -> DroppedAttributesCount: %d", l.DroppedAttributesCount())
 		b.logAttributes("     -> Attributes:", l.Attributes())
@@ -267,8 +274,14 @@ func (b *dataBuffer) logExemplars(description string, se pmetric.ExemplarSlice) 
 	for i := 0; i < se.Len(); i++ {
 		e := se.At(i)
 		b.logEntry("Exemplar #%d", i)
-		b.logEntry("     -> Trace ID: %s", e.TraceID())
-		b.logEntry("     -> Span ID: %s", e.SpanID())
+		tid, ok := e.TraceID()
+		if ok {
+			b.logEntry("     -> Trace ID: %s", tid)
+		}
+		sp, ok := e.SpanID()
+		if ok {
+			b.logEntry("     -> Span ID: %s", sp)
+		}
 		b.logEntry("     -> Timestamp: %s", e.Timestamp())
 		switch e.ValueType() {
 		case pmetric.ExemplarValueTypeInt:

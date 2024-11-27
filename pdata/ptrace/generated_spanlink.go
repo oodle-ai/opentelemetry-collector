@@ -54,8 +54,12 @@ func (ms SpanLink) IsNil() bool {
 }
 
 // TraceID returns the traceid associated with this SpanLink.
-func (ms SpanLink) TraceID() pcommon.TraceID {
-	return pcommon.TraceID(ms.orig.TraceId)
+func (ms SpanLink) TraceID() (pcommon.TraceID, bool) {
+	if len(ms.orig.TraceId) != 16 {
+		return pcommon.TraceID{}, false
+	}
+
+	return pcommon.TraceID(ms.orig.TraceId), true
 }
 
 // SetTraceID replaces the traceid associated with this SpanLink.
@@ -65,8 +69,11 @@ func (ms SpanLink) SetTraceID(v pcommon.TraceID) {
 }
 
 // SpanID returns the spanid associated with this SpanLink.
-func (ms SpanLink) SpanID() pcommon.SpanID {
-	return pcommon.SpanID(ms.orig.SpanId)
+func (ms SpanLink) SpanID() (pcommon.SpanID, bool) {
+	if len(ms.orig.SpanId) != 8 {
+		return pcommon.SpanID{}, false
+	}
+	return pcommon.SpanID(ms.orig.SpanId), true
 }
 
 // SetSpanID replaces the spanid associated with this SpanLink.
@@ -110,8 +117,14 @@ func (ms SpanLink) SetDroppedAttributesCount(v uint32) {
 // CopyTo copies all properties from the current struct overriding the destination.
 func (ms SpanLink) CopyTo(dest SpanLink) {
 	dest.state.AssertMutable()
-	dest.SetTraceID(ms.TraceID())
-	dest.SetSpanID(ms.SpanID())
+	tid, ok := ms.TraceID()
+	if ok {
+		dest.SetTraceID(tid)
+	}
+	sp, ok := ms.SpanID()
+	if ok {
+		dest.SetSpanID(sp)
+	}
 	ms.TraceState().CopyTo(dest.TraceState())
 	dest.SetFlags(ms.Flags())
 	ms.Attributes().CopyTo(dest.Attributes())
