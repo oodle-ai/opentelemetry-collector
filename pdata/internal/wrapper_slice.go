@@ -36,6 +36,7 @@ func FillTestSlice(tv Slice) {
 	*tv.orig = make([]*otlpcommon.AnyValue, 7)
 	for i := 0; i < 7; i++ {
 		state := StateMutable
+		(*tv.orig)[i] = &otlpcommon.AnyValue{}
 		FillTestValue(NewValue((*tv.orig)[i], &state))
 	}
 }

@@ -1,6 +1,6 @@
 module github.com/oodle-ai/opentelemetry-collector/pdata
 
-go 1.21.0
+go 1.22
 
 require (
 	github.com/gogo/protobuf v1.3.2

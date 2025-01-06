@@ -451,7 +451,7 @@ func (v Value) AsRaw() any {
 }
 
 func newKeyValueString(k string, v string) *otlpcommon.KeyValue {
-	orig := otlpcommon.KeyValue{Key: k}
+	orig := otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{}}
 	state := internal.StateMutable
 	akv := newValue(orig.Value, &state)
 	akv.SetStr(v)
@@ -459,7 +459,7 @@ func newKeyValueString(k string, v string) *otlpcommon.KeyValue {
 }
 
 func newKeyValueInt(k string, v int64) *otlpcommon.KeyValue {
-	orig := otlpcommon.KeyValue{Key: k}
+	orig := otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{}}
 	state := internal.StateMutable
 	akv := newValue(orig.Value, &state)
 	akv.SetInt(v)
@@ -467,7 +467,7 @@ func newKeyValueInt(k string, v int64) *otlpcommon.KeyValue {
 }
 
 func newKeyValueDouble(k string, v float64) *otlpcommon.KeyValue {
-	orig := otlpcommon.KeyValue{Key: k}
+	orig := otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{}}
 	state := internal.StateMutable
 	akv := newValue(orig.Value, &state)
 	akv.SetDouble(v)
@@ -475,7 +475,7 @@ func newKeyValueDouble(k string, v float64) *otlpcommon.KeyValue {
 }
 
 func newKeyValueBool(k string, v bool) *otlpcommon.KeyValue {
-	orig := otlpcommon.KeyValue{Key: k}
+	orig := otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{}}
 	state := internal.StateMutable
 	akv := newValue(orig.Value, &state)
 	akv.SetBool(v)

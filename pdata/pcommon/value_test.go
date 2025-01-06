@@ -259,7 +259,7 @@ func TestValue_CopyTo(t *testing.T) {
 }
 
 func TestSliceWithNilValues(t *testing.T) {
-	origWithNil := []otlpcommon.AnyValue{
+	origWithNil := []*otlpcommon.AnyValue{
 		{},
 		{Value: &otlpcommon.AnyValue_StringValue{StringValue: "test_value"}},
 	}

@@ -67,6 +67,9 @@ func (es Slice) CopyTo(dest Slice) {
 		(*dest.getOrig()) = (*dest.getOrig())[:srcLen:destCap]
 	} else {
 		(*dest.getOrig()) = make([]*otlpcommon.AnyValue, srcLen)
+		for i := range srcLen {
+			(*dest.getOrig())[i] = &otlpcommon.AnyValue{}
+		}
 	}
 
 	for i := range *es.getOrig() {
@@ -159,6 +162,7 @@ func (es Slice) FromRaw(rawSlice []any) error {
 	var errs error
 	origs := make([]*otlpcommon.AnyValue, len(rawSlice))
 	for ix, iv := range rawSlice {
+		origs[ix] = &otlpcommon.AnyValue{}
 		errs = multierr.Append(errs, newValue(origs[ix], es.getState()).FromRaw(iv))
 	}
 	*es.getOrig() = origs
