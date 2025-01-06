@@ -1,6 +1,8 @@
 module github.com/oodle-ai/opentelemetry-collector
 
-go 1.21.0
+go 1.23
+
+toolchain go1.23.4
 
 require (
 	github.com/oodle-ai/opentelemetry-collector/component v0.0.0-00010101000000-000000000000
