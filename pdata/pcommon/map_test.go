@@ -55,8 +55,8 @@ func TestMap(t *testing.T) {
 
 func TestMapReadOnly(t *testing.T) {
 	state := internal.StateReadOnly
-	m := newMap(&[]otlpcommon.KeyValue{
-		{Key: "k1", Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "v1"}}},
+	m := newMap(&[]*otlpcommon.KeyValue{
+		{Key: "k1", Value: &otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "v1"}}},
 	}, &state)
 
 	assert.Equal(t, 1, m.Len())
@@ -176,15 +176,15 @@ func TestMapPutEmptyBytes(t *testing.T) {
 }
 
 func TestMapWithEmpty(t *testing.T) {
-	origWithNil := []otlpcommon.KeyValue{
+	origWithNil := []*otlpcommon.KeyValue{
 		{},
 		{
 			Key:   "test_key",
-			Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "test_value"}},
+			Value: &otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "test_value"}},
 		},
 		{
 			Key:   "test_key2",
-			Value: otlpcommon.AnyValue{Value: nil},
+			Value: &otlpcommon.AnyValue{Value: nil},
 		},
 	}
 	state := internal.StateMutable
@@ -390,7 +390,7 @@ func TestMap_CopyTo(t *testing.T) {
 	assert.EqualValues(t, Map(internal.GenerateTestMap()), dest)
 
 	// Test CopyTo with an empty Value in the destination
-	(*dest.getOrig())[0].Value = otlpcommon.AnyValue{}
+	(*dest.getOrig())[0].Value = &otlpcommon.AnyValue{}
 	Map(internal.GenerateTestMap()).CopyTo(dest)
 	assert.EqualValues(t, Map(internal.GenerateTestMap()), dest)
 }

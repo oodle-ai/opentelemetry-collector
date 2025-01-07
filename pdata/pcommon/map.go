@@ -113,7 +113,7 @@ func (m Map) PutEmpty(k string) Value {
 		av.getOrig().Value = nil
 		return newValue(av.getOrig(), m.getState())
 	}
-	*m.getOrig() = append(*m.getOrig(), &otlpcommon.KeyValue{Key: k})
+	*m.getOrig() = append(*m.getOrig(), &otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{}})
 	return newValue((*m.getOrig())[len(*m.getOrig())-1].Value, m.getState())
 }
 
@@ -246,6 +246,7 @@ func (m Map) CopyTo(dest Map) {
 	origs := make([]*otlpcommon.KeyValue, len(*m.getOrig()))
 	for i := range *m.getOrig() {
 		akv := (*m.getOrig())[i]
+		origs[i] = &otlpcommon.KeyValue{Key: akv.Key, Value: &otlpcommon.AnyValue{}}
 		origs[i].Key = akv.Key
 		newValue(akv.Value, m.getState()).CopyTo(newValue(origs[i].Value, dest.getState()))
 	}
@@ -274,6 +275,7 @@ func (m Map) FromRaw(rawMap map[string]any) error {
 	origs := make([]*otlpcommon.KeyValue, len(rawMap))
 	ix := 0
 	for k, iv := range rawMap {
+		origs[ix] = &otlpcommon.KeyValue{Value: &otlpcommon.AnyValue{}}
 		origs[ix].Key = k
 		errs = multierr.Append(errs, newValue(origs[ix].Value, m.getState()).FromRaw(iv))
 		ix++

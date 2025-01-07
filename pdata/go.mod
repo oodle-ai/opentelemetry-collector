@@ -1,13 +1,12 @@
 module github.com/oodle-ai/opentelemetry-collector/pdata
 
-go 1.21.0
+go 1.23
 
 require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/json-iterator/go v1.1.12
 	github.com/planetscale/vtprotobuf v0.6.0
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/proto/otlp v1.2.0
 	go.uber.org/goleak v1.3.0
 	go.uber.org/multierr v1.11.0
 	google.golang.org/grpc v1.64.0
