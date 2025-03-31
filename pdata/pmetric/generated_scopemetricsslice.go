@@ -10,6 +10,7 @@ import (
 	"sort"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	v11 "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
 )
 
@@ -84,7 +85,7 @@ func (es ScopeMetricsSlice) EnsureCapacity(newCap int) {
 // It returns the newly added ScopeMetrics.
 func (es ScopeMetricsSlice) AppendEmpty() ScopeMetrics {
 	es.state.AssertMutable()
-	*es.orig = append(*es.orig, &otlpmetrics.ScopeMetrics{})
+	*es.orig = append(*es.orig, &otlpmetrics.ScopeMetrics{Scope: &v11.InstrumentationScope{}})
 	return es.At(es.Len() - 1)
 }
 

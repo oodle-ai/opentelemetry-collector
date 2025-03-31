@@ -11,6 +11,7 @@ import (
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
+	v1 "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 )
 
 // ResourceMetricsSlice logically represents a slice of ResourceMetrics.
@@ -84,7 +85,7 @@ func (es ResourceMetricsSlice) EnsureCapacity(newCap int) {
 // It returns the newly added ResourceMetrics.
 func (es ResourceMetricsSlice) AppendEmpty() ResourceMetrics {
 	es.state.AssertMutable()
-	*es.orig = append(*es.orig, &otlpmetrics.ResourceMetrics{})
+	*es.orig = append(*es.orig, &otlpmetrics.ResourceMetrics{Resource: &v1.Resource{}})
 	return es.At(es.Len() - 1)
 }
 
