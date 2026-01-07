@@ -5,9 +5,12 @@ package ptrace // import "github.com/oodle-ai/opentelemetry-collector/pdata/ptra
 
 import (
 	"bytes"
+
 	jsoniter "github.com/json-iterator/go"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/otlp"
@@ -59,7 +62,10 @@ func (ms ResourceSpans) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "resource":
-			json.ReadResource(iter, internal.GetOrigResource(internal.Resource(ms.Resource())))
+			if ms.orig.Resource == nil {
+				ms.orig.Resource = &otlpresource.Resource{}
+			}
+			json.ReadResource(iter, ms.orig.Resource)
 		case "scopeSpans", "scope_spans":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
 				ms.ScopeSpans().AppendEmpty().unmarshalJsoniter(iter)
@@ -78,6 +84,9 @@ func (ms ScopeSpans) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "scope":
+			if ms.orig.Scope == nil {
+				ms.orig.Scope = &otlpcommon.InstrumentationScope{}
+			}
 			json.ReadScope(iter, ms.orig.Scope)
 		case "spans":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
@@ -134,6 +143,9 @@ func (dest Span) unmarshalJsoniter(iter *jsoniter.Iterator) {
 		case "droppedLinksCount", "dropped_links_count":
 			dest.orig.DroppedLinksCount = json.ReadUint32(iter)
 		case "status":
+			if dest.orig.Status == nil {
+				dest.orig.Status = &otlptrace.Status{}
+			}
 			dest.Status().unmarshalJsoniter(iter)
 		default:
 			iter.Skip()
