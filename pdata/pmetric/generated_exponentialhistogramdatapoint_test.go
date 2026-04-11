@@ -182,12 +182,21 @@ func fillTestExponentialHistogramDataPoint(tv ExponentialHistogramDataPoint) {
 	tv.orig.Count = uint64(17)
 	tv.orig.Scale = int32(4)
 	tv.orig.ZeroCount = uint64(201)
-	fillTestExponentialHistogramDataPointBuckets(newExponentialHistogramDataPointBuckets(&tv.orig.Positive, tv.state))
-	fillTestExponentialHistogramDataPointBuckets(newExponentialHistogramDataPointBuckets(&tv.orig.Negative, tv.state))
+	if tv.orig.Positive == nil {
+		tv.orig.Positive = &otlpmetrics.ExponentialHistogramDataPoint_Buckets{}
+	}
+	fillTestExponentialHistogramDataPointBuckets(newExponentialHistogramDataPointBuckets(tv.orig.Positive, tv.state))
+	if tv.orig.Negative == nil {
+		tv.orig.Negative = &otlpmetrics.ExponentialHistogramDataPoint_Buckets{}
+	}
+	fillTestExponentialHistogramDataPointBuckets(newExponentialHistogramDataPointBuckets(tv.orig.Negative, tv.state))
 	fillTestExemplarSlice(newExemplarSlice(&tv.orig.Exemplars, tv.state))
 	tv.orig.Flags = 1
-	tv.orig.Sum_ = &otlpmetrics.ExponentialHistogramDataPoint_Sum{Sum: float64(17.13)}
-	tv.orig.Min_ = &otlpmetrics.ExponentialHistogramDataPoint_Min{Min: float64(9.23)}
-	tv.orig.Max_ = &otlpmetrics.ExponentialHistogramDataPoint_Max{Max: float64(182.55)}
+	valSum := float64(17.13)
+	tv.orig.Sum = &valSum
+	valMin := float64(9.23)
+	tv.orig.Min = &valMin
+	valMax := float64(182.55)
+	tv.orig.Max = &valMax
 	tv.orig.ZeroThreshold = float64(0.5)
 }

@@ -5,10 +5,14 @@ package plog // import "github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 
 import (
 	"bytes"
+
 	jsoniter "github.com/json-iterator/go"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/otlp"
 )
@@ -61,6 +65,9 @@ func (ms ResourceLogs) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "resource":
+			if ms.orig.Resource == nil {
+				ms.orig.Resource = &otlpresource.Resource{}
+			}
 			json.ReadResource(iter, ms.orig.Resource)
 		case "scope_logs", "scopeLogs":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
@@ -80,6 +87,9 @@ func (ms ScopeLogs) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "scope":
+			if ms.orig.Scope == nil {
+				ms.orig.Scope = &otlpcommon.InstrumentationScope{}
+			}
 			json.ReadScope(iter, ms.orig.Scope)
 		case "log_records", "logRecords":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
@@ -107,6 +117,9 @@ func (ms LogRecord) unmarshalJsoniter(iter *jsoniter.Iterator) {
 		case "severity_text", "severityText":
 			ms.orig.SeverityText = iter.ReadString()
 		case "body":
+			if ms.orig.Body == nil {
+				ms.orig.Body = &otlpcommon.AnyValue{}
+			}
 			json.ReadValue(iter, ms.orig.Body)
 		case "attributes":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
@@ -118,9 +131,11 @@ func (ms LogRecord) unmarshalJsoniter(iter *jsoniter.Iterator) {
 		case "flags":
 			ms.orig.Flags = json.ReadUint32(iter)
 		case "traceId", "trace_id":
-			ms.orig.TraceId = []byte(iter.ReadString())
+			(*data.TraceID)(&ms.orig.TraceId).
+				UnmarshalJsoniter(iter, "readLogRecord.traceId", "parse trace_id:%v")
 		case "spanId", "span_id":
-			ms.orig.SpanId = []byte(iter.ReadString())
+			(*data.SpanID)(&ms.orig.SpanId).
+				UnmarshalJsoniter(iter, "readLogRecord.spanId", "parse span_id:%v")
 		default:
 			iter.Skip()
 		}

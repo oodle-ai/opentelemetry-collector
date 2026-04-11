@@ -195,7 +195,10 @@ func fillTestProfile(tv Profile) {
 	tv.orig.KeepFrames = int64(1)
 	tv.orig.TimeNanos = 1234567890
 	tv.orig.DurationNanos = 1234567890
-	fillTestValueType(newValueType(&tv.orig.PeriodType, tv.state))
+	if tv.orig.PeriodType == nil {
+		tv.orig.PeriodType = &otlpprofiles.ValueType{}
+	}
+	fillTestValueType(newValueType(tv.orig.PeriodType, tv.state))
 	tv.orig.Period = int64(1)
 	internal.FillTestInt64Slice(internal.NewInt64Slice(&tv.orig.Comment, tv.state))
 	tv.orig.DefaultSampleType = int64(1)

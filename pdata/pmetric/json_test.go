@@ -328,7 +328,10 @@ func TestUnmarshalJsoniterResourceMetrics(t *testing.T) {
 	val := NewResourceMetrics()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.EqualValues(t, &otlpmetrics.ResourceMetrics{SchemaUrl: "schema"}, val.orig)
+	want := NewResourceMetrics()
+	want.orig.SchemaUrl = "schema"
+	want.Resource()
+	assert.EqualValues(t, want.orig, val.orig)
 }
 
 func TestUnmarshalJsoniterScopeMetrics(t *testing.T) {
@@ -338,7 +341,10 @@ func TestUnmarshalJsoniterScopeMetrics(t *testing.T) {
 	val := NewScopeMetrics()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.EqualValues(t, &otlpmetrics.ScopeMetrics{SchemaUrl: "schema"}, val.orig)
+	want := NewScopeMetrics()
+	want.orig.SchemaUrl = "schema"
+	want.Scope()
+	assert.EqualValues(t, want.orig, val.orig)
 }
 
 func TestUnmarshalJsoniterMetric(t *testing.T) {

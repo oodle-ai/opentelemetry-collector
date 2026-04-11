@@ -6,8 +6,11 @@
 
 package internal
 
+import (
+)
+
 type Float64Slice struct {
-	orig  *[]float64
+	orig *[]float64
 	state *State
 }
 
@@ -32,3 +35,5 @@ func GenerateTestFloat64Slice() Float64Slice {
 
 	return Float64Slice{&orig, &state}
 }
+
+

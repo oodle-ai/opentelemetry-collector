@@ -36,20 +36,36 @@ const accessorsSliceTestTemplate = `func Test{{ .structName }}_{{ .fieldName }}(
 	{{- end }}
 }`
 
-const setTestValueTemplate = `{{ if .isCommon -}}
+const setTestValueTemplate = `{{ if .isPointer -}}
+	if tv.orig.{{ .originFieldName }} == nil {
+		tv.orig.{{ .originFieldName }} = &{{ .originFullName }}{}
+	}
+{{ end -}}
+{{ if .isCommon -}}
 	{{ if not .isBaseStructCommon }}internal.{{ end }}FillTest{{ .returnType }}(
 	{{- if not .isBaseStructCommon }}internal.{{ end }}New
 	{{- else -}}
 	fillTest{{ .returnType }}(new
 	{{-	end -}}
-	{{ .returnType }}(&tv.orig.{{ .originFieldName }}, tv.state))`
+	{{ .returnType }}({{ if not .isPointer }}&{{ end }}tv.orig.{{ .originFieldName }}, tv.state))`
 
 const accessorsMessageValueTemplate = `// {{ .fieldName }} returns the {{ .lowerFieldName }} associated with this {{ .structName }}.
 func (ms {{ .structName }}) {{ .fieldName }}() {{ .packageName }}{{ .returnType }} {
+	{{- if .isPointer }}
+	if ms.{{ .origAccessor }}.{{ .originFieldName }} == nil {
+		ms.{{ .origAccessor }}.{{ .originFieldName }} = &{{ .originFullName }}{}
+	}
+	{{- if .isCommon }}
+	return {{ .packageName }}{{ .returnType }}(internal.New{{ .returnType }}(ms.{{ .origAccessor }}.{{ .originFieldName }}, ms.state))
+	{{- else }}
+	return new{{ .returnType }}(ms.{{ .origAccessor }}.{{ .originFieldName }}, ms.state)
+	{{- end }}
+	{{- else }}
 	{{- if .isCommon }}
 	return {{ .packageName }}{{ .returnType }}(internal.New{{ .returnType }}(&ms.{{ .origAccessor }}.{{ .fieldName }}, ms.state))
 	{{- else }}
 	return new{{ .returnType }}(&ms.{{ .origAccessor }}.{{ .fieldName }}, ms.state)
+	{{- end }}
 	{{- end }}
 }`
 
@@ -186,13 +202,19 @@ const accessorsPrimitiveTestTemplate = `func Test{{ .structName }}_{{ .fieldName
 
 const accessorsPrimitiveTypedTemplate = `// {{ .fieldName }} returns the {{ .lowerFieldName }} associated with this {{ .structName }}.
 func (ms {{ .structName }}) {{ .fieldName }}() {{ .packageName }}{{ .returnType }} {
+	{{- if .isSlice }}
+	var v {{ .packageName }}{{ .returnType }}
+	copy(v[:], ms.orig.{{ .originFieldName }})
+	return v
+	{{- else }}
 	return {{ .packageName }}{{ .returnType }}(ms.orig.{{ .originFieldName }})
+	{{- end }}
 }
 
 // Set{{ .fieldName }} replaces the {{ .lowerFieldName }} associated with this {{ .structName }}.
 func (ms {{ .structName }}) Set{{ .fieldName }}(v {{ .packageName }}{{ .returnType }}) {
 	ms.state.AssertMutable()
-	ms.orig.{{ .originFieldName }} = {{ .rawType }}(v)
+	{{ if .isSlice }}ms.orig.{{ .originFieldName }} = v[:]{{ else }}ms.orig.{{ .originFieldName }} = {{ .rawType }}(v){{ end }}
 }`
 
 const accessorsPrimitiveTypedTestTemplate = `func Test{{ .structName }}_{{ .fieldName }}(t *testing.T) {
@@ -218,19 +240,19 @@ func (ms {{ .structName }}) {{ .fieldName }}() {{ .returnType }} {
 // Has{{ .fieldName }} returns true if the {{ .structName }} contains a
 // {{ .fieldName }} value, false otherwise.
 func (ms {{ .structName }}) Has{{ .fieldName }}() bool {
-	return ms.orig.{{ .fieldName }}_ != nil
+	return ms.orig.{{ .fieldName }} != nil
 }
 
 // Set{{ .fieldName }} replaces the {{ .lowerFieldName }} associated with this {{ .structName }}.
 func (ms {{ .structName }}) Set{{ .fieldName }}(v {{ .returnType }}) {
 	ms.state.AssertMutable()
-	ms.orig.{{ .fieldName }}_ = &{{ .originStructType }}{{ "{" }}{{ .fieldName }}: v}
+	ms.orig.{{ .fieldName }} = &v
 }
 
 // Remove{{ .fieldName }} removes the {{ .lowerFieldName }} associated with this {{ .structName }}.
 func (ms {{ .structName }}) Remove{{ .fieldName }}() {
 	ms.state.AssertMutable()
-	ms.orig.{{ .fieldName }}_ = nil
+	ms.orig.{{ .fieldName }} = nil
 }`
 
 const accessorsOptionalPrimitiveTestTemplate = `func Test{{ .structName }}_{{ .fieldName }}(t *testing.T) {
@@ -319,6 +341,7 @@ var _ baseField = (*sliceField)(nil)
 type messageValueField struct {
 	fieldName     string
 	returnMessage *messageValueStruct
+	isPointer     bool
 }
 
 func (mf *messageValueField) GenerateAccessors(ms *messageValueStruct) string {
@@ -348,13 +371,31 @@ func (mf *messageValueField) GenerateSetWithTestValue(ms *messageValueStruct) st
 	return sb.String()
 }
 
-func (mf *messageValueField) GenerateCopyToValue(*messageValueStruct) string {
-	return "\tms." + mf.fieldName + "().CopyTo(dest." + mf.fieldName + "())"
+func (mf *messageValueField) GenerateCopyToValue(
+	ms *messageValueStruct,
+) string {
+	if mf.isPointer {
+		oa := origAccessor(ms)
+		field := "ms." + oa + "." + mf.fieldName
+		return "\tif " + field + " != nil {\n" +
+			"\t\tms." + mf.fieldName +
+			"().CopyTo(dest." + mf.fieldName +
+			"())\n" +
+			"\t} else {\n" +
+			"\t\tdest." + oa + "." + mf.fieldName +
+			" = nil\n" +
+			"\t}"
+	}
+	return "\tms." + mf.fieldName +
+		"().CopyTo(dest." + mf.fieldName + "())"
 }
 
-func (mf *messageValueField) templateFields(ms *messageValueStruct) map[string]any {
+func (mf *messageValueField) templateFields(
+	ms *messageValueStruct,
+) map[string]any {
 	return map[string]any{
-		"isCommon":        usedByOtherDataTypes(mf.returnMessage.packageName),
+		"isCommon":   usedByOtherDataTypes(mf.returnMessage.packageName),
+		"isBaseStructCommon": usedByOtherDataTypes(ms.packageName),
 		"structName":      ms.getName(),
 		"fieldName":       mf.fieldName,
 		"originFieldName": mf.fieldName,
@@ -366,8 +407,10 @@ func (mf *messageValueField) templateFields(ms *messageValueStruct) map[string]a
 			}
 			return ""
 		}(),
-		"origAccessor":  origAccessor(ms),
-		"stateAccessor": stateAccessor(ms),
+		"origAccessor":   origAccessor(ms),
+		"stateAccessor":  stateAccessor(ms),
+		"isPointer":      mf.isPointer,
+		"originFullName": mf.returnMessage.originFullName,
 	}
 }
 
@@ -440,6 +483,7 @@ type primitiveType struct {
 	rawType     string
 	defaultVal  string
 	testVal     string
+	isSlice     bool
 }
 
 // Types that has defined a custom type (e.g. "type Timestamp uint64")
@@ -475,8 +519,20 @@ func (ptf *primitiveTypedField) GenerateSetWithTestValue(*messageValueStruct) st
 	return "\ttv.orig." + originFieldName + " = " + ptf.returnType.testVal
 }
 
-func (ptf *primitiveTypedField) GenerateCopyToValue(*messageValueStruct) string {
-	return "\tdest.Set" + ptf.fieldName + "(ms." + ptf.fieldName + "())"
+func (ptf *primitiveTypedField) GenerateCopyToValue(
+	*messageValueStruct,
+) string {
+	if ptf.returnType.isSlice {
+		originFieldName := ptf.fieldName
+		if ptf.originFieldName != "" {
+			originFieldName = ptf.originFieldName
+		}
+		return "\tdest.orig." + originFieldName +
+			" = append([]byte(nil), ms.orig." +
+			originFieldName + "...)"
+	}
+	return "\tdest.Set" + ptf.fieldName +
+		"(ms." + ptf.fieldName + "())"
 }
 
 func (ptf *primitiveTypedField) templateFields(ms *messageValueStruct) map[string]any {
@@ -494,6 +550,7 @@ func (ptf *primitiveTypedField) templateFields(ms *messageValueStruct) map[strin
 		"lowerFieldName": strings.ToLower(ptf.fieldName),
 		"testValue":      ptf.returnType.testVal,
 		"rawType":        ptf.returnType.rawType,
+		"isSlice":        ptf.returnType.isSlice,
 		"originFieldName": func() string {
 			if ptf.originFieldName == "" {
 				return ptf.fieldName
@@ -792,8 +849,12 @@ func (opv *optionalPrimitiveValue) GenerateAccessorsTest(ms *messageValueStruct)
 	return sb.String()
 }
 
-func (opv *optionalPrimitiveValue) GenerateSetWithTestValue(ms *messageValueStruct) string {
-	return "\ttv.orig." + opv.fieldName + "_ = &" + ms.originFullName + "_" + opv.fieldName + "{" + opv.fieldName + ":" + opv.testVal + "}"
+func (opv *optionalPrimitiveValue) GenerateSetWithTestValue(
+	ms *messageValueStruct,
+) string {
+	v := opv.testVal
+	return "\tval" + opv.fieldName + " := " + v + "\n" +
+		"\ttv.orig." + opv.fieldName + " = &val" + opv.fieldName
 }
 
 func (opv *optionalPrimitiveValue) GenerateCopyToValue(*messageValueStruct) string {

@@ -7,6 +7,8 @@
 package pmetric
 
 import (
+	"sort"
+
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
 )
@@ -127,10 +129,24 @@ func (es ExemplarSlice) CopyTo(dest ExemplarSlice) {
 	destCap := cap(*dest.orig)
 	if srcLen <= destCap {
 		(*dest.orig) = (*dest.orig)[:srcLen:destCap]
-	} else {
-		(*dest.orig) = make([]*otlpmetrics.Exemplar, srcLen)
+		for i := range *es.orig {
+			newExemplar((*es.orig)[i], es.state).CopyTo(newExemplar((*dest.orig)[i], dest.state))
+		}
+		return
 	}
+	origs := make([]otlpmetrics.Exemplar, srcLen)
+	wrappers := make([]*otlpmetrics.Exemplar, srcLen)
 	for i := range *es.orig {
-		newExemplar((*es.orig)[i], es.state).CopyTo(newExemplar((*dest.orig)[i], dest.state))
+		wrappers[i] = &origs[i]
+		newExemplar((*es.orig)[i], es.state).CopyTo(newExemplar(wrappers[i], dest.state))
 	}
+	*dest.orig = wrappers
+}
+
+// Sort sorts the Exemplar elements within ExemplarSlice given the
+// provided less function so that two instances of ExemplarSlice
+// can be compared.
+func (es ExemplarSlice) Sort(less func(a, b Exemplar) bool) {
+	es.state.AssertMutable()
+	sort.SliceStable(*es.orig, func(i, j int) bool { return less(es.At(i), es.At(j)) })
 }

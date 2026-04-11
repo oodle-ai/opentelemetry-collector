@@ -6,8 +6,11 @@
 
 package internal
 
+import (
+)
+
 type ByteSlice struct {
-	orig  *[]byte
+	orig *[]byte
 	state *State
 }
 
@@ -32,3 +35,5 @@ func GenerateTestByteSlice() ByteSlice {
 
 	return ByteSlice{&orig, &state}
 }
+
+

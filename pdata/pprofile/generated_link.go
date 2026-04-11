@@ -8,7 +8,6 @@ package pprofile
 
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
-	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"
 	otlpprofiles "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/profiles/v1experimental"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -54,29 +53,33 @@ func (ms Link) IsNil() bool {
 
 // TraceID returns the traceid associated with this Link.
 func (ms Link) TraceID() pcommon.TraceID {
-	return pcommon.TraceID(ms.orig.TraceId)
+	var v pcommon.TraceID
+	copy(v[:], ms.orig.TraceId)
+	return v
 }
 
 // SetTraceID replaces the traceid associated with this Link.
 func (ms Link) SetTraceID(v pcommon.TraceID) {
 	ms.state.AssertMutable()
-	ms.orig.TraceId = data.TraceID(v)
+	ms.orig.TraceId = v[:]
 }
 
 // SpanID returns the spanid associated with this Link.
 func (ms Link) SpanID() pcommon.SpanID {
-	return pcommon.SpanID(ms.orig.SpanId)
+	var v pcommon.SpanID
+	copy(v[:], ms.orig.SpanId)
+	return v
 }
 
 // SetSpanID replaces the spanid associated with this Link.
 func (ms Link) SetSpanID(v pcommon.SpanID) {
 	ms.state.AssertMutable()
-	ms.orig.SpanId = data.SpanID(v)
+	ms.orig.SpanId = v[:]
 }
 
 // CopyTo copies all properties from the current struct overriding the destination.
 func (ms Link) CopyTo(dest Link) {
 	dest.state.AssertMutable()
-	dest.SetTraceID(ms.TraceID())
-	dest.SetSpanID(ms.SpanID())
+	dest.orig.TraceId = append([]byte(nil), ms.orig.TraceId...)
+	dest.orig.SpanId = append([]byte(nil), ms.orig.SpanId...)
 }

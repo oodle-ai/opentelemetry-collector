@@ -42,21 +42,18 @@ func TestSpanLink_CopyTo(t *testing.T) {
 
 func TestSpanLink_TraceID(t *testing.T) {
 	ms := NewSpanLink()
-	tid, _ := ms.TraceID()
-	assert.Equal(t, pcommon.TraceID(data.TraceID([16]byte{})), tid)
-	testValTraceID := pcommon.TraceID(data.TraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1}))
+	assert.Equal(t, pcommon.TraceID(data.TraceID(make([]byte, 16))), ms.TraceID())
+	testValTraceID := pcommon.TraceID(data.TraceID([]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1}))
 	ms.SetTraceID(testValTraceID)
-	assert.Equal(t, testValTraceID, tid)
+	assert.Equal(t, testValTraceID, ms.TraceID())
 }
 
 func TestSpanLink_SpanID(t *testing.T) {
 	ms := NewSpanLink()
-	sp, _ := ms.SpanID()
-	assert.Equal(t, pcommon.SpanID(data.SpanID([8]byte{})), sp)
-	testValSpanID := pcommon.SpanID(data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1}))
+	assert.Equal(t, pcommon.SpanID(data.SpanID(make([]byte, 8))), ms.SpanID())
+	testValSpanID := pcommon.SpanID(data.SpanID([]byte{8, 7, 6, 5, 4, 3, 2, 1}))
 	ms.SetSpanID(testValSpanID)
-	sp, _ = ms.SpanID()
-	assert.Equal(t, testValSpanID, sp)
+	assert.Equal(t, testValSpanID, ms.SpanID())
 }
 
 func TestSpanLink_TraceState(t *testing.T) {
@@ -97,8 +94,8 @@ func generateTestSpanLink() SpanLink {
 }
 
 func fillTestSpanLink(tv SpanLink) {
-	tv.orig.TraceId = []byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1}
-	tv.orig.SpanId = []byte{8, 7, 6, 5, 4, 3, 2, 1}
+	tv.orig.TraceId = data.TraceID([]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1})
+	tv.orig.SpanId = data.SpanID([]byte{8, 7, 6, 5, 4, 3, 2, 1})
 	internal.FillTestTraceState(internal.NewTraceState(&tv.orig.TraceState, tv.state))
 	tv.orig.Flags = uint32(0xf)
 	internal.FillTestMap(internal.NewMap(&tv.orig.Attributes, tv.state))

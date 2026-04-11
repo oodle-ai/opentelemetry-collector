@@ -98,5 +98,8 @@ func fillTestProfileContainer(tv ProfileContainer) {
 	tv.orig.EndTimeUnixNano = 1234567890
 	internal.FillTestMap(internal.NewMap(&tv.orig.Attributes, tv.state))
 	tv.orig.DroppedAttributesCount = uint32(17)
-	fillTestProfile(newProfile(&tv.orig.Profile, tv.state))
+	if tv.orig.Profile == nil {
+		tv.orig.Profile = &otlpprofiles.Profile{}
+	}
+	fillTestProfile(newProfile(tv.orig.Profile, tv.state))
 }

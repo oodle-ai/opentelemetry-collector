@@ -9,6 +9,7 @@ package pmetric
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
@@ -53,6 +54,9 @@ func (ms ResourceMetrics) IsNil() bool {
 
 // Resource returns the resource associated with this ResourceMetrics.
 func (ms ResourceMetrics) Resource() pcommon.Resource {
+	if ms.orig.Resource == nil {
+		ms.orig.Resource = &otlpresource.Resource{}
+	}
 	return pcommon.Resource(internal.NewResource(ms.orig.Resource, ms.state))
 }
 
@@ -75,7 +79,11 @@ func (ms ResourceMetrics) ScopeMetrics() ScopeMetricsSlice {
 // CopyTo copies all properties from the current struct overriding the destination.
 func (ms ResourceMetrics) CopyTo(dest ResourceMetrics) {
 	dest.state.AssertMutable()
-	ms.Resource().CopyTo(dest.Resource())
+	if ms.orig.Resource != nil {
+		ms.Resource().CopyTo(dest.Resource())
+	} else {
+		dest.orig.Resource = nil
+	}
 	dest.SetSchemaUrl(ms.SchemaUrl())
 	ms.ScopeMetrics().CopyTo(dest.ScopeMetrics())
 }

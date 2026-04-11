@@ -11,12 +11,16 @@ var ptraceotlp = &Package{
 	name: "ptraceotlp",
 	path: filepath.Join("ptrace", "ptraceotlp"),
 	imports: []string{
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 		`otlpcollectortrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/trace/v1"`,
 	},
 	testImports: []string{
 		`"testing"`,
 		``,
 		`"github.com/stretchr/testify/assert"`,
+		``,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
+		`otlpcollectortrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/trace/v1"`,
 	},
 	structs: []baseStruct{
 		exportTracePartialSuccess,

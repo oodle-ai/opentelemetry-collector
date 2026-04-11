@@ -88,7 +88,7 @@ var tracesOTLP = func() Traces {
 	return td
 }()
 
-var tracesJSON = `{"resourceSpans":[{"resource":{"attributes":[{"key":"host.name","value":{"stringValue":"testHost"}},{"key":"service.name","value":{"stringValue":"testService"}}],"droppedAttributesCount":1},"scopeSpans":[{"scope":{"name":"scope name","version":"scope version"},"spans":[{"traceId":"0102030405060708090a0b0c0d0e0f10","spanId":"1112131415161718","traceState":"state","parentSpanId":"1112131415161718","name":"testSpan","kind":3,"startTimeUnixNano":"1684617382541971000","endTimeUnixNano":"1684623646539558000","attributes":[{"key":"string","value":{"stringValue":"value"}},{"key":"bool","value":{"boolValue":true}},{"key":"int","value":{"intValue":"1"}},{"key":"double","value":{"doubleValue":1.1}},{"key":"bytes","value":{"bytesValue":"Zm9v"}},{"key":"array","value":{"arrayValue":{"values":[{"intValue":"1"},{"stringValue":"str"}]}}},{"key":"kvList","value":{"kvlistValue":{"values":[{"key":"int","value":{"intValue":"1"}},{"key":"string","value":{"stringValue":"string"}}]}}}],"droppedAttributesCount":1,"events":[{"timeUnixNano":"1684620382541971000","name":"eventName","attributes":[{"key":"string","value":{"stringValue":"value"}},{"key":"bool","value":{"boolValue":true}},{"key":"int","value":{"intValue":"1"}},{"key":"double","value":{"doubleValue":1.1}},{"key":"bytes","value":{"bytesValue":"Zm9v"}}],"droppedAttributesCount":1}],"droppedEventsCount":1,"links":[{"traceId":"0102030405060708090a0b0c0d0e0f10","spanId":"1112131415161718","traceState":"state","attributes":[{"key":"string","value":{"stringValue":"value"}},{"key":"bool","value":{"boolValue":true}},{"key":"int","value":{"intValue":"1"}},{"key":"double","value":{"doubleValue":1.1}},{"key":"bytes","value":{"bytesValue":"Zm9v"}}],"droppedAttributesCount":1}],"droppedLinksCount":1,"status":{"message":"message","code":1}},{"traceId":"","spanId":"","parentSpanId":"","name":"testSpan2","status":{}}],"schemaUrl":"schemaURL"}],"schemaUrl":"schemaURL"}]}`
+var tracesJSON = `{"resourceSpans":[{"resource":{"attributes":[{"key":"host.name","value":{"stringValue":"testHost"}},{"key":"service.name","value":{"stringValue":"testService"}}],"droppedAttributesCount":1},"scopeSpans":[{"scope":{"name":"scope name","version":"scope version"},"spans":[{"traceId":"0102030405060708090a0b0c0d0e0f10","spanId":"1112131415161718","traceState":"state","parentSpanId":"1112131415161718","name":"testSpan","kind":3,"startTimeUnixNano":"1684617382541971000","endTimeUnixNano":"1684623646539558000","attributes":[{"key":"string","value":{"stringValue":"value"}},{"key":"bool","value":{"boolValue":true}},{"key":"int","value":{"intValue":"1"}},{"key":"double","value":{"doubleValue":1.1}},{"key":"bytes","value":{"bytesValue":"Zm9v"}},{"key":"array","value":{"arrayValue":{"values":[{"intValue":"1"},{"stringValue":"str"}]}}},{"key":"kvList","value":{"kvlistValue":{"values":[{"key":"int","value":{"intValue":"1"}},{"key":"string","value":{"stringValue":"string"}}]}}}],"droppedAttributesCount":1,"events":[{"timeUnixNano":"1684620382541971000","name":"eventName","attributes":[{"key":"string","value":{"stringValue":"value"}},{"key":"bool","value":{"boolValue":true}},{"key":"int","value":{"intValue":"1"}},{"key":"double","value":{"doubleValue":1.1}},{"key":"bytes","value":{"bytesValue":"Zm9v"}}],"droppedAttributesCount":1}],"droppedEventsCount":1,"links":[{"traceId":"0102030405060708090a0b0c0d0e0f10","spanId":"1112131415161718","traceState":"state","attributes":[{"key":"string","value":{"stringValue":"value"}},{"key":"bool","value":{"boolValue":true}},{"key":"int","value":{"intValue":"1"}},{"key":"double","value":{"doubleValue":1.1}},{"key":"bytes","value":{"bytesValue":"Zm9v"}}],"droppedAttributesCount":1}],"droppedLinksCount":1,"status":{"message":"message","code":1}},{"name":"testSpan2"}],"schemaUrl":"schemaURL"}],"schemaUrl":"schemaURL"}]}`
 
 func TestJSONUnmarshal(t *testing.T) {
 	decoder := &JSONUnmarshaler{}
@@ -128,17 +128,21 @@ func TestUnmarshalJsoniterResourceSpans(t *testing.T) {
 	val := NewResourceSpans()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.Equal(t, NewResourceSpans(), val)
+	expected := NewResourceSpans()
+	expected.Resource()
+	assert.Equal(t, expected, val)
 }
 
 func TestUnmarshalJsoniterScopeSpans(t *testing.T) {
-	jsonStr := `{"extra":"", "scope": {}, "logRecords": []}`
+	jsonStr := `{"extra":"", "scope": {}, "spans": []}`
 	iter := jsoniter.ConfigFastest.BorrowIterator([]byte(jsonStr))
 	defer jsoniter.ConfigFastest.ReturnIterator(iter)
 	val := NewScopeSpans()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.Equal(t, NewScopeSpans(), val)
+	expected := NewScopeSpans()
+	expected.Scope()
+	assert.Equal(t, expected, val)
 }
 
 func TestUnmarshalJsoniterSpan(t *testing.T) {

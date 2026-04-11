@@ -7,10 +7,8 @@ import (
 	"testing"
 	"time"
 
-	gogoproto "github.com/gogo/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 	goproto "google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 
 	otlpcollectormetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/metrics/v1"
 	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
@@ -24,38 +22,39 @@ const (
 	endTime   = uint64(12578940000000054321)
 )
 
-func TestResourceMetricsWireCompatibility(t *testing.T) {
-	// This test verifies that OTLP ProtoBufs generated using goproto lib in
-	// opentelemetry-proto repository OTLP ProtoBufs generated using gogoproto lib in
-	// this repository are wire compatible.
+func testProtoStringKV(key, val string) *otlpcommon.KeyValue {
+	return &otlpcommon.KeyValue{
+		Key: key,
+		Value: &otlpcommon.AnyValue{
+			Value: &otlpcommon.AnyValue_StringValue{StringValue: val},
+		},
+	}
+}
 
-	// Generate ResourceMetrics as pdata struct.
+func TestResourceMetricsWireCompatibility(t *testing.T) {
+	// Verifies a full protobuf marshal → unmarshal → marshal → unmarshal round trip
+	// for ExportMetricsServiceRequest (vtproto / golang protobuf generated types).
+
 	metrics := NewMetrics()
 	fillTestResourceMetricsSlice(metrics.ResourceMetrics())
 
-	// Marshal its underlying ProtoBuf to wire.
-	wire1, err := gogoproto.Marshal(metrics.getOrig())
+	wire1, err := goproto.Marshal(metrics.getOrig())
 	assert.NoError(t, err)
-	assert.NotNil(t, wire1)
+	assert.NotEmpty(t, wire1)
 
-	// Unmarshal from the wire to OTLP Protobuf in goproto's representation.
-	var goprotoMessage emptypb.Empty
-	err = goproto.Unmarshal(wire1, &goprotoMessage)
+	var decoded otlpcollectormetrics.ExportMetricsServiceRequest
+	err = goproto.Unmarshal(wire1, &decoded)
 	assert.NoError(t, err)
 
-	// Marshal to the wire again.
-	wire2, err := goproto.Marshal(&goprotoMessage)
+	wire2, err := goproto.Marshal(&decoded)
 	assert.NoError(t, err)
-	assert.NotNil(t, wire2)
+	assert.NotEmpty(t, wire2)
 
-	// Unmarshal from the wire into gogoproto's representation.
-	var gogoprotoRM otlpcollectormetrics.ExportMetricsServiceRequest
-	err = gogoproto.Unmarshal(wire2, &gogoprotoRM)
+	var roundTrip otlpcollectormetrics.ExportMetricsServiceRequest
+	err = goproto.Unmarshal(wire2, &roundTrip)
 	assert.NoError(t, err)
 
-	// Now compare that the original and final ProtoBuf messages are the same.
-	// This proves that goproto and gogoproto marshaling/unmarshaling are wire compatible.
-	assert.True(t, assert.EqualValues(t, metrics.getOrig(), &gogoprotoRM))
+	assert.True(t, goproto.Equal(metrics.getOrig(), &roundTrip))
 }
 
 func TestMetricCount(t *testing.T) {
@@ -286,7 +285,7 @@ func TestOtlpToFromInternalReadOnly(t *testing.T) {
 		},
 	})
 	// Test that nothing changed
-	assert.EqualValues(t, &otlpmetrics.MetricsData{
+	assert.True(t, goproto.Equal(&otlpcollectormetrics.ExportMetricsServiceRequest{
 		ResourceMetrics: []*otlpmetrics.ResourceMetrics{
 			{
 				Resource: generateTestProtoResource(),
@@ -298,7 +297,7 @@ func TestOtlpToFromInternalReadOnly(t *testing.T) {
 				},
 			},
 		},
-	}, md.getOrig())
+	}, md.getOrig()))
 }
 
 func TestOtlpToFromInternalGaugeMutating(t *testing.T) {
@@ -343,7 +342,7 @@ func TestOtlpToFromInternalGaugeMutating(t *testing.T) {
 	assert.EqualValues(t, newAttributes, gaugeDataPoints.At(0).Attributes().AsRaw())
 
 	// Test that everything is updated.
-	assert.EqualValues(t, &otlpmetrics.MetricsData{
+	assert.True(t, goproto.Equal(&otlpcollectormetrics.ExportMetricsServiceRequest{
 		ResourceMetrics: []*otlpmetrics.ResourceMetrics{
 			{
 				Resource: generateTestProtoResource(),
@@ -359,11 +358,8 @@ func TestOtlpToFromInternalGaugeMutating(t *testing.T) {
 									Gauge: &otlpmetrics.Gauge{
 										DataPoints: []*otlpmetrics.NumberDataPoint{
 											{
-												Attributes: []otlpcommon.KeyValue{
-													{
-														Key:   "k",
-														Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "v"}},
-													},
+												Attributes: []*otlpcommon.KeyValue{
+													testProtoStringKV("k", "v"),
 												},
 												StartTimeUnixNano: startTime + 1,
 												TimeUnixNano:      endTime + 1,
@@ -380,7 +376,7 @@ func TestOtlpToFromInternalGaugeMutating(t *testing.T) {
 				},
 			},
 		},
-	}, md.getOrig())
+	}, md.getOrig()))
 }
 
 func TestOtlpToFromInternalSumMutating(t *testing.T) {
@@ -426,7 +422,7 @@ func TestOtlpToFromInternalSumMutating(t *testing.T) {
 	assert.EqualValues(t, newAttributes, doubleDataPoints.At(0).Attributes().AsRaw())
 
 	// Test that everything is updated.
-	assert.EqualValues(t, &otlpmetrics.MetricsData{
+	assert.True(t, goproto.Equal(&otlpcollectormetrics.ExportMetricsServiceRequest{
 		ResourceMetrics: []*otlpmetrics.ResourceMetrics{
 			{
 				Resource: generateTestProtoResource(),
@@ -443,11 +439,8 @@ func TestOtlpToFromInternalSumMutating(t *testing.T) {
 										AggregationTemporality: otlpmetrics.AggregationTemporality_AGGREGATION_TEMPORALITY_CUMULATIVE,
 										DataPoints: []*otlpmetrics.NumberDataPoint{
 											{
-												Attributes: []otlpcommon.KeyValue{
-													{
-														Key:   "k",
-														Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "v"}},
-													},
+												Attributes: []*otlpcommon.KeyValue{
+													testProtoStringKV("k", "v"),
 												},
 												StartTimeUnixNano: startTime + 1,
 												TimeUnixNano:      endTime + 1,
@@ -464,7 +457,7 @@ func TestOtlpToFromInternalSumMutating(t *testing.T) {
 				},
 			},
 		},
-	}, md.getOrig())
+	}, md.getOrig()))
 }
 
 func TestOtlpToFromInternalHistogramMutating(t *testing.T) {
@@ -510,7 +503,7 @@ func TestOtlpToFromInternalHistogramMutating(t *testing.T) {
 	assert.EqualValues(t, []float64{1}, histogramDataPoints.At(0).ExplicitBounds().AsRaw())
 	histogramDataPoints.At(0).BucketCounts().FromRaw([]uint64{21, 32})
 	// Test that everything is updated.
-	assert.EqualValues(t, &otlpmetrics.MetricsData{
+	assert.True(t, goproto.Equal(&otlpcollectormetrics.ExportMetricsServiceRequest{
 		ResourceMetrics: []*otlpmetrics.ResourceMetrics{
 			{
 				Resource: generateTestProtoResource(),
@@ -527,11 +520,8 @@ func TestOtlpToFromInternalHistogramMutating(t *testing.T) {
 										AggregationTemporality: otlpmetrics.AggregationTemporality_AGGREGATION_TEMPORALITY_DELTA,
 										DataPoints: []*otlpmetrics.HistogramDataPoint{
 											{
-												Attributes: []otlpcommon.KeyValue{
-													{
-														Key:   "k",
-														Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "v"}},
-													},
+												Attributes: []*otlpcommon.KeyValue{
+													testProtoStringKV("k", "v"),
 												},
 												StartTimeUnixNano: startTime + 1,
 												TimeUnixNano:      endTime + 1,
@@ -547,7 +537,7 @@ func TestOtlpToFromInternalHistogramMutating(t *testing.T) {
 				},
 			},
 		},
-	}, md.getOrig())
+	}, md.getOrig()))
 }
 
 func TestOtlpToFromInternalExponentialHistogramMutating(t *testing.T) {
@@ -590,7 +580,7 @@ func TestOtlpToFromInternalExponentialHistogramMutating(t *testing.T) {
 	histogramDataPoints.At(0).Attributes().PutStr("k", "v")
 	assert.EqualValues(t, newAttributes, histogramDataPoints.At(0).Attributes().AsRaw())
 	// Test that everything is updated.
-	assert.EqualValues(t, &otlpmetrics.MetricsData{
+	assert.True(t, goproto.Equal(&otlpcollectormetrics.ExportMetricsServiceRequest{
 		ResourceMetrics: []*otlpmetrics.ResourceMetrics{
 			{
 				Resource: generateTestProtoResource(),
@@ -607,11 +597,8 @@ func TestOtlpToFromInternalExponentialHistogramMutating(t *testing.T) {
 										AggregationTemporality: otlpmetrics.AggregationTemporality_AGGREGATION_TEMPORALITY_DELTA,
 										DataPoints: []*otlpmetrics.ExponentialHistogramDataPoint{
 											{
-												Attributes: []otlpcommon.KeyValue{
-													{
-														Key:   "k",
-														Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "v"}},
-													},
+												Attributes: []*otlpcommon.KeyValue{
+													testProtoStringKV("k", "v"),
 												},
 												StartTimeUnixNano: startTime + 1,
 												TimeUnixNano:      endTime + 1,
@@ -625,7 +612,7 @@ func TestOtlpToFromInternalExponentialHistogramMutating(t *testing.T) {
 				},
 			},
 		},
-	}, md.getOrig())
+	}, md.getOrig()))
 }
 
 func TestMetricsCopyTo(t *testing.T) {
@@ -752,19 +739,16 @@ func BenchmarkOtlpToFromInternal_HistogramPoints_MutateOneLabel(b *testing.B) {
 	}
 }
 
-func generateTestProtoResource() otlpresource.Resource {
-	return otlpresource.Resource{
-		Attributes: []otlpcommon.KeyValue{
-			{
-				Key:   "string",
-				Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "string-resource"}},
-			},
+func generateTestProtoResource() *otlpresource.Resource {
+	return &otlpresource.Resource{
+		Attributes: []*otlpcommon.KeyValue{
+			testProtoStringKV("string", "string-resource"),
 		},
 	}
 }
 
-func generateTestProtoInstrumentationScope() otlpcommon.InstrumentationScope {
-	return otlpcommon.InstrumentationScope{
+func generateTestProtoInstrumentationScope() *otlpcommon.InstrumentationScope {
+	return &otlpcommon.InstrumentationScope{
 		Name:    "test",
 		Version: "",
 	}
@@ -779,11 +763,8 @@ func generateTestProtoGaugeMetric() *otlpmetrics.Metric {
 			Gauge: &otlpmetrics.Gauge{
 				DataPoints: []*otlpmetrics.NumberDataPoint{
 					{
-						Attributes: []otlpcommon.KeyValue{
-							{
-								Key:   "key0",
-								Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "value0"}},
-							},
+						Attributes: []*otlpcommon.KeyValue{
+							testProtoStringKV("key0", "value0"),
 						},
 						StartTimeUnixNano: startTime,
 						TimeUnixNano:      endTime,
@@ -792,11 +773,8 @@ func generateTestProtoGaugeMetric() *otlpmetrics.Metric {
 						},
 					},
 					{
-						Attributes: []otlpcommon.KeyValue{
-							{
-								Key:   "key1",
-								Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "value1"}},
-							},
+						Attributes: []*otlpcommon.KeyValue{
+							testProtoStringKV("key1", "value1"),
 						},
 						StartTimeUnixNano: startTime,
 						TimeUnixNano:      endTime,
@@ -819,11 +797,8 @@ func generateTestProtoSumMetric() *otlpmetrics.Metric {
 				AggregationTemporality: otlpmetrics.AggregationTemporality_AGGREGATION_TEMPORALITY_CUMULATIVE,
 				DataPoints: []*otlpmetrics.NumberDataPoint{
 					{
-						Attributes: []otlpcommon.KeyValue{
-							{
-								Key:   "key0",
-								Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "value0"}},
-							},
+						Attributes: []*otlpcommon.KeyValue{
+							testProtoStringKV("key0", "value0"),
 						},
 						StartTimeUnixNano: startTime,
 						TimeUnixNano:      endTime,
@@ -832,11 +807,8 @@ func generateTestProtoSumMetric() *otlpmetrics.Metric {
 						},
 					},
 					{
-						Attributes: []otlpcommon.KeyValue{
-							{
-								Key:   "key1",
-								Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "value1"}},
-							},
+						Attributes: []*otlpcommon.KeyValue{
+							testProtoStringKV("key1", "value1"),
 						},
 						StartTimeUnixNano: startTime,
 						TimeUnixNano:      endTime,
@@ -860,11 +832,8 @@ func generateTestProtoHistogramMetric() *otlpmetrics.Metric {
 				AggregationTemporality: otlpmetrics.AggregationTemporality_AGGREGATION_TEMPORALITY_DELTA,
 				DataPoints: []*otlpmetrics.HistogramDataPoint{
 					{
-						Attributes: []otlpcommon.KeyValue{
-							{
-								Key:   "key0",
-								Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "value0"}},
-							},
+						Attributes: []*otlpcommon.KeyValue{
+							testProtoStringKV("key0", "value0"),
 						},
 						StartTimeUnixNano: startTime,
 						TimeUnixNano:      endTime,
@@ -872,11 +841,8 @@ func generateTestProtoHistogramMetric() *otlpmetrics.Metric {
 						ExplicitBounds:    []float64{1, 2},
 					},
 					{
-						Attributes: []otlpcommon.KeyValue{
-							{
-								Key:   "key1",
-								Value: otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_StringValue{StringValue: "value1"}},
-							},
+						Attributes: []*otlpcommon.KeyValue{
+							testProtoStringKV("key1", "value1"),
 						},
 						StartTimeUnixNano: startTime,
 						TimeUnixNano:      endTime,

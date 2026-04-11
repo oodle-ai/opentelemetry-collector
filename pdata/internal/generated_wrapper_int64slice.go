@@ -6,8 +6,11 @@
 
 package internal
 
+import (
+)
+
 type Int64Slice struct {
-	orig  *[]int64
+	orig *[]int64
 	state *State
 }
 
@@ -32,3 +35,5 @@ func GenerateTestInt64Slice() Int64Slice {
 
 	return Int64Slice{&orig, &state}
 }
+
+

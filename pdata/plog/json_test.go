@@ -95,7 +95,9 @@ func TestUnmarshalJsoniterResourceLogs(t *testing.T) {
 	val := NewResourceLogs()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.Equal(t, NewResourceLogs(), val)
+	expected := NewResourceLogs()
+	expected.Resource()
+	assert.Equal(t, expected, val)
 }
 
 func TestUnmarshalJsoniterScopeLogs(t *testing.T) {
@@ -105,7 +107,9 @@ func TestUnmarshalJsoniterScopeLogs(t *testing.T) {
 	val := NewScopeLogs()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.Equal(t, NewScopeLogs(), val)
+	expected := NewScopeLogs()
+	expected.Scope()
+	assert.Equal(t, expected, val)
 }
 
 func TestUnmarshalJsoniterLogRecord(t *testing.T) {
@@ -115,7 +119,9 @@ func TestUnmarshalJsoniterLogRecord(t *testing.T) {
 	val := NewLogRecord()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.Equal(t, NewLogRecord(), val)
+	expected := NewLogRecord()
+	expected.Body()
+	assert.Equal(t, expected, val)
 }
 
 func TestUnmarshalJsoniterLogWrongTraceID(t *testing.T) {

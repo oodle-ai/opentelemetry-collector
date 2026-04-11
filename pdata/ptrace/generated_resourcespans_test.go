@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -70,6 +71,9 @@ func generateTestResourceSpans() ResourceSpans {
 }
 
 func fillTestResourceSpans(tv ResourceSpans) {
+	if tv.orig.Resource == nil {
+		tv.orig.Resource = &otlpresource.Resource{}
+	}
 	internal.FillTestResource(internal.NewResource(tv.orig.Resource, tv.state))
 	tv.orig.SchemaUrl = "https://opentelemetry.io/schemas/1.5.0"
 	fillTestScopeSpansSlice(newScopeSpansSlice(&tv.orig.ScopeSpans, tv.state))

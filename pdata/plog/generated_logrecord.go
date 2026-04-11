@@ -8,6 +8,7 @@ package plog
 
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -74,12 +75,10 @@ func (ms LogRecord) SetTimestamp(v pcommon.Timestamp) {
 }
 
 // TraceID returns the traceid associated with this LogRecord.
-func (ms LogRecord) TraceID() (pcommon.TraceID, bool) {
-	if len(ms.orig.TraceId) != 16 {
-		return pcommon.NewTraceIDEmpty(), false
-	}
-
-	return pcommon.TraceID(ms.orig.TraceId), true
+func (ms LogRecord) TraceID() pcommon.TraceID {
+	var v pcommon.TraceID
+	copy(v[:], ms.orig.TraceId)
+	return v
 }
 
 // SetTraceID replaces the traceid associated with this LogRecord.
@@ -89,13 +88,10 @@ func (ms LogRecord) SetTraceID(v pcommon.TraceID) {
 }
 
 // SpanID returns the spanid associated with this LogRecord.
-// Returns the span ID and whether it exists.
-func (ms LogRecord) SpanID() (pcommon.SpanID, bool) {
-	if len(ms.orig.SpanId) != 8 {
-		return pcommon.NewSpanIDEmpty(), false
-	}
-
-	return pcommon.SpanID(ms.orig.SpanId), true
+func (ms LogRecord) SpanID() pcommon.SpanID {
+	var v pcommon.SpanID
+	copy(v[:], ms.orig.SpanId)
+	return v
 }
 
 // SetSpanID replaces the spanid associated with this LogRecord.
@@ -139,6 +135,9 @@ func (ms LogRecord) SetSeverityNumber(v SeverityNumber) {
 
 // Body returns the body associated with this LogRecord.
 func (ms LogRecord) Body() pcommon.Value {
+	if ms.orig.Body == nil {
+		ms.orig.Body = &otlpcommon.AnyValue{}
+	}
 	return pcommon.Value(internal.NewValue(ms.orig.Body, ms.state))
 }
 
@@ -163,18 +162,16 @@ func (ms LogRecord) CopyTo(dest LogRecord) {
 	dest.state.AssertMutable()
 	dest.SetObservedTimestamp(ms.ObservedTimestamp())
 	dest.SetTimestamp(ms.Timestamp())
-	tid, ok := ms.TraceID()
-	if ok {
-		dest.SetTraceID(tid)
-	}
-	sp, ok := ms.SpanID()
-	if ok {
-		dest.SetSpanID(sp)
-	}
+	dest.orig.TraceId = append([]byte(nil), ms.orig.TraceId...)
+	dest.orig.SpanId = append([]byte(nil), ms.orig.SpanId...)
 	dest.SetFlags(ms.Flags())
 	dest.SetSeverityText(ms.SeverityText())
 	dest.SetSeverityNumber(ms.SeverityNumber())
-	ms.Body().CopyTo(dest.Body())
+	if ms.orig.Body != nil {
+		ms.Body().CopyTo(dest.Body())
+	} else {
+		dest.orig.Body = nil
+	}
 	ms.Attributes().CopyTo(dest.Attributes())
 	dest.SetDroppedAttributesCount(ms.DroppedAttributesCount())
 }

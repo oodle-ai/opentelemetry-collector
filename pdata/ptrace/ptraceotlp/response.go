@@ -70,7 +70,12 @@ func (ms ExportResponse) unmarshalJsoniter(iter *jsoniter.Iterator) {
 
 // PartialSuccess returns the ExportLogsPartialSuccess associated with this ExportResponse.
 func (ms ExportResponse) PartialSuccess() ExportPartialSuccess {
-	return newExportPartialSuccess(ms.orig.PartialSuccess, ms.state)
+	if ms.orig.PartialSuccess == nil {
+		ms.orig.PartialSuccess = &otlpcollectortrace.ExportTracePartialSuccess{}
+	}
+	return newExportPartialSuccess(
+		ms.orig.PartialSuccess, ms.state,
+	)
 }
 
 func (ms ExportPartialSuccess) unmarshalJsoniter(iter *jsoniter.Iterator) {
