@@ -109,34 +109,29 @@ func (ms Exemplar) FilteredAttributes() pcommon.Map {
 }
 
 // TraceID returns the traceid associated with this Exemplar.
-func (ms Exemplar) TraceID() (pcommon.TraceID, bool) {
-	if len(ms.orig.TraceId) != 16 {
-		return pcommon.NewTraceIDEmpty(), false
-	}
-
-	return pcommon.TraceID(ms.orig.TraceId), true
+func (ms Exemplar) TraceID() pcommon.TraceID {
+	var v pcommon.TraceID
+	copy(v[:], ms.orig.TraceId)
+	return v
 }
 
 // SetTraceID replaces the traceid associated with this Exemplar.
 func (ms Exemplar) SetTraceID(v pcommon.TraceID) {
 	ms.state.AssertMutable()
-	//ms.orig.TraceId = data.TraceID(v)
+	ms.orig.TraceId = v[:]
 }
 
 // SpanID returns the spanid associated with this Exemplar.
-// Returns the span ID and whether it exists.
-func (ms Exemplar) SpanID() (pcommon.SpanID, bool) {
-	if len(ms.orig.SpanId) != 8 {
-		return pcommon.NewSpanIDEmpty(), false
-	}
-
-	return pcommon.SpanID(ms.orig.SpanId), true
+func (ms Exemplar) SpanID() pcommon.SpanID {
+	var v pcommon.SpanID
+	copy(v[:], ms.orig.SpanId)
+	return v
 }
 
 // SetSpanID replaces the spanid associated with this Exemplar.
 func (ms Exemplar) SetSpanID(v pcommon.SpanID) {
 	ms.state.AssertMutable()
-	//ms.orig.SpanId = data.SpanID(v)
+	ms.orig.SpanId = v[:]
 }
 
 // CopyTo copies all properties from the current struct overriding the destination.
@@ -151,12 +146,6 @@ func (ms Exemplar) CopyTo(dest Exemplar) {
 	}
 
 	ms.FilteredAttributes().CopyTo(dest.FilteredAttributes())
-	tid, ok := ms.TraceID()
-	if ok {
-		dest.SetTraceID(tid)
-	}
-	sp, ok := ms.SpanID()
-	if ok {
-		dest.SetSpanID(sp)
-	}
+	dest.orig.TraceId = append([]byte(nil), ms.orig.TraceId...)
+	dest.orig.SpanId = append([]byte(nil), ms.orig.SpanId...)
 }

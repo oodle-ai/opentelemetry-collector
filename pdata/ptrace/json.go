@@ -9,6 +9,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"
 	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
@@ -106,13 +107,16 @@ func (dest Span) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "traceId", "trace_id":
-			dest.orig.TraceId = []byte(iter.ReadString())
+			(*data.TraceID)(&dest.orig.TraceId).
+				UnmarshalJsoniter(iter, "readSpan.traceId", "parse trace_id:%v")
 		case "spanId", "span_id":
-			dest.orig.SpanId = []byte(iter.ReadString())
+			(*data.SpanID)(&dest.orig.SpanId).
+				UnmarshalJsoniter(iter, "readSpan.spanId", "parse span_id:%v")
 		case "traceState", "trace_state":
 			dest.TraceState().FromRaw(iter.ReadString())
 		case "parentSpanId", "parent_span_id":
-			dest.orig.ParentSpanId = []byte(iter.ReadString())
+			(*data.SpanID)(&dest.orig.ParentSpanId).
+				UnmarshalJsoniter(iter, "readSpan.parentSpanId", "parse parent_span_id:%v")
 		case "name":
 			dest.orig.Name = iter.ReadString()
 		case "kind":
@@ -142,6 +146,8 @@ func (dest Span) unmarshalJsoniter(iter *jsoniter.Iterator) {
 			})
 		case "droppedLinksCount", "dropped_links_count":
 			dest.orig.DroppedLinksCount = json.ReadUint32(iter)
+		case "flags":
+			dest.orig.Flags = json.ReadUint32(iter)
 		case "status":
 			if dest.orig.Status == nil {
 				dest.orig.Status = &otlptrace.Status{}
@@ -172,9 +178,11 @@ func (dest SpanLink) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "traceId", "trace_id":
-			dest.orig.TraceId = []byte(iter.ReadString())
+			(*data.TraceID)(&dest.orig.TraceId).
+				UnmarshalJsoniter(iter, "readSpanLink", "parse trace_id:%v")
 		case "spanId", "span_id":
-			dest.orig.SpanId = []byte(iter.ReadString())
+			(*data.SpanID)(&dest.orig.SpanId).
+				UnmarshalJsoniter(iter, "readSpanLink", "parse span_id:%v")
 		case "traceState", "trace_state":
 			dest.orig.TraceState = iter.ReadString()
 		case "attributes":
@@ -184,6 +192,8 @@ func (dest SpanLink) unmarshalJsoniter(iter *jsoniter.Iterator) {
 			})
 		case "droppedAttributesCount", "dropped_attributes_count":
 			dest.orig.DroppedAttributesCount = json.ReadUint32(iter)
+		case "flags":
+			dest.orig.Flags = json.ReadUint32(iter)
 		default:
 			iter.Skip()
 		}

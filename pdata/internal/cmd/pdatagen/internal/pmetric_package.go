@@ -11,7 +11,9 @@ var pmetric = &Package{
 		``,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
 		`otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
 	testImports: []string{
@@ -22,7 +24,9 @@ var pmetric = &Package{
 		``,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
 		`otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
 	structs: []baseStruct{
@@ -315,10 +319,12 @@ var exponentialHistogramDataPoint = &messageValueStruct{
 		&messageValueField{
 			fieldName:     "Positive",
 			returnMessage: bucketsValues,
+			isPointer:     true,
 		},
 		&messageValueField{
 			fieldName:     "Negative",
 			returnMessage: bucketsValues,
+			isPointer:     true,
 		},
 		exemplarsField,
 		dataPointFlagsField,
@@ -387,7 +393,7 @@ var quantileValues = &messageValueStruct{
 	},
 }
 
-var exemplarSlice = &sliceOfValues{
+var exemplarSlice = &sliceOfPtrs{
 	structName: "ExemplarSlice",
 	element:    exemplar,
 }

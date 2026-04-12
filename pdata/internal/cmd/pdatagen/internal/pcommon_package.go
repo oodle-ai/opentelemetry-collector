@@ -17,6 +17,8 @@ var pcommon = &Package{
 		`"github.com/stretchr/testify/assert"`,
 		``,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 	},
 	structs: []baseStruct{
 		scope,
@@ -57,6 +59,7 @@ var mapStruct = &sliceOfPtrs{
 var scopeField = &messageValueField{
 	fieldName:     "Scope",
 	returnMessage: scope,
+	isPointer:     true,
 }
 
 var traceState = &messageValueStruct{
@@ -118,8 +121,9 @@ var traceIDType = &primitiveType{
 	structName:  "TraceID",
 	packageName: "pcommon",
 	rawType:     "data.TraceID",
-	defaultVal:  "data.TraceID([16]byte{})",
-	testVal:     "data.TraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1})",
+	defaultVal:  "data.TraceID(make([]byte, 16))",
+	testVal:     "data.TraceID([]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1})",
+	isSlice:     true,
 }
 
 var spanIDField = &primitiveTypedField{
@@ -138,8 +142,9 @@ var spanIDType = &primitiveType{
 	structName:  "SpanID",
 	packageName: "pcommon",
 	rawType:     "data.SpanID",
-	defaultVal:  "data.SpanID([8]byte{})",
-	testVal:     "data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1})",
+	defaultVal:  "data.SpanID(make([]byte, 8))",
+	testVal:     "data.SpanID([]byte{8, 7, 6, 5, 4, 3, 2, 1})",
+	isSlice:     true,
 }
 
 var schemaURLField = &primitiveField{
@@ -163,6 +168,7 @@ var resource = &messageValueStruct{
 var resourceField = &messageValueField{
 	fieldName:     "Resource",
 	returnMessage: resource,
+	isPointer:     true,
 }
 
 var byteSlice = &primitiveSliceStruct{

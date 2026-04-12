@@ -9,6 +9,7 @@ import (
 
 	jsoniter "github.com/json-iterator/go"
 	"github.com/stretchr/testify/assert"
+	goproto "google.golang.org/protobuf/proto"
 
 	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
@@ -328,7 +329,10 @@ func TestUnmarshalJsoniterResourceMetrics(t *testing.T) {
 	val := NewResourceMetrics()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.EqualValues(t, &otlpmetrics.ResourceMetrics{SchemaUrl: "schema"}, val.orig)
+	want := NewResourceMetrics()
+	want.orig.SchemaUrl = "schema"
+	want.Resource()
+	assert.EqualValues(t, want.orig, val.orig)
 }
 
 func TestUnmarshalJsoniterScopeMetrics(t *testing.T) {
@@ -338,7 +342,10 @@ func TestUnmarshalJsoniterScopeMetrics(t *testing.T) {
 	val := NewScopeMetrics()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.EqualValues(t, &otlpmetrics.ScopeMetrics{SchemaUrl: "schema"}, val.orig)
+	want := NewScopeMetrics()
+	want.orig.SchemaUrl = "schema"
+	want.Scope()
+	assert.EqualValues(t, want.orig, val.orig)
 }
 
 func TestUnmarshalJsoniterMetric(t *testing.T) {
@@ -554,3 +561,72 @@ func TestExemplar(t *testing.T) {
 	assert.NoError(t, iter.Error)
 	assert.EqualValues(t, NewExemplar(), val)
 }
+
+func TestMetricsJSONWireCompatibility(t *testing.T) {
+	metrics := NewMetrics()
+	fillTestResourceMetricsSlice(
+		metrics.ResourceMetrics(),
+	)
+
+	// fillTestMetric only creates Sum.
+	// Append one metric of each remaining type.
+	sm := metrics.ResourceMetrics().At(0).
+		ScopeMetrics().At(0)
+	for _, setup := range []struct {
+		name string
+		fill func(Metric)
+	}{
+		{"gauge", func(m Metric) {
+			fillTestGauge(m.SetEmptyGauge())
+		}},
+		{"histogram", func(m Metric) {
+			fillTestHistogram(
+				m.SetEmptyHistogram(),
+			)
+		}},
+		{"exp_histogram", func(m Metric) {
+			fillTestExponentialHistogram(
+				m.SetEmptyExponentialHistogram(),
+			)
+		}},
+		{"summary", func(m Metric) {
+			fillTestSummary(m.SetEmptySummary())
+		}},
+	} {
+		m := sm.Metrics().AppendEmpty()
+		m.SetName(setup.name)
+		m.SetDescription("test")
+		m.SetUnit("1")
+		setup.fill(m)
+	}
+
+	json1, err := (&JSONMarshaler{}).MarshalMetrics(
+		metrics,
+	)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, json1)
+
+	decoded, err := (&JSONUnmarshaler{}).UnmarshalMetrics(
+		json1,
+	)
+	assert.NoError(t, err)
+
+	json2, err := (&JSONMarshaler{}).MarshalMetrics(
+		decoded,
+	)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, json2)
+
+	roundTrip, err := (&JSONUnmarshaler{}).UnmarshalMetrics(
+		json2,
+	)
+	assert.NoError(t, err)
+
+	assert.True(t,
+		goproto.Equal(
+			metrics.getOrig(),
+			roundTrip.getOrig(),
+		),
+	)
+}
+

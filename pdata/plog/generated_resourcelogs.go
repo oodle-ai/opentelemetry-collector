@@ -9,6 +9,7 @@ package plog
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
@@ -53,6 +54,9 @@ func (ms ResourceLogs) IsNil() bool {
 
 // Resource returns the resource associated with this ResourceLogs.
 func (ms ResourceLogs) Resource() pcommon.Resource {
+	if ms.orig.Resource == nil {
+		ms.orig.Resource = &otlpresource.Resource{}
+	}
 	return pcommon.Resource(internal.NewResource(ms.orig.Resource, ms.state))
 }
 
@@ -75,7 +79,11 @@ func (ms ResourceLogs) ScopeLogs() ScopeLogsSlice {
 // CopyTo copies all properties from the current struct overriding the destination.
 func (ms ResourceLogs) CopyTo(dest ResourceLogs) {
 	dest.state.AssertMutable()
-	ms.Resource().CopyTo(dest.Resource())
+	if ms.orig.Resource != nil {
+		ms.Resource().CopyTo(dest.Resource())
+	} else {
+		dest.orig.Resource = nil
+	}
 	dest.SetSchemaUrl(ms.SchemaUrl())
 	ms.ScopeLogs().CopyTo(dest.ScopeLogs())
 }

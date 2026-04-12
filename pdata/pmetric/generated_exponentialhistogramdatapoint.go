@@ -116,11 +116,17 @@ func (ms ExponentialHistogramDataPoint) SetZeroCount(v uint64) {
 
 // Positive returns the positive associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) Positive() ExponentialHistogramDataPointBuckets {
+	if ms.orig.Positive == nil {
+		ms.orig.Positive = &otlpmetrics.ExponentialHistogramDataPoint_Buckets{}
+	}
 	return newExponentialHistogramDataPointBuckets(ms.orig.Positive, ms.state)
 }
 
 // Negative returns the negative associated with this ExponentialHistogramDataPoint.
 func (ms ExponentialHistogramDataPoint) Negative() ExponentialHistogramDataPointBuckets {
+	if ms.orig.Negative == nil {
+		ms.orig.Negative = &otlpmetrics.ExponentialHistogramDataPoint_Buckets{}
+	}
 	return newExponentialHistogramDataPointBuckets(ms.orig.Negative, ms.state)
 }
 
@@ -229,8 +235,16 @@ func (ms ExponentialHistogramDataPoint) CopyTo(dest ExponentialHistogramDataPoin
 	dest.SetCount(ms.Count())
 	dest.SetScale(ms.Scale())
 	dest.SetZeroCount(ms.ZeroCount())
-	ms.Positive().CopyTo(dest.Positive())
-	ms.Negative().CopyTo(dest.Negative())
+	if ms.orig.Positive != nil {
+		ms.Positive().CopyTo(dest.Positive())
+	} else {
+		dest.orig.Positive = nil
+	}
+	if ms.orig.Negative != nil {
+		ms.Negative().CopyTo(dest.Negative())
+	} else {
+		dest.orig.Negative = nil
+	}
 	ms.Exemplars().CopyTo(dest.Exemplars())
 	dest.SetFlags(ms.Flags())
 	if ms.HasSum() {

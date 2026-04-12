@@ -13,6 +13,7 @@ import (
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
@@ -70,6 +71,9 @@ func generateTestResourceLogs() ResourceLogs {
 }
 
 func fillTestResourceLogs(tv ResourceLogs) {
+	if tv.orig.Resource == nil {
+		tv.orig.Resource = &otlpresource.Resource{}
+	}
 	internal.FillTestResource(internal.NewResource(tv.orig.Resource, tv.state))
 	tv.orig.SchemaUrl = "https://opentelemetry.io/schemas/1.5.0"
 	fillTestScopeLogsSlice(newScopeLogsSlice(&tv.orig.ScopeLogs, tv.state))

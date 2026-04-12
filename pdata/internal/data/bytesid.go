@@ -22,24 +22,35 @@ func marshalJSON(id []byte) ([]byte, error) {
 	return b, nil
 }
 
-// unmarshalJSON inflates trace id from hex string, possibly enclosed in quotes.
-// Called by Protobuf JSON deserialization.
-func unmarshalJSON(dst []byte, src []byte) error {
-	if l := len(src); l >= 2 && src[0] == '"' && src[l-1] == '"' {
+// unmarshalOTLPJSONBytesID decodes a fixed-size ID from a
+// hex-encoded JSON string, possibly enclosed in quotes.
+// size is the expected decoded byte count (16 for TraceID,
+// 8 for SpanID). dst is re-allocated or resliced as needed
+// to hold exactly size bytes.
+func unmarshalOTLPJSONBytesID(
+	dst *[]byte, size int, src []byte,
+) error {
+	if cap(*dst) < size {
+		*dst = make([]byte, size)
+	} else {
+		*dst = (*dst)[:size]
+	}
+	if l := len(src); l >= 2 &&
+		src[0] == '"' && src[l-1] == '"' {
 		src = src[1 : l-1]
 	}
-	nLen := len(src)
-	if nLen == 0 {
+	if len(src) == 0 {
 		return nil
 	}
-
-	if len(dst) != hex.DecodedLen(nLen) {
+	if len(src) != hex.EncodedLen(size) {
 		return errors.New("invalid length for ID")
 	}
-
-	_, err := hex.Decode(dst, src)
+	_, err := hex.Decode(*dst, src)
 	if err != nil {
-		return fmt.Errorf("cannot unmarshal ID from string '%s': %w", string(src), err)
+		return fmt.Errorf(
+			"cannot unmarshal ID from string '%s': %w",
+			string(src), err,
+		)
 	}
 	return nil
 }

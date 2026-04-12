@@ -8,6 +8,7 @@ package pprofile
 
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 	otlpprofiles "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/profiles/v1experimental"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -53,7 +54,10 @@ func (ms ScopeProfiles) IsNil() bool {
 
 // Scope returns the scope associated with this ScopeProfiles.
 func (ms ScopeProfiles) Scope() pcommon.InstrumentationScope {
-	return pcommon.InstrumentationScope(internal.NewInstrumentationScope(&ms.orig.Scope, ms.state))
+	if ms.orig.Scope == nil {
+		ms.orig.Scope = &otlpcommon.InstrumentationScope{}
+	}
+	return pcommon.InstrumentationScope(internal.NewInstrumentationScope(ms.orig.Scope, ms.state))
 }
 
 // SchemaUrl returns the schemaurl associated with this ScopeProfiles.
@@ -75,7 +79,11 @@ func (ms ScopeProfiles) Profiles() ProfilesContainersSlice {
 // CopyTo copies all properties from the current struct overriding the destination.
 func (ms ScopeProfiles) CopyTo(dest ScopeProfiles) {
 	dest.state.AssertMutable()
-	ms.Scope().CopyTo(dest.Scope())
+	if ms.orig.Scope != nil {
+		ms.Scope().CopyTo(dest.Scope())
+	} else {
+		dest.orig.Scope = nil
+	}
 	dest.SetSchemaUrl(ms.SchemaUrl())
 	ms.Profiles().CopyTo(dest.Profiles())
 }

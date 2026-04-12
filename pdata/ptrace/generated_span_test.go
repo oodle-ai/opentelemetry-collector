@@ -42,22 +42,18 @@ func TestSpan_CopyTo(t *testing.T) {
 
 func TestSpan_TraceID(t *testing.T) {
 	ms := NewSpan()
-	tid, _ := ms.TraceID()
-	assert.Equal(t, pcommon.TraceID(data.TraceID([16]byte{})), tid)
-	testValTraceID := pcommon.TraceID(data.TraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1}))
+	assert.Equal(t, pcommon.TraceID(data.TraceID(make([]byte, 16))), ms.TraceID())
+	testValTraceID := pcommon.TraceID(data.TraceID([]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1}))
 	ms.SetTraceID(testValTraceID)
-	tid, _ = ms.TraceID()
-	assert.Equal(t, testValTraceID, tid)
+	assert.Equal(t, testValTraceID, ms.TraceID())
 }
 
 func TestSpan_SpanID(t *testing.T) {
 	ms := NewSpan()
-	sp, _ := ms.SpanID()
-	assert.Equal(t, pcommon.SpanID(data.SpanID([8]byte{})), sp)
-	testValSpanID := pcommon.SpanID(data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1}))
+	assert.Equal(t, pcommon.SpanID(data.SpanID(make([]byte, 8))), ms.SpanID())
+	testValSpanID := pcommon.SpanID(data.SpanID([]byte{8, 7, 6, 5, 4, 3, 2, 1}))
 	ms.SetSpanID(testValSpanID)
-	sp, _ = ms.SpanID()
-	assert.Equal(t, testValSpanID, sp)
+	assert.Equal(t, testValSpanID, ms.SpanID())
 }
 
 func TestSpan_TraceState(t *testing.T) {
@@ -68,12 +64,10 @@ func TestSpan_TraceState(t *testing.T) {
 
 func TestSpan_ParentSpanID(t *testing.T) {
 	ms := NewSpan()
-	sp, _ := ms.ParentSpanID()
-	assert.Equal(t, pcommon.SpanID(data.SpanID([8]byte{})), sp)
-	testValParentSpanID := pcommon.SpanID(data.SpanID([8]byte{8, 7, 6, 5, 4, 3, 2, 1}))
+	assert.Equal(t, pcommon.SpanID(data.SpanID(make([]byte, 8))), ms.ParentSpanID())
+	testValParentSpanID := pcommon.SpanID(data.SpanID([]byte{8, 7, 6, 5, 4, 3, 2, 1}))
 	ms.SetParentSpanID(testValParentSpanID)
-	sp, _ = ms.ParentSpanID()
-	assert.Equal(t, testValParentSpanID, sp)
+	assert.Equal(t, testValParentSpanID, ms.ParentSpanID())
 }
 
 func TestSpan_Name(t *testing.T) {
@@ -179,10 +173,10 @@ func generateTestSpan() Span {
 }
 
 func fillTestSpan(tv Span) {
-	tv.orig.TraceId = []byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1}
-	tv.orig.SpanId = []byte{8, 7, 6, 5, 4, 3, 2, 1}
+	tv.orig.TraceId = data.TraceID([]byte{1, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3, 2, 1})
+	tv.orig.SpanId = data.SpanID([]byte{8, 7, 6, 5, 4, 3, 2, 1})
 	internal.FillTestTraceState(internal.NewTraceState(&tv.orig.TraceState, tv.state))
-	tv.orig.ParentSpanId = []byte{8, 7, 6, 5, 4, 3, 2, 1}
+	tv.orig.ParentSpanId = data.SpanID([]byte{8, 7, 6, 5, 4, 3, 2, 1})
 	tv.orig.Name = "test_name"
 	tv.orig.Flags = uint32(0xf)
 	tv.orig.Kind = otlptrace.Span_SpanKind(3)
@@ -194,5 +188,8 @@ func fillTestSpan(tv Span) {
 	tv.orig.DroppedEventsCount = uint32(17)
 	fillTestSpanLinkSlice(newSpanLinkSlice(&tv.orig.Links, tv.state))
 	tv.orig.DroppedLinksCount = uint32(17)
+	if tv.orig.Status == nil {
+		tv.orig.Status = &otlptrace.Status{}
+	}
 	fillTestStatus(newStatus(tv.orig.Status, tv.state))
 }

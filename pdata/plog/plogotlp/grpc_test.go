@@ -22,6 +22,24 @@ import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/plog"
 )
 
+func assertExportRequestJSONEqual(t *testing.T, expected, actual ExportRequest) {
+	t.Helper()
+	expectedBytes, err := expected.MarshalJSON()
+	assert.NoError(t, err)
+	actualBytes, err := actual.MarshalJSON()
+	assert.NoError(t, err)
+	assert.Equal(t, expectedBytes, actualBytes)
+}
+
+func assertExportResponseJSONEqual(t *testing.T, expected, actual ExportResponse) {
+	t.Helper()
+	expectedBytes, err := expected.MarshalJSON()
+	assert.NoError(t, err)
+	actualBytes, err := actual.MarshalJSON()
+	assert.NoError(t, err)
+	assert.Equal(t, expectedBytes, actualBytes)
+}
+
 func TestGrpc(t *testing.T) {
 	lis := bufconn.Listen(1024 * 1024)
 	s := grpc.NewServer()
@@ -52,10 +70,11 @@ func TestGrpc(t *testing.T) {
 
 	resp, err := logClient.Export(context.Background(), generateLogsRequest())
 	assert.NoError(t, err)
-	assert.Equal(t, NewExportResponse(), resp)
+	assertExportResponseJSONEqual(t, NewExportResponse(), resp)
 }
 
 func TestGrpcError(t *testing.T) {
+	resolver.SetDefaultScheme("passthrough")
 	lis := bufconn.Listen(1024 * 1024)
 	s := grpc.NewServer()
 	RegisterGRPCServer(s, &fakeLogsServer{t: t, err: errors.New("my error")})
@@ -97,7 +116,7 @@ type fakeLogsServer struct {
 }
 
 func (f fakeLogsServer) Export(_ context.Context, request ExportRequest) (ExportResponse, error) {
-	assert.Equal(f.t, generateLogsRequest(), request)
+	assertExportRequestJSONEqual(f.t, generateLogsRequest(), request)
 	return NewExportResponse(), f.err
 }
 

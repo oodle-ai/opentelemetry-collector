@@ -147,7 +147,10 @@ func (ms Profile) SetDuration(v pcommon.Timestamp) {
 
 // PeriodType returns the periodtype associated with this Profile.
 func (ms Profile) PeriodType() ValueType {
-	return newValueType(&ms.orig.PeriodType, ms.state)
+	if ms.orig.PeriodType == nil {
+		ms.orig.PeriodType = &otlpprofiles.ValueType{}
+	}
+	return newValueType(ms.orig.PeriodType, ms.state)
 }
 
 // Period returns the period associated with this Profile.
@@ -194,7 +197,11 @@ func (ms Profile) CopyTo(dest Profile) {
 	dest.SetKeepFrames(ms.KeepFrames())
 	dest.SetStartTime(ms.StartTime())
 	dest.SetDuration(ms.Duration())
-	ms.PeriodType().CopyTo(dest.PeriodType())
+	if ms.orig.PeriodType != nil {
+		ms.PeriodType().CopyTo(dest.PeriodType())
+	} else {
+		dest.orig.PeriodType = nil
+	}
 	dest.SetPeriod(ms.Period())
 	ms.Comment().CopyTo(dest.Comment())
 	dest.SetDefaultSampleType(ms.DefaultSampleType())

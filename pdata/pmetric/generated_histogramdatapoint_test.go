@@ -145,7 +145,10 @@ func fillTestHistogramDataPoint(tv HistogramDataPoint) {
 	tv.orig.ExplicitBounds = []float64{1, 2, 3}
 	fillTestExemplarSlice(newExemplarSlice(&tv.orig.Exemplars, tv.state))
 	tv.orig.Flags = 1
-	tv.orig.Sum_ = &otlpmetrics.HistogramDataPoint_Sum{Sum: float64(17.13)}
-	tv.orig.Min_ = &otlpmetrics.HistogramDataPoint_Min{Min: float64(9.23)}
-	tv.orig.Max_ = &otlpmetrics.HistogramDataPoint_Max{Max: float64(182.55)}
+	valSum := float64(17.13)
+	tv.orig.Sum = &valSum
+	valMin := float64(9.23)
+	tv.orig.Min = &valMin
+	valMax := float64(182.55)
+	tv.orig.Max = &valMax
 }

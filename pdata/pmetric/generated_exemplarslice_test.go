@@ -8,6 +8,7 @@ package pmetric
 
 import (
 	"testing"
+	"unsafe"
 
 	"github.com/stretchr/testify/assert"
 
@@ -19,7 +20,7 @@ func TestExemplarSlice(t *testing.T) {
 	es := NewExemplarSlice()
 	assert.Equal(t, 0, es.Len())
 	state := internal.StateMutable
-	es = newExemplarSlice(&[]otlpmetrics.Exemplar{}, &state)
+	es = newExemplarSlice(&[]*otlpmetrics.Exemplar{}, &state)
 	assert.Equal(t, 0, es.Len())
 
 	emptyVal := NewExemplar()
@@ -35,7 +36,7 @@ func TestExemplarSlice(t *testing.T) {
 
 func TestExemplarSliceReadOnly(t *testing.T) {
 	sharedState := internal.StateReadOnly
-	es := newExemplarSlice(&[]otlpmetrics.Exemplar{}, &sharedState)
+	es := newExemplarSlice(&[]*otlpmetrics.Exemplar{}, &sharedState)
 	assert.Equal(t, 0, es.Len())
 	assert.Panics(t, func() { es.AppendEmpty() })
 	assert.Panics(t, func() { es.EnsureCapacity(2) })
@@ -122,6 +123,22 @@ func TestExemplarSlice_RemoveIf(t *testing.T) {
 	assert.Equal(t, 5, filtered.Len())
 }
 
+func TestExemplarSlice_Sort(t *testing.T) {
+	es := generateTestExemplarSlice()
+	es.Sort(func(a, b Exemplar) bool {
+		return uintptr(unsafe.Pointer(a.orig)) < uintptr(unsafe.Pointer(b.orig))
+	})
+	for i := 1; i < es.Len(); i++ {
+		assert.True(t, uintptr(unsafe.Pointer(es.At(i-1).orig)) < uintptr(unsafe.Pointer(es.At(i).orig)))
+	}
+	es.Sort(func(a, b Exemplar) bool {
+		return uintptr(unsafe.Pointer(a.orig)) > uintptr(unsafe.Pointer(b.orig))
+	})
+	for i := 1; i < es.Len(); i++ {
+		assert.True(t, uintptr(unsafe.Pointer(es.At(i-1).orig)) > uintptr(unsafe.Pointer(es.At(i).orig)))
+	}
+}
+
 func generateTestExemplarSlice() ExemplarSlice {
 	es := NewExemplarSlice()
 	fillTestExemplarSlice(es)
@@ -129,9 +146,9 @@ func generateTestExemplarSlice() ExemplarSlice {
 }
 
 func fillTestExemplarSlice(es ExemplarSlice) {
-	*es.orig = make([]otlpmetrics.Exemplar, 7)
+	*es.orig = make([]*otlpmetrics.Exemplar, 7)
 	for i := 0; i < 7; i++ {
-		(*es.orig)[i] = otlpmetrics.Exemplar{}
-		fillTestExemplar(newExemplar(&(*es.orig)[i], es.state))
+		(*es.orig)[i] = &otlpmetrics.Exemplar{}
+		fillTestExemplar(newExemplar((*es.orig)[i], es.state))
 	}
 }

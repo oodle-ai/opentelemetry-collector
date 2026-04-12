@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -70,7 +71,10 @@ func generateTestScopeMetrics() ScopeMetrics {
 }
 
 func fillTestScopeMetrics(tv ScopeMetrics) {
-	internal.FillTestInstrumentationScope(internal.NewInstrumentationScope(&tv.orig.Scope, tv.state))
+	if tv.orig.Scope == nil {
+		tv.orig.Scope = &otlpcommon.InstrumentationScope{}
+	}
+	internal.FillTestInstrumentationScope(internal.NewInstrumentationScope(tv.orig.Scope, tv.state))
 	tv.orig.SchemaUrl = "https://opentelemetry.io/schemas/1.5.0"
 	fillTestMetricSlice(newMetricSlice(&tv.orig.Metrics, tv.state))
 }

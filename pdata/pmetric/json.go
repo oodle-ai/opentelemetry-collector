@@ -9,7 +9,10 @@ import (
 	jsoniter "github.com/json-iterator/go"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 	otlpmetrics "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/json"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal/otlp"
 )
@@ -62,6 +65,9 @@ func (ms ResourceMetrics) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "resource":
+			if ms.orig.Resource == nil {
+				ms.orig.Resource = &otlpresource.Resource{}
+			}
 			json.ReadResource(iter, ms.orig.Resource)
 		case "scopeMetrics", "scope_metrics":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
@@ -81,6 +87,9 @@ func (ms ScopeMetrics) unmarshalJsoniter(iter *jsoniter.Iterator) {
 	iter.ReadObjectCB(func(iter *jsoniter.Iterator, f string) bool {
 		switch f {
 		case "scope":
+			if ms.orig.Scope == nil {
+				ms.orig.Scope = &otlpcommon.InstrumentationScope{}
+			}
 			json.ReadScope(iter, ms.orig.Scope)
 		case "metrics":
 			iter.ReadArrayCB(func(iter *jsoniter.Iterator) bool {
@@ -330,6 +339,8 @@ func (ms ExponentialHistogramDataPoint) unmarshalJsoniter(iter *jsoniter.Iterato
 		case "min":
 			minVal := json.ReadFloat64(iter)
 			ms.orig.Min = &minVal
+		case "zeroThreshold", "zero_threshold":
+			ms.orig.ZeroThreshold = json.ReadFloat64(iter)
 		default:
 			iter.Skip()
 		}
@@ -417,13 +428,11 @@ func (ms Exemplar) unmarshalJsoniter(iter *jsoniter.Iterator) {
 				AsDouble: json.ReadFloat64(iter),
 			}
 		case "traceId", "trace_id":
-			//if err := ms.orig.TraceId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-			//	iter.ReportError("exemplar.traceId", fmt.Sprintf("parse trace_id:%v", err))
-			//}
+			(*data.TraceID)(&ms.orig.TraceId).
+				UnmarshalJsoniter(iter, "exemplar.traceId", "parse trace_id:%v")
 		case "spanId", "span_id":
-			//if err := ms.orig.SpanId.UnmarshalJSON([]byte(iter.ReadString())); err != nil {
-			//	iter.ReportError("exemplar.spanId", fmt.Sprintf("parse span_id:%v", err))
-			//}
+			(*data.SpanID)(&ms.orig.SpanId).
+				UnmarshalJsoniter(iter, "exemplar.spanId", "parse span_id:%v")
 		default:
 			iter.Skip()
 		}

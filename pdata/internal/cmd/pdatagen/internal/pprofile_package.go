@@ -9,7 +9,9 @@ var pprofile = &Package{
 	imports: []string{
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
 		`otlpprofiles "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/profiles/v1experimental"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
 	testImports: []string{
@@ -19,7 +21,9 @@ var pprofile = &Package{
 		`"github.com/stretchr/testify/assert"`,
 		``,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
 		`otlpprofiles "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/profiles/v1experimental"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
 	structs: []baseStruct{
@@ -119,6 +123,7 @@ var profileContainer = &messageValueStruct{
 		&messageValueField{
 			fieldName:     "Profile",
 			returnMessage: profile,
+			isPointer:     true,
 		},
 	},
 }
@@ -205,6 +210,7 @@ var profile = &messageValueStruct{
 		&messageValueField{
 			fieldName:     "PeriodType",
 			returnMessage: valueType,
+			isPointer:     true,
 		},
 		&primitiveField{
 			fieldName:  "Period",
@@ -225,7 +231,7 @@ var profile = &messageValueStruct{
 	},
 }
 
-var valueTypeSlice = &sliceOfValues{
+var valueTypeSlice = &sliceOfPtrs{
 	structName: "ValueTypeSlice",
 	element:    valueType,
 }
@@ -256,7 +262,7 @@ var valueType = &messageValueStruct{
 	},
 }
 
-var sampleSlice = &sliceOfValues{
+var sampleSlice = &sliceOfPtrs{
 	structName: "SampleSlice",
 	element:    sample,
 }
@@ -313,7 +319,7 @@ var sample = &messageValueStruct{
 	},
 }
 
-var labelSlice = &sliceOfValues{
+var labelSlice = &sliceOfPtrs{
 	structName: "LabelSlice",
 	element:    label,
 }
@@ -350,7 +356,7 @@ var label = &messageValueStruct{
 	},
 }
 
-var mappingSlice = &sliceOfValues{
+var mappingSlice = &sliceOfPtrs{
 	structName: "MappingSlice",
 	element:    mapping,
 }
@@ -436,7 +442,7 @@ var mapping = &messageValueStruct{
 	},
 }
 
-var locationSlice = &sliceOfValues{
+var locationSlice = &sliceOfPtrs{
 	structName: "LocationSlice",
 	element:    location,
 }
@@ -487,7 +493,7 @@ var location = &messageValueStruct{
 	},
 }
 
-var lineSlice = &sliceOfValues{
+var lineSlice = &sliceOfPtrs{
 	structName: "LineSlice",
 	element:    line,
 }
@@ -518,7 +524,7 @@ var line = &messageValueStruct{
 	},
 }
 
-var functionSlice = &sliceOfValues{
+var functionSlice = &sliceOfPtrs{
 	structName: "FunctionSlice",
 	element:    function,
 }
@@ -562,7 +568,7 @@ var function = &messageValueStruct{
 	},
 }
 
-var attributeUnitSlice = &sliceOfValues{
+var attributeUnitSlice = &sliceOfPtrs{
 	structName: "AttributeUnitSlice",
 	element:    attributeUnit,
 }
@@ -587,7 +593,7 @@ var attributeUnit = &messageValueStruct{
 	},
 }
 
-var linkSlice = &sliceOfValues{
+var linkSlice = &sliceOfPtrs{
 	structName: "LinkSlice",
 	element:    link,
 }

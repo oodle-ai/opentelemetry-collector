@@ -11,7 +11,9 @@ var plog = &Package{
 		``,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
 		`otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
 	testImports: []string{
@@ -22,7 +24,9 @@ var plog = &Package{
 		``,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
 		`otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
 	structs: []baseStruct{
@@ -128,4 +132,5 @@ var logRecord = &messageValueStruct{
 var bodyField = &messageValueField{
 	fieldName:     "Body",
 	returnMessage: anyValue,
+	isPointer:     true,
 }

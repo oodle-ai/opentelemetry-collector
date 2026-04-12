@@ -53,7 +53,7 @@ func (ms {{ .structName }}) MoveTo(dest {{ .structName }}) {
 
 // IsNil returns whether the struct is nil value.
 func (ms {{ .structName }}) IsNil() bool {
-    return ms.orig == nil
+	return ms.{{ .origAccessor }} == nil
 }
 
 {{ if .isCommon -}}

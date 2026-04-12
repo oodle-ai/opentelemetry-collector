@@ -28,7 +28,9 @@ func TestUnmarshalJSONExportResponse(t *testing.T) {
 	jsonStr := `{"extra":"", "partialSuccess": {}}`
 	val := NewExportResponse()
 	assert.NoError(t, val.UnmarshalJSON([]byte(jsonStr)))
-	assert.Equal(t, NewExportResponse(), val)
+	expected := NewExportResponse()
+	expected.PartialSuccess()
+	assert.Equal(t, expected, val)
 }
 
 func TestUnmarshalJsoniterExportPartialSuccess(t *testing.T) {

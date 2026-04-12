@@ -8,6 +8,7 @@ package plog
 
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"
 	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -53,6 +54,9 @@ func (ms ScopeLogs) IsNil() bool {
 
 // Scope returns the scope associated with this ScopeLogs.
 func (ms ScopeLogs) Scope() pcommon.InstrumentationScope {
+	if ms.orig.Scope == nil {
+		ms.orig.Scope = &otlpcommon.InstrumentationScope{}
+	}
 	return pcommon.InstrumentationScope(internal.NewInstrumentationScope(ms.orig.Scope, ms.state))
 }
 
@@ -75,7 +79,11 @@ func (ms ScopeLogs) LogRecords() LogRecordSlice {
 // CopyTo copies all properties from the current struct overriding the destination.
 func (ms ScopeLogs) CopyTo(dest ScopeLogs) {
 	dest.state.AssertMutable()
-	ms.Scope().CopyTo(dest.Scope())
+	if ms.orig.Scope != nil {
+		ms.Scope().CopyTo(dest.Scope())
+	} else {
+		dest.orig.Scope = nil
+	}
 	dest.SetSchemaUrl(ms.SchemaUrl())
 	ms.LogRecords().CopyTo(dest.LogRecords())
 }

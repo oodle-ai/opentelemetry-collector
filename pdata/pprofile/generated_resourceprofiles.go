@@ -9,6 +9,7 @@ package pprofile
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
 	otlpprofiles "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/profiles/v1experimental"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
 
@@ -53,7 +54,10 @@ func (ms ResourceProfiles) IsNil() bool {
 
 // Resource returns the resource associated with this ResourceProfiles.
 func (ms ResourceProfiles) Resource() pcommon.Resource {
-	return pcommon.Resource(internal.NewResource(&ms.orig.Resource, ms.state))
+	if ms.orig.Resource == nil {
+		ms.orig.Resource = &otlpresource.Resource{}
+	}
+	return pcommon.Resource(internal.NewResource(ms.orig.Resource, ms.state))
 }
 
 // SchemaUrl returns the schemaurl associated with this ResourceProfiles.
@@ -75,7 +79,11 @@ func (ms ResourceProfiles) ScopeProfiles() ScopeProfilesSlice {
 // CopyTo copies all properties from the current struct overriding the destination.
 func (ms ResourceProfiles) CopyTo(dest ResourceProfiles) {
 	dest.state.AssertMutable()
-	ms.Resource().CopyTo(dest.Resource())
+	if ms.orig.Resource != nil {
+		ms.Resource().CopyTo(dest.Resource())
+	} else {
+		dest.orig.Resource = nil
+	}
 	dest.SetSchemaUrl(ms.SchemaUrl())
 	ms.ScopeProfiles().CopyTo(dest.ScopeProfiles())
 }

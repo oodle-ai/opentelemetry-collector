@@ -7,10 +7,8 @@ import (
 	"testing"
 	"time"
 
-	gogoproto "github.com/gogo/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 	goproto "google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 
 	otlpcollectortrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/trace/v1"
 	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
@@ -75,37 +73,29 @@ func TestToFromOtlp(t *testing.T) {
 }
 
 func TestResourceSpansWireCompatibility(t *testing.T) {
-	// This test verifies that OTLP ProtoBufs generated using goproto lib in
-	// opentelemetry-proto repository OTLP ProtoBufs generated using gogoproto lib in
-	// this repository are wire compatible.
+	// Verifies a full protobuf marshal → unmarshal → marshal → unmarshal round trip
+	// for ExportTraceServiceRequest (vtproto / golang protobuf generated types).
 
-	// Generate ResourceSpans as pdata struct.
 	traces := NewTraces()
 	fillTestResourceSpansSlice(traces.ResourceSpans())
 
-	// Marshal its underlying ProtoBuf to wire.
-	wire1, err := gogoproto.Marshal(traces.getOrig())
+	wire1, err := goproto.Marshal(traces.getOrig())
 	assert.NoError(t, err)
-	assert.NotNil(t, wire1)
+	assert.NotEmpty(t, wire1)
 
-	// Unmarshal from the wire to OTLP Protobuf in goproto's representation.
-	var goprotoMessage emptypb.Empty
-	err = goproto.Unmarshal(wire1, &goprotoMessage)
+	var decoded otlpcollectortrace.ExportTraceServiceRequest
+	err = goproto.Unmarshal(wire1, &decoded)
 	assert.NoError(t, err)
 
-	// Marshal to the wire again.
-	wire2, err := goproto.Marshal(&goprotoMessage)
+	wire2, err := goproto.Marshal(&decoded)
 	assert.NoError(t, err)
-	assert.NotNil(t, wire2)
+	assert.NotEmpty(t, wire2)
 
-	// Unmarshal from the wire into gogoproto's representation.
-	var gogoprotoRS2 otlpcollectortrace.ExportTraceServiceRequest
-	err = gogoproto.Unmarshal(wire2, &gogoprotoRS2)
+	var roundTrip otlpcollectortrace.ExportTraceServiceRequest
+	err = goproto.Unmarshal(wire2, &roundTrip)
 	assert.NoError(t, err)
 
-	// Now compare that the original and final ProtoBuf messages are the same.
-	// This proves that goproto and gogoproto marshaling/unmarshaling are wire compatible.
-	assert.EqualValues(t, traces.getOrig(), &gogoprotoRS2)
+	assert.True(t, goproto.Equal(traces.getOrig(), &roundTrip))
 }
 
 func TestTracesCopyTo(t *testing.T) {
@@ -160,8 +150,7 @@ func BenchmarkTracesUsage(b *testing.B) {
 					s.SetTraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
 					assert.Equal(b, pcommon.TraceID([16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}), s.TraceID())
 					s.SetSpanID([8]byte{1, 2, 3, 4, 5, 6, 7, 8})
-					sp, _ := s.SpanID()
-					assert.Equal(b, pcommon.SpanID([8]byte{1, 2, 3, 4, 5, 6, 7, 8}), sp)
+					assert.Equal(b, pcommon.SpanID([8]byte{1, 2, 3, 4, 5, 6, 7, 8}), s.SpanID())
 				}
 				s := iss.Spans().AppendEmpty()
 				s.SetName("another_span")

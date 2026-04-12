@@ -11,6 +11,8 @@ var ptrace = &Package{
 		``,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 		`otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
@@ -22,6 +24,8 @@ var ptrace = &Package{
 		``,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal/data"`,
+		`otlpcommon "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/common/v1"`,
+		`otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"`,
 		`otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"`,
 		`"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"`,
 	},
@@ -138,6 +142,7 @@ var span = &messageValueStruct{
 		&messageValueField{
 			fieldName:     "Status",
 			returnMessage: spanStatus,
+			isPointer:     true,
 		},
 	},
 }

@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -41,30 +42,87 @@ type Package struct {
 
 const newLine = "\n"
 
+var importAliasRe = regexp.MustCompile(
+	`^\s*(\w+)\s+"[^"]*"$`,
+)
+
+func filterImports(
+	allImports []string,
+	code string,
+) []string {
+	var result []string
+	for _, imp := range allImports {
+		if imp == "" {
+			result = append(result, imp)
+			continue
+		}
+		m := importAliasRe.FindStringSubmatch(imp)
+		if m != nil {
+			alias := m[1]
+			if strings.Contains(code, alias+".") {
+				result = append(result, imp)
+			}
+			continue
+		}
+		pkg := imp
+		pkg = strings.Trim(pkg, `" `)
+		if i := strings.LastIndex(pkg, "/"); i >= 0 {
+			pkg = pkg[i+1:]
+		}
+		if strings.Contains(code, pkg+".") ||
+			strings.Contains(code, `"`+strings.Trim(imp, `" `)+`"`) {
+			result = append(result, imp)
+		}
+	}
+	// Remove trailing empty separators
+	for len(result) > 0 && result[len(result)-1] == "" {
+		result = result[:len(result)-1]
+	}
+	// Remove leading empty separators
+	for len(result) > 0 && result[0] == "" {
+		result = result[1:]
+	}
+	// Remove consecutive empty separators
+	var cleaned []string
+	for i, imp := range result {
+		if imp == "" && i > 0 && result[i-1] == "" {
+			continue
+		}
+		cleaned = append(cleaned, imp)
+	}
+	return cleaned
+}
+
+func writeImports(sb *bytes.Buffer, imports []string) {
+	sb.WriteString("import (" + newLine)
+	for _, imp := range imports {
+		if imp != "" {
+			sb.WriteString("\t" + imp + newLine)
+		} else {
+			sb.WriteString(newLine)
+		}
+	}
+	sb.WriteString(")")
+}
+
 // GenerateFiles generates files with the configured data structures for this Package.
 func (p *Package) GenerateFiles() error {
 	for _, s := range p.structs {
+		var codeBuf bytes.Buffer
+		s.generateStruct(&codeBuf)
+		code := codeBuf.String()
+
 		var sb bytes.Buffer
 		generateHeader(&sb, p.name)
-
-		// Add imports
-		sb.WriteString("import (" + newLine)
-		for _, imp := range p.imports {
-			if imp != "" {
-				sb.WriteString("\t" + imp + newLine)
-			} else {
-				sb.WriteString(newLine)
-			}
-		}
-		sb.WriteString(")")
-
-		// Write all structs
+		writeImports(&sb, filterImports(p.imports, code))
 		sb.WriteString(newLine + newLine)
-		s.generateStruct(&sb)
+		sb.WriteString(code)
 		sb.WriteString(newLine)
 
-		path := filepath.Join("pdata", p.path, "generated_"+strings.ToLower(s.getName())+".go")
-		// ignore gosec complain about permissions being `0644`.
+		path := filepath.Join(
+			"pdata", p.path,
+			"generated_"+strings.ToLower(s.getName())+".go",
+		)
 		//nolint:gosec
 		if err := os.WriteFile(path, sb.Bytes(), 0644); err != nil {
 			return err
@@ -76,30 +134,26 @@ func (p *Package) GenerateFiles() error {
 // GenerateTestFiles generates files with tests for the configured data structures for this Package.
 func (p *Package) GenerateTestFiles() error {
 	for _, s := range p.structs {
+		var codeBuf bytes.Buffer
+		s.generateTests(&codeBuf)
+		if !usedByOtherDataTypes(p.name) {
+			codeBuf.WriteString(newLine + newLine)
+			s.generateTestValueHelpers(&codeBuf)
+		}
+		code := codeBuf.String()
+
 		var sb bytes.Buffer
 		generateHeader(&sb, p.name)
-
-		// Add imports
-		sb.WriteString("import (" + newLine)
-		for _, imp := range p.testImports {
-			if imp != "" {
-				sb.WriteString("\t" + imp + newLine)
-			} else {
-				sb.WriteString(newLine)
-			}
-		}
-		sb.WriteString(")")
-
-		// Write all tests
+		writeImports(
+			&sb, filterImports(p.testImports, code),
+		)
 		sb.WriteString(newLine + newLine)
-		s.generateTests(&sb)
-		if !usedByOtherDataTypes(p.name) {
-			sb.WriteString(newLine + newLine)
-			s.generateTestValueHelpers(&sb)
-		}
+		sb.WriteString(code)
 
-		path := filepath.Join("pdata", p.path, "generated_"+strings.ToLower(s.getName())+"_test.go")
-		// ignore gosec complain about permissions being `0644`.
+		path := filepath.Join(
+			"pdata", p.path,
+			"generated_"+strings.ToLower(s.getName())+"_test.go",
+		)
 		//nolint:gosec
 		if err := os.WriteFile(path, sb.Bytes(), 0644); err != nil {
 			return err
@@ -114,35 +168,35 @@ func (p *Package) GenerateInternalFiles() error {
 		return nil
 	}
 
+	internalSelf := `"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`
+	var internalImports []string
+	for _, imp := range p.imports {
+		if imp != internalSelf {
+			internalImports = append(internalImports, imp)
+		}
+	}
+
 	for _, s := range p.structs {
+		var codeBuf bytes.Buffer
+		s.generateInternal(&codeBuf)
+		codeBuf.WriteString(newLine + newLine)
+		s.generateTestValueHelpers(&codeBuf)
+		code := codeBuf.String()
+
 		var sb bytes.Buffer
 		generateHeader(&sb, "internal")
-
-		// Add imports
-		sb.WriteString("import (" + newLine)
-		for _, imp := range p.imports {
-			if imp == `"github.com/oodle-ai/opentelemetry-collector/pdata/internal"` {
-				continue
-			}
-			if imp != "" {
-				sb.WriteString("\t" + imp + newLine)
-			} else {
-				sb.WriteString(newLine)
-			}
-		}
-		sb.WriteString(")")
-
-		// Write all types and funcs
-		s.generateInternal(&sb)
+		writeImports(
+			&sb,
+			filterImports(internalImports, code),
+		)
+		sb.WriteString(newLine)
+		sb.WriteString(code)
 		sb.WriteString(newLine)
 
-		// Write all tests generate value
-		sb.WriteString(newLine + newLine)
-		s.generateTestValueHelpers(&sb)
-		sb.WriteString(newLine)
-
-		path := filepath.Join("pdata", "internal", "generated_wrapper_"+strings.ToLower(s.getName())+".go")
-		// ignore gosec complain about permissions being `0644`.
+		path := filepath.Join(
+			"pdata", "internal",
+			"generated_wrapper_"+strings.ToLower(s.getName())+".go",
+		)
 		//nolint:gosec
 		if err := os.WriteFile(path, sb.Bytes(), 0644); err != nil {
 			return err

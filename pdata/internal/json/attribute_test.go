@@ -24,8 +24,8 @@ func TestReadArray(t *testing.T) {
 "stringValue":"12312"
 }]}`,
 			want: &otlpcommon.ArrayValue{
-				Values: []otlpcommon.AnyValue{
-					{
+				Values: []*otlpcommon.AnyValue{
+					&otlpcommon.AnyValue{
 						Value: &otlpcommon.AnyValue_StringValue{
 							StringValue: "12312",
 						},
@@ -59,10 +59,10 @@ func TestReadKvlistValue(t *testing.T) {
 }
 }]}`,
 			want: &otlpcommon.KeyValueList{
-				Values: []otlpcommon.KeyValue{
-					{
+				Values: []*otlpcommon.KeyValue{
+					&otlpcommon.KeyValue{
 						Key: "testKey",
-						Value: otlpcommon.AnyValue{
+						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_StringValue{
 								StringValue: "testValue",
 							},
@@ -80,10 +80,10 @@ func TestReadKvlistValue(t *testing.T) {
 }
 }]}`,
 			want: &otlpcommon.KeyValueList{
-				Values: []otlpcommon.KeyValue{
-					{
+				Values: []*otlpcommon.KeyValue{
+					&otlpcommon.KeyValue{
 						Key: "testKey",
-						Value: otlpcommon.AnyValue{
+						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_BoolValue{
 								BoolValue: true,
 							},
@@ -101,10 +101,10 @@ func TestReadKvlistValue(t *testing.T) {
 }
 }]}`,
 			want: &otlpcommon.KeyValueList{
-				Values: []otlpcommon.KeyValue{
-					{
+				Values: []*otlpcommon.KeyValue{
+					&otlpcommon.KeyValue{
 						Key: "testKey",
-						Value: otlpcommon.AnyValue{
+						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_IntValue{
 								IntValue: 1,
 							},
@@ -122,10 +122,10 @@ func TestReadKvlistValue(t *testing.T) {
 }
 }]}`,
 			want: &otlpcommon.KeyValueList{
-				Values: []otlpcommon.KeyValue{
-					{
+				Values: []*otlpcommon.KeyValue{
+					&otlpcommon.KeyValue{
 						Key: "testKey",
-						Value: otlpcommon.AnyValue{
+						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_DoubleValue{
 								DoubleValue: 1.3,
 							},
@@ -152,7 +152,7 @@ func TestReadAttributeUnknownField(t *testing.T) {
 	value := ReadAttribute(iter)
 	//  unknown fields should not be an error
 	assert.NoError(t, iter.Error)
-	assert.EqualValues(t, otlpcommon.KeyValue{}, value)
+	assert.EqualValues(t, &otlpcommon.KeyValue{Value: &otlpcommon.AnyValue{}}, value)
 }
 
 func TestReadAttributeValueUnknownField(t *testing.T) {
@@ -163,7 +163,7 @@ func TestReadAttributeValueUnknownField(t *testing.T) {
 	value := ReadAttribute(iter)
 	//  unknown fields should not be an error
 	assert.NoError(t, iter.Error)
-	assert.EqualValues(t, otlpcommon.KeyValue{Key: "test"}, value)
+	assert.EqualValues(t, &otlpcommon.KeyValue{Key: "test", Value: &otlpcommon.AnyValue{}}, value)
 }
 
 func TestReadValueUnknownField(t *testing.T) {

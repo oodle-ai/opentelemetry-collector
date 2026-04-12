@@ -33,5 +33,5 @@ func (ms TraceID) String() string {
 
 // IsEmpty returns true if id doesn't contain at least one non-zero byte.
 func (ms TraceID) IsEmpty() bool {
-	return data.TraceID(ms).IsEmpty()
+	return data.TraceID(ms[:]).IsEmpty()
 }

@@ -9,6 +9,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	goproto "google.golang.org/protobuf/proto"
 
 	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
@@ -95,7 +96,9 @@ func TestUnmarshalJsoniterResourceLogs(t *testing.T) {
 	val := NewResourceLogs()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.Equal(t, NewResourceLogs(), val)
+	expected := NewResourceLogs()
+	expected.Resource()
+	assert.Equal(t, expected, val)
 }
 
 func TestUnmarshalJsoniterScopeLogs(t *testing.T) {
@@ -105,7 +108,9 @@ func TestUnmarshalJsoniterScopeLogs(t *testing.T) {
 	val := NewScopeLogs()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.Equal(t, NewScopeLogs(), val)
+	expected := NewScopeLogs()
+	expected.Scope()
+	assert.Equal(t, expected, val)
 }
 
 func TestUnmarshalJsoniterLogRecord(t *testing.T) {
@@ -115,7 +120,9 @@ func TestUnmarshalJsoniterLogRecord(t *testing.T) {
 	val := NewLogRecord()
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
-	assert.Equal(t, NewLogRecord(), val)
+	expected := NewLogRecord()
+	expected.Body()
+	assert.Equal(t, expected, val)
 }
 
 func TestUnmarshalJsoniterLogWrongTraceID(t *testing.T) {
@@ -134,6 +141,32 @@ func TestUnmarshalJsoniterLogWrongSpanID(t *testing.T) {
 	NewLogRecord().unmarshalJsoniter(iter)
 	require.Error(t, iter.Error)
 	assert.Contains(t, iter.Error.Error(), "parse span_id")
+}
+
+func TestLogsJSONWireCompatibility(t *testing.T) {
+	logs := NewLogs()
+	fillTestResourceLogsSlice(logs.ResourceLogs())
+
+	json1, err := (&JSONMarshaler{}).MarshalLogs(logs)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, json1)
+
+	decoded, err := (&JSONUnmarshaler{}).UnmarshalLogs(json1)
+	assert.NoError(t, err)
+
+	json2, err := (&JSONMarshaler{}).MarshalLogs(decoded)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, json2)
+
+	roundTrip, err := (&JSONUnmarshaler{}).UnmarshalLogs(json2)
+	assert.NoError(t, err)
+
+	assert.True(t,
+		goproto.Equal(
+			logs.getOrig(),
+			roundTrip.getOrig(),
+		),
+	)
 }
 
 func BenchmarkJSONUnmarshal(b *testing.B) {

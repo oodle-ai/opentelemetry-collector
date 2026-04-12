@@ -7,10 +7,8 @@ import (
 	"testing"
 	"time"
 
-	gogoproto "github.com/gogo/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 	goproto "google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 
 	otlpcollectorlog "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/logs/v1"
 	otlplogs "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/logs/v1"
@@ -74,37 +72,29 @@ func TestToFromLogOtlp(t *testing.T) {
 }
 
 func TestResourceLogsWireCompatibility(t *testing.T) {
-	// This test verifies that OTLP ProtoBufs generated using goproto lib in
-	// opentelemetry-proto repository OTLP ProtoBufs generated using gogoproto lib in
-	// this repository are wire compatible.
+	// Verifies a full protobuf marshal → unmarshal → marshal → unmarshal round trip
+	// for ExportLogsServiceRequest (vtproto / golang protobuf generated types).
 
-	// Generate ResourceLogs as pdata struct.
 	logs := NewLogs()
 	fillTestResourceLogsSlice(logs.ResourceLogs())
 
-	// Marshal its underlying ProtoBuf to wire.
-	wire1, err := gogoproto.Marshal(logs.getOrig())
+	wire1, err := goproto.Marshal(logs.getOrig())
 	assert.NoError(t, err)
-	assert.NotNil(t, wire1)
+	assert.NotEmpty(t, wire1)
 
-	// Unmarshal from the wire to OTLP Protobuf in goproto's representation.
-	var goprotoMessage emptypb.Empty
-	err = goproto.Unmarshal(wire1, &goprotoMessage)
+	var decoded otlpcollectorlog.ExportLogsServiceRequest
+	err = goproto.Unmarshal(wire1, &decoded)
 	assert.NoError(t, err)
 
-	// Marshal to the wire again.
-	wire2, err := goproto.Marshal(&goprotoMessage)
+	wire2, err := goproto.Marshal(&decoded)
 	assert.NoError(t, err)
-	assert.NotNil(t, wire2)
+	assert.NotEmpty(t, wire2)
 
-	// Unmarshal from the wire into gogoproto's representation.
-	var gogoprotoRS2 otlpcollectorlog.ExportLogsServiceRequest
-	err = gogoproto.Unmarshal(wire2, &gogoprotoRS2)
+	var roundTrip otlpcollectorlog.ExportLogsServiceRequest
+	err = goproto.Unmarshal(wire2, &roundTrip)
 	assert.NoError(t, err)
 
-	// Now compare that the original and final ProtoBuf messages are the same.
-	// This proves that goproto and gogoproto marshaling/unmarshaling are wire compatible.
-	assert.EqualValues(t, logs.getOrig(), &gogoprotoRS2)
+	assert.True(t, goproto.Equal(logs.getOrig(), &roundTrip))
 }
 
 func TestLogsCopyTo(t *testing.T) {

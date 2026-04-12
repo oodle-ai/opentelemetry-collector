@@ -57,7 +57,12 @@ func (ms ExportResponse) UnmarshalJSON(data []byte) error {
 
 // PartialSuccess returns the ExportPartialSuccess associated with this ExportResponse.
 func (ms ExportResponse) PartialSuccess() ExportPartialSuccess {
-	return newExportPartialSuccess(ms.orig.PartialSuccess, ms.state)
+	if ms.orig.PartialSuccess == nil {
+		ms.orig.PartialSuccess = &otlpcollectorlog.ExportLogsPartialSuccess{}
+	}
+	return newExportPartialSuccess(
+		ms.orig.PartialSuccess, ms.state,
+	)
 }
 
 func (ms ExportResponse) unmarshalJsoniter(iter *jsoniter.Iterator) {

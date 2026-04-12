@@ -27,8 +27,8 @@ var logsRequestJSON = []byte(`
 							"body": {
 								"stringValue": "test_log_record"
 							},
-							"traceId": "",
-							"spanId": ""
+							"traceId": "00000000000000000000000000000000",
+							"spanId": "0000000000000000"
 						}
 					]
 				}

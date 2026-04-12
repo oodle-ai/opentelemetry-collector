@@ -10,12 +10,16 @@ var pprofileotlp = &Package{
 	name: "pprofileotlp",
 	path: filepath.Join("pprofile", "pprofileotlp"),
 	imports: []string{
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
 		`otlpcollectorprofile "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/profiles/v1experimental"`,
 	},
 	testImports: []string{
 		`"testing"`,
 		``,
 		`"github.com/stretchr/testify/assert"`,
+		``,
+		`"github.com/oodle-ai/opentelemetry-collector/pdata/internal"`,
+		`otlpcollectorprofile "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/collector/profiles/v1experimental"`,
 	},
 	structs: []baseStruct{
 		exportProfilesPartialSuccess,

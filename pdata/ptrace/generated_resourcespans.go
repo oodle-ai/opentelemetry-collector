@@ -8,6 +8,7 @@ package ptrace
 
 import (
 	"github.com/oodle-ai/opentelemetry-collector/pdata/internal"
+	otlpresource "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/resource/v1"
 	otlptrace "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/trace/v1"
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -53,6 +54,9 @@ func (ms ResourceSpans) IsNil() bool {
 
 // Resource returns the resource associated with this ResourceSpans.
 func (ms ResourceSpans) Resource() pcommon.Resource {
+	if ms.orig.Resource == nil {
+		ms.orig.Resource = &otlpresource.Resource{}
+	}
 	return pcommon.Resource(internal.NewResource(ms.orig.Resource, ms.state))
 }
 
@@ -75,7 +79,11 @@ func (ms ResourceSpans) ScopeSpans() ScopeSpansSlice {
 // CopyTo copies all properties from the current struct overriding the destination.
 func (ms ResourceSpans) CopyTo(dest ResourceSpans) {
 	dest.state.AssertMutable()
-	ms.Resource().CopyTo(dest.Resource())
+	if ms.orig.Resource != nil {
+		ms.Resource().CopyTo(dest.Resource())
+	} else {
+		dest.orig.Resource = nil
+	}
 	dest.SetSchemaUrl(ms.SchemaUrl())
 	ms.ScopeSpans().CopyTo(dest.ScopeSpans())
 }
