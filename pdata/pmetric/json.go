@@ -339,6 +339,8 @@ func (ms ExponentialHistogramDataPoint) unmarshalJsoniter(iter *jsoniter.Iterato
 		case "min":
 			minVal := json.ReadFloat64(iter)
 			ms.orig.Min = &minVal
+		case "zeroThreshold", "zero_threshold":
+			ms.orig.ZeroThreshold = json.ReadFloat64(iter)
 		default:
 			iter.Skip()
 		}

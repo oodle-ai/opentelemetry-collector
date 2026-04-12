@@ -146,6 +146,8 @@ func (dest Span) unmarshalJsoniter(iter *jsoniter.Iterator) {
 			})
 		case "droppedLinksCount", "dropped_links_count":
 			dest.orig.DroppedLinksCount = json.ReadUint32(iter)
+		case "flags":
+			dest.orig.Flags = json.ReadUint32(iter)
 		case "status":
 			if dest.orig.Status == nil {
 				dest.orig.Status = &otlptrace.Status{}
@@ -190,6 +192,8 @@ func (dest SpanLink) unmarshalJsoniter(iter *jsoniter.Iterator) {
 			})
 		case "droppedAttributesCount", "dropped_attributes_count":
 			dest.orig.DroppedAttributesCount = json.ReadUint32(iter)
+		case "flags":
+			dest.orig.Flags = json.ReadUint32(iter)
 		default:
 			iter.Skip()
 		}

@@ -8,6 +8,7 @@ import (
 
 	jsoniter "github.com/json-iterator/go"
 	"github.com/stretchr/testify/assert"
+	goproto "google.golang.org/protobuf/proto"
 
 	"github.com/oodle-ai/opentelemetry-collector/pdata/pcommon"
 )
@@ -233,6 +234,32 @@ func TestUnmarshalJsoniterSpanEvent(t *testing.T) {
 	val.unmarshalJsoniter(iter)
 	assert.NoError(t, iter.Error)
 	assert.Equal(t, NewSpanEvent(), val)
+}
+
+func TestTracesJSONWireCompatibility(t *testing.T) {
+	traces := NewTraces()
+	fillTestResourceSpansSlice(traces.ResourceSpans())
+
+	json1, err := (&JSONMarshaler{}).MarshalTraces(traces)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, json1)
+
+	decoded, err := (&JSONUnmarshaler{}).UnmarshalTraces(json1)
+	assert.NoError(t, err)
+
+	json2, err := (&JSONMarshaler{}).MarshalTraces(decoded)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, json2)
+
+	roundTrip, err := (&JSONUnmarshaler{}).UnmarshalTraces(json2)
+	assert.NoError(t, err)
+
+	assert.True(t,
+		goproto.Equal(
+			traces.getOrig(),
+			roundTrip.getOrig(),
+		),
+	)
 }
 
 func BenchmarkJSONUnmarshal(b *testing.B) {
