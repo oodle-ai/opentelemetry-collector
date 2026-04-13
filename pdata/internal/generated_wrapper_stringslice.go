@@ -6,11 +6,8 @@
 
 package internal
 
-import (
-)
-
 type StringSlice struct {
-	orig *[]string
+	orig  *[]string
 	state *State
 }
 
@@ -35,5 +32,3 @@ func GenerateTestStringSlice() StringSlice {
 
 	return StringSlice{&orig, &state}
 }
-
-

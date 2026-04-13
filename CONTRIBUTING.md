@@ -678,18 +678,100 @@ target would result in unacceptable latency in the local development loop.
 The default repo-level target (i.e. running `make` at the root of the repo) should meaningfully validate the entire repo. This should include
 running the default common target for each module as well as additional repo-level targets.
 
+## How to regenerate code
+
+There are two layers of code generation, plus hand-written files
+that are **not** generated and must be maintained manually.
+
+### Prerequisites
+
+Install the required Go protoc plugins (once per machine):
+
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28.1
+go install github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto@v0.6.0
+```
+
+You also need `protoc` installed locally
+(e.g. `brew install protobuf` on macOS).
+
+### Layer 1 — Protobuf generation (`make genproto`)
+
+Generates the low-level protobuf Go types from `.proto` files into
+`pdata/internal/data/protogen/` (22 files: `*.pb.go`,
+`*_vtproto.pb.go`).
+
+```bash
+GOBIN=$(go env GOPATH)/bin make genproto
+```
+
+`GOBIN` must point to the directory containing the `protoc-gen-go`
+and `protoc-gen-go-vtproto` binaries.
+
+You generally do **not** need to run this unless the OTLP proto
+version changes.
+
+### Layer 2 — pdata wrapper generation (`make genpdata`)
+
+Generates the high-level pdata wrapper types (structs, accessors,
+setters, `CopyTo`, tests) from the templates in
+`pdata/internal/cmd/pdatagen/internal/`. Produces ~161 files
+(`generated_*.go` and `generated_*_test.go`) across the `pdata/`
+subtree.
+
+```bash
+make genpdata
+```
+
+Run this after modifying any `pdatagen` templates.
+
+### Full regeneration sequence
+
+```bash
+# Step 1: Generate protobuf Go types (only if OTLP proto changed)
+GOBIN=$(go env GOPATH)/bin make genproto
+
+# Step 2: Generate pdata wrapper types
+make genpdata
+
+# Step 3: Verify
+cd pdata && go test ./...
+```
+
+### Hand-written files (not generated)
+
+The following files contain custom logic and must be maintained
+manually. They are **not** produced by either `genproto` or
+`genpdata`:
+
+- JSON unmarshalers: `pdata/ptrace/json.go`,
+  `pdata/plog/json.go`, `pdata/pmetric/json.go`
+- JSON marshaler: `pdata/internal/json/json.go`
+- Internal ID types: `pdata/internal/data/traceid.go`,
+  `pdata/internal/data/spanid.go`,
+  `pdata/internal/data/bytesid.go`
+
+When new fields are added in the OTLP protocol, the JSON
+unmarshalers must be updated by hand to handle those fields.
+
 ## How to update the OTLP protocol version
 
-When a new OTLP version is published, the following steps are required to update this code base:
+When a new OTLP version is published, the following steps are
+required to update this code base:
 
-1. Edit the top-level Makefile's `OPENTELEMETRY_PROTO_VERSION` variable
-2. Run `make genproto` 
-3. Inspect modifications to the generated code in `pdata/internal/data/protogen`
-4. When new fields are added in the protocol, make corresponding changes in `pdata/internal/cmd/pdatagen/internal`
-5. Run `make genpdata` 
+1. Edit the top-level Makefile's `OPENTELEMETRY_PROTO_VERSION`
+   variable
+2. Run `GOBIN=$(go env GOPATH)/bin make genproto`
+3. Inspect modifications to the generated code in
+   `pdata/internal/data/protogen`
+4. When new fields are added in the protocol, make corresponding
+   changes in `pdata/internal/cmd/pdatagen/internal`
+5. Run `make genpdata`
 6. Inspect modifications to the generated code in `pdata/*`
-7. Run `make genproto-cleanup`, to remove temporary files
-8. Update the supported OTLP version in [README.md](./README.md).
+7. Update the hand-written JSON unmarshalers if new fields were
+   added
+8. Run `cd pdata && go test ./...` to verify
+9. Update the supported OTLP version in [README.md](./README.md).
 
 ## Exceptions
 

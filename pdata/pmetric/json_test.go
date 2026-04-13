@@ -629,4 +629,3 @@ func TestMetricsJSONWireCompatibility(t *testing.T) {
 		),
 	)
 }
-

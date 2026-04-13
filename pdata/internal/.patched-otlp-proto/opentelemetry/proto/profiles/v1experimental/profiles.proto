@@ -24,7 +24,7 @@ option csharp_namespace = "OpenTelemetry.Proto.Profiles.V1Experimental";
 option java_multiple_files = true;
 option java_package = "io.opentelemetry.proto.profiles.v1experimental";
 option java_outer_classname = "ProfilesProto";
-option go_package = "go.opentelemetry.io/proto/otlp/profiles/v1experimental";
+option go_package = "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/profiles/v1experimental";
 
 //                Relationships Diagram
 //
