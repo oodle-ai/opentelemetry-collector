@@ -171,6 +171,43 @@ PROTO_PACKAGE=github.com/oodle-ai/opentelemetry-collector/$(PROTO_TARGET_GEN_DIR
 # Intermediate directory used during generation.
 PROTO_INTERMEDIATE_DIR=pdata/internal/.patched-otlp-proto
 
+VTPROTO_FEATURES=marshal+marshal_strict+unmarshal+unmarshal_unsafe+size+equal+clone+pool+grpc
+VTPROTO_POOL_TYPES=\
+	$(PROTO_PACKAGE)/common/v1.AnyValue \
+	$(PROTO_PACKAGE)/common/v1.ArrayValue \
+	$(PROTO_PACKAGE)/common/v1.KeyValueList \
+	$(PROTO_PACKAGE)/common/v1.KeyValue \
+	$(PROTO_PACKAGE)/common/v1.InstrumentationScope \
+	$(PROTO_PACKAGE)/resource/v1.Resource \
+	$(PROTO_PACKAGE)/trace/v1.TracesData \
+	$(PROTO_PACKAGE)/trace/v1.ResourceSpans \
+	$(PROTO_PACKAGE)/trace/v1.ScopeSpans \
+	$(PROTO_PACKAGE)/trace/v1.Span \
+	$(PROTO_PACKAGE)/trace/v1.Span_Event \
+	$(PROTO_PACKAGE)/trace/v1.Span_Link \
+	$(PROTO_PACKAGE)/logs/v1.LogsData \
+	$(PROTO_PACKAGE)/logs/v1.ResourceLogs \
+	$(PROTO_PACKAGE)/logs/v1.ScopeLogs \
+	$(PROTO_PACKAGE)/logs/v1.LogRecord \
+	$(PROTO_PACKAGE)/metrics/v1.MetricsData \
+	$(PROTO_PACKAGE)/metrics/v1.ResourceMetrics \
+	$(PROTO_PACKAGE)/metrics/v1.ScopeMetrics \
+	$(PROTO_PACKAGE)/metrics/v1.Metric \
+	$(PROTO_PACKAGE)/metrics/v1.Gauge \
+	$(PROTO_PACKAGE)/metrics/v1.Sum \
+	$(PROTO_PACKAGE)/metrics/v1.Histogram \
+	$(PROTO_PACKAGE)/metrics/v1.ExponentialHistogram \
+	$(PROTO_PACKAGE)/metrics/v1.Summary \
+	$(PROTO_PACKAGE)/metrics/v1.NumberDataPoint \
+	$(PROTO_PACKAGE)/metrics/v1.HistogramDataPoint \
+	$(PROTO_PACKAGE)/metrics/v1.ExponentialHistogramDataPoint \
+	$(PROTO_PACKAGE)/metrics/v1.SummaryDataPoint \
+	$(PROTO_PACKAGE)/metrics/v1.Exemplar \
+	$(PROTO_PACKAGE)/collector/trace/v1.ExportTraceServiceRequest \
+	$(PROTO_PACKAGE)/collector/logs/v1.ExportLogsServiceRequest \
+	$(PROTO_PACKAGE)/collector/metrics/v1.ExportMetricsServiceRequest
+VTPROTO_POOL_OPTS=$(foreach t,$(VTPROTO_POOL_TYPES),--go-vtproto_opt=pool=$(t))
+
 DOCKER_PROTOBUF ?= otel/build-protobuf:0.23.0
 PROTOC := docker run --rm -u ${shell id -u} -v${PWD}:${PWD} -w${PWD}/$(PROTO_INTERMEDIATE_DIR) ${DOCKER_PROTOBUF} --proto_path=${PWD}
 OPWD := ${PWD}
@@ -212,16 +249,15 @@ genproto_sub:
 	# reserved 1000 -> repeated ScopeSpans deprecated_scope_spans = 1000;
 	sed 's/reserved 1000;/repeated ScopeSpans deprecated_scope_spans = 1000;/g' $(PROTO_INTERMEDIATE_DIR)/opentelemetry/proto/trace/v1/trace.proto 1<> $(PROTO_INTERMEDIATE_DIR)/opentelemetry/proto/trace/v1/trace.proto
 
-    # Oodle changes
-	$(foreach file,$(OPENTELEMETRY_PROTO_FILES),$(call exec-command,sed -e 's/import "gogoproto\/gogo.proto";//g' $(OPENTELEMETRY_PROTO_SRC_DIR)/$(file) > $(PROTO_INTERMEDIATE_DIR)/$(file)))
-
 	@echo Generate Go code from .proto files in intermediate directory.
 
-	$(foreach file,$(OPENTELEMETRY_PROTO_FILES),$(call exec-command,cd $(PROTO_INTERMEDIATE_DIR) && protoc --proto_path=${OPWD} --go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" --go-grpc_out=. --plugin protoc-gen-go-grpc="${GOBIN}/protoc-gen-go-grpc" --go-vtproto_out=. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto"  $(PROTO_INCLUDES)  $(file)))
+	$(foreach file,$(OPENTELEMETRY_PROTO_FILES),$(call exec-command,cd $(PROTO_INTERMEDIATE_DIR) && protoc --proto_path=${OPWD} --go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" --go-vtproto_out=. --go-vtproto_opt=features=$(VTPROTO_FEATURES) $(VTPROTO_POOL_OPTS) --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto"  $(PROTO_INCLUDES)  $(file)))
 
 	@echo Move generated code to target directory.
 	mkdir -p $(PROTO_TARGET_GEN_DIR)
 	cp -R $(PROTO_INTERMEDIATE_DIR)/$(PROTO_PACKAGE)/* $(PROTO_TARGET_GEN_DIR)/
+	# Remove protoc-gen-go-grpc output; vtproto grpc feature provides these.
+	find $(PROTO_TARGET_GEN_DIR) -name '*_grpc.pb.go' -delete
 	rm -rf $(PROTO_INTERMEDIATE_DIR)/go.opentelemetry.io
 
 	@rm -rf $(OPENTELEMETRY_PROTO_SRC_DIR)/*

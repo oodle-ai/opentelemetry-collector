@@ -18,13 +18,12 @@ package opentelemetry.proto.metrics.v1;
 
 import "opentelemetry/proto/common/v1/common.proto";
 import "opentelemetry/proto/resource/v1/resource.proto";
-import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
 option csharp_namespace = "OpenTelemetry.Proto.Metrics.V1";
 option java_multiple_files = true;
 option java_package = "io.opentelemetry.proto.metrics.v1";
 option java_outer_classname = "MetricsProto";
-option go_package = "go.opentelemetry.io/proto/otlp/metrics/v1";
+option go_package = "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/metrics/v1";
 
 // MetricsData represents the metrics data that can be stored in a persistent
 // storage, OR can be embedded by other protocols that transfer OTLP metrics
@@ -37,7 +36,6 @@ option go_package = "go.opentelemetry.io/proto/otlp/metrics/v1";
 // When new fields are added into this message, the OTLP request MUST be updated
 // as well.
 message MetricsData {
-  option (vtproto.mempool) = true;
   // An array of ResourceMetrics.
   // For data coming from a single resource this array will typically contain
   // one element. Intermediary nodes that receive data from multiple origins
@@ -48,8 +46,7 @@ message MetricsData {
 
 // A collection of ScopeMetrics from a Resource.
 message ResourceMetrics {
-  option (vtproto.mempool) = true;
-  reserved 1000;
+  repeated ScopeMetrics deprecated_scope_metrics = 1000;
 
   // The resource for the metrics in this message.
   // If this field is not set then no resource info is known.
@@ -68,8 +65,6 @@ message ResourceMetrics {
 
 // A collection of Metrics produced by an Scope.
 message ScopeMetrics {
-  option (vtproto.mempool) = true;
-
   // The instrumentation scope information for the metrics in this message.
   // Semantically when InstrumentationScope isn't set, it is equivalent with
   // an empty instrumentation scope name (unknown).
@@ -171,8 +166,6 @@ message ScopeMetrics {
 // when the start time is truly unknown, setting StartTimeUnixNano is
 // strongly encouraged.
 message Metric {
-  option (vtproto.mempool) = true;
-
   reserved 4, 6, 8;
 
   // name of the metric.
@@ -216,14 +209,12 @@ message Metric {
 // AggregationTemporality is not included. Consequently, this also means
 // "StartTimeUnixNano" is ignored for all data points.
 message Gauge {
-  option (vtproto.mempool) = true;
   repeated NumberDataPoint data_points = 1;
 }
 
 // Sum represents the type of a scalar metric that is calculated as a sum of all
 // reported measurements over a time interval.
 message Sum {
-  option (vtproto.mempool) = true;
   repeated NumberDataPoint data_points = 1;
 
   // aggregation_temporality describes if the aggregator reports delta changes
@@ -237,7 +228,6 @@ message Sum {
 // Histogram represents the type of a metric that is calculated by aggregating
 // as a Histogram of all reported measurements over a time interval.
 message Histogram {
-  option (vtproto.mempool) = true;
   repeated HistogramDataPoint data_points = 1;
 
   // aggregation_temporality describes if the aggregator reports delta changes
@@ -248,7 +238,6 @@ message Histogram {
 // ExponentialHistogram represents the type of a metric that is calculated by aggregating
 // as a ExponentialHistogram of all reported double measurements over a time interval.
 message ExponentialHistogram {
-  option (vtproto.mempool) = true;
   repeated ExponentialHistogramDataPoint data_points = 1;
 
   // aggregation_temporality describes if the aggregator reports delta changes
@@ -263,7 +252,6 @@ message ExponentialHistogram {
 // While they can be useful in some applications, histogram data points are
 // recommended for new applications.
 message Summary {
-  option (vtproto.mempool) = true;
   repeated SummaryDataPoint data_points = 1;
 }
 
@@ -361,7 +349,6 @@ enum DataPointFlags {
 // NumberDataPoint is a single data point in a timeseries that describes the
 // time-varying scalar value of a metric.
 message NumberDataPoint {
-  option (vtproto.mempool) = true;
   reserved 1;
 
   // The set of key/value pairs that uniquely identify the timeseries from
@@ -410,7 +397,6 @@ message NumberDataPoint {
 // "explicit_bounds" and "bucket_counts" must be omitted and only "count" and
 // "sum" are known.
 message HistogramDataPoint {
-  option (vtproto.mempool) = true;
   reserved 1;
 
   // The set of key/value pairs that uniquely identify the timeseries from
@@ -492,7 +478,6 @@ message HistogramDataPoint {
 // distribution of those values across a set of buckets.
 //
 message ExponentialHistogramDataPoint {
-  option (vtproto.mempool) = true;
   // The set of key/value pairs that uniquely identify the timeseries from
   // where this point belongs. The list may be empty (may contain 0 elements).
   // Attribute keys MUST be unique (it is not allowed to have more than one
@@ -606,7 +591,6 @@ message ExponentialHistogramDataPoint {
 // SummaryDataPoint is a single data point in a timeseries that describes the
 // time-varying values of a Summary metric.
 message SummaryDataPoint {
-  option (vtproto.mempool) = true;
   reserved 1;
 
   // The set of key/value pairs that uniquely identify the timeseries from
@@ -674,7 +658,6 @@ message SummaryDataPoint {
 // was recorded, for example the span and trace ID of the active span when the
 // exemplar was recorded.
 message Exemplar {
-  option (vtproto.mempool) = true;
   reserved 1;
 
   // The set of key/value pairs that were filtered out by the aggregator, but

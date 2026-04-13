@@ -25,7 +25,7 @@ func TestReadArray(t *testing.T) {
 }]}`,
 			want: &otlpcommon.ArrayValue{
 				Values: []*otlpcommon.AnyValue{
-					&otlpcommon.AnyValue{
+					{
 						Value: &otlpcommon.AnyValue_StringValue{
 							StringValue: "12312",
 						},
@@ -60,7 +60,7 @@ func TestReadKvlistValue(t *testing.T) {
 }]}`,
 			want: &otlpcommon.KeyValueList{
 				Values: []*otlpcommon.KeyValue{
-					&otlpcommon.KeyValue{
+					{
 						Key: "testKey",
 						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_StringValue{
@@ -81,7 +81,7 @@ func TestReadKvlistValue(t *testing.T) {
 }]}`,
 			want: &otlpcommon.KeyValueList{
 				Values: []*otlpcommon.KeyValue{
-					&otlpcommon.KeyValue{
+					{
 						Key: "testKey",
 						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_BoolValue{
@@ -102,7 +102,7 @@ func TestReadKvlistValue(t *testing.T) {
 }]}`,
 			want: &otlpcommon.KeyValueList{
 				Values: []*otlpcommon.KeyValue{
-					&otlpcommon.KeyValue{
+					{
 						Key: "testKey",
 						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_IntValue{
@@ -123,7 +123,7 @@ func TestReadKvlistValue(t *testing.T) {
 }]}`,
 			want: &otlpcommon.KeyValueList{
 				Values: []*otlpcommon.KeyValue{
-					&otlpcommon.KeyValue{
+					{
 						Key: "testKey",
 						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_DoubleValue{

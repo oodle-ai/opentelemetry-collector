@@ -58,7 +58,7 @@ func TestReadScope(t *testing.T) {
 				Name:    "my_name",
 				Version: "my_version",
 				Attributes: []*otlpcommon.KeyValue{
-					&otlpcommon.KeyValue{
+					{
 						Key: "string_key",
 						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_StringValue{
@@ -66,7 +66,7 @@ func TestReadScope(t *testing.T) {
 							},
 						},
 					},
-					&otlpcommon.KeyValue{
+					{
 						Key: "bool_key",
 						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_BoolValue{
@@ -74,7 +74,7 @@ func TestReadScope(t *testing.T) {
 							},
 						},
 					},
-					&otlpcommon.KeyValue{
+					{
 						Key: "int_key",
 						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_IntValue{
@@ -82,7 +82,7 @@ func TestReadScope(t *testing.T) {
 							},
 						},
 					},
-					&otlpcommon.KeyValue{
+					{
 						Key: "double_key",
 						Value: &otlpcommon.AnyValue{
 							Value: &otlpcommon.AnyValue_DoubleValue{

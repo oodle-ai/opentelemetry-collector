@@ -59,7 +59,7 @@ package opentelemetry.proto.profiles.v1experimental;
 import "opentelemetry/proto/common/v1/common.proto";
 
 option csharp_namespace = "OpenTelemetry.Proto.Profiles.V1Experimental";
-option go_package = "go.opentelemetry.io/proto/otlp/profiles/v1experimental";
+option go_package = "github.com/oodle-ai/opentelemetry-collector/pdata/internal/data/protogen/profiles/v1experimental";
 
 // Represents a complete profile, including sample types, samples,
 // mappings to binaries, locations, functions, string table, and additional metadata.

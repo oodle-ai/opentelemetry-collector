@@ -394,13 +394,13 @@ func (mf *messageValueField) templateFields(
 	ms *messageValueStruct,
 ) map[string]any {
 	return map[string]any{
-		"isCommon":   usedByOtherDataTypes(mf.returnMessage.packageName),
+		"isCommon":           usedByOtherDataTypes(mf.returnMessage.packageName),
 		"isBaseStructCommon": usedByOtherDataTypes(ms.packageName),
-		"structName":      ms.getName(),
-		"fieldName":       mf.fieldName,
-		"originFieldName": mf.fieldName,
-		"lowerFieldName":  strings.ToLower(mf.fieldName),
-		"returnType":      mf.returnMessage.getName(),
+		"structName":         ms.getName(),
+		"fieldName":          mf.fieldName,
+		"originFieldName":    mf.fieldName,
+		"lowerFieldName":     strings.ToLower(mf.fieldName),
+		"returnType":         mf.returnMessage.getName(),
 		"packageName": func() string {
 			if mf.returnMessage.packageName != ms.packageName {
 				return mf.returnMessage.packageName + "."

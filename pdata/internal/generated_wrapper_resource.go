@@ -11,7 +11,7 @@ import (
 )
 
 type Resource struct {
-	orig *otlpresource.Resource
+	orig  *otlpresource.Resource
 	state *State
 }
 
@@ -37,5 +37,5 @@ func GenerateTestResource() Resource {
 
 func FillTestResource(tv Resource) {
 	FillTestMap(NewMap(&tv.orig.Attributes, tv.state))
-		tv.orig.DroppedAttributesCount = uint32(17)
+	tv.orig.DroppedAttributesCount = uint32(17)
 }

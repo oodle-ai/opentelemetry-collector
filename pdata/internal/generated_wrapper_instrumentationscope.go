@@ -11,7 +11,7 @@ import (
 )
 
 type InstrumentationScope struct {
-	orig *otlpcommon.InstrumentationScope
+	orig  *otlpcommon.InstrumentationScope
 	state *State
 }
 
@@ -36,8 +36,8 @@ func GenerateTestInstrumentationScope() InstrumentationScope {
 }
 
 func FillTestInstrumentationScope(tv InstrumentationScope) {
-		tv.orig.Name = "test_name"
-		tv.orig.Version = "test_version"
+	tv.orig.Name = "test_name"
+	tv.orig.Version = "test_version"
 	FillTestMap(NewMap(&tv.orig.Attributes, tv.state))
-		tv.orig.DroppedAttributesCount = uint32(17)
+	tv.orig.DroppedAttributesCount = uint32(17)
 }
