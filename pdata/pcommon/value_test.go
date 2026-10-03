@@ -565,10 +565,12 @@ func TestInvalidValue(t *testing.T) {
 	assert.Equal(t, ByteSlice{}, v.Bytes())
 	assert.Equal(t, Map{}, v.Map())
 	assert.Equal(t, Slice{}, v.Slice())
-	assert.Panics(t, func() { v.AsString() })
-	assert.Panics(t, func() { v.AsRaw() })
+	// Reads see a nil AnyValue as empty, because the decoder keeps one
+	// for a key-value pair that has no value on the wire.
+	assert.Equal(t, "", v.AsString())
+	assert.Nil(t, v.AsRaw())
+	assert.Equal(t, ValueTypeEmpty, v.Type())
 	assert.Panics(t, func() { _ = v.FromRaw(1) })
-	assert.Panics(t, func() { v.Type() })
 	assert.Panics(t, func() { v.SetStr("") })
 	assert.Panics(t, func() { v.SetInt(0) })
 	assert.Panics(t, func() { v.SetDouble(0) })
@@ -576,7 +578,10 @@ func TestInvalidValue(t *testing.T) {
 	assert.Panics(t, func() { v.SetEmptyBytes() })
 	assert.Panics(t, func() { v.SetEmptyMap() })
 	assert.Panics(t, func() { v.SetEmptySlice() })
-	assert.Panics(t, func() { v.CopyTo(NewValueEmpty()) })
+	dest := NewValueStr("v")
+	v.CopyTo(dest)
+	assert.Equal(t, ValueTypeEmpty, dest.Type())
+	assert.Panics(t, func() { NewValueStr("v").CopyTo(v) })
 }
 
 func generateTestValueMap() Value {

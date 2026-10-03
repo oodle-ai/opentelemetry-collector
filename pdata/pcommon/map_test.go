@@ -546,3 +546,69 @@ func TestInvalidMap(t *testing.T) {
 	assert.Panics(t, func() { v.AsRaw() })
 	assert.Panics(t, func() { _ = v.FromRaw(map[string]any{"foo": "bar"}) })
 }
+
+// A key-value pair from the wire can have no value field. The decoder
+// then keeps a nil AnyValue. The map must read it as an empty value and
+// must let a write replace it.
+func TestMapNilValue(t *testing.T) {
+	newNilMap := func() Map {
+		state := internal.StateMutable
+		origs := []*otlpcommon.KeyValue{
+			{Key: "k"},
+			{Key: "nested", Value: &otlpcommon.AnyValue{Value: &otlpcommon.AnyValue_KvlistValue{
+				KvlistValue: &otlpcommon.KeyValueList{Values: []*otlpcommon.KeyValue{{Key: "inner"}}},
+			}}},
+		}
+		return newMap(&origs, &state)
+	}
+
+	m := newNilMap()
+	v, ok := m.Get("k")
+	assert.True(t, ok)
+	assert.Equal(t, ValueTypeEmpty, v.Type())
+	assert.Equal(t, "", v.AsString())
+	assert.Nil(t, v.AsRaw())
+	assert.Equal(t, map[string]any{"k": nil, "nested": map[string]any{"inner": nil}}, m.AsRaw())
+	nested, _ := m.Get("nested")
+	assert.Equal(t, `{"inner":null}`, nested.AsString())
+
+	types := map[string]ValueType{}
+	m.Range(func(k string, v Value) bool {
+		types[k] = v.Type()
+		return true
+	})
+	assert.Equal(t, map[string]ValueType{"k": ValueTypeEmpty, "nested": ValueTypeMap}, types)
+
+	dest := NewMap()
+	m.CopyTo(dest)
+	assert.Equal(t, m.AsRaw(), dest.AsRaw())
+
+	// The destination reuses its own key-value pairs when they fit.
+	reused := newNilMap()
+	src := NewMap()
+	src.PutStr("a", "b")
+	src.PutInt("c", 1)
+	src.CopyTo(reused)
+	assert.Equal(t, map[string]any{"a": "b", "c": int64(1)}, reused.AsRaw())
+
+	puts := map[string]func(Map){
+		"str":    func(m Map) { m.PutStr("k", "v") },
+		"int":    func(m Map) { m.PutInt("k", 1) },
+		"double": func(m Map) { m.PutDouble("k", 1.5) },
+		"bool":   func(m Map) { m.PutBool("k", true) },
+		"empty":  func(m Map) { m.PutEmpty("k").SetStr("v") },
+		"bytes":  func(m Map) { m.PutEmptyBytes("k").FromRaw([]byte("v")) },
+		"map":    func(m Map) { m.PutEmptyMap("k").PutStr("x", "y") },
+		"slice":  func(m Map) { m.PutEmptySlice("k").AppendEmpty().SetStr("v") },
+	}
+	for name, put := range puts {
+		t.Run(name, func(t *testing.T) {
+			m := newNilMap()
+			put(m)
+			v, ok := m.Get("k")
+			assert.True(t, ok)
+			assert.NotEqual(t, ValueTypeEmpty, v.Type())
+			assert.Equal(t, 2, m.Len())
+		})
+	}
+}
