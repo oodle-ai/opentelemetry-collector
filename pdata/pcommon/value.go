@@ -176,9 +176,11 @@ func (v Value) FromRaw(iv any) error {
 }
 
 // Type returns the type of the value for this Value.
-// Calling this function on zero-initialized Value will cause a panic.
+// A key-value pair from the wire can have no value. The decoder then
+// keeps a nil AnyValue, and Type returns ValueTypeEmpty for it, as it
+// does for an AnyValue with no field set.
 func (v Value) Type() ValueType {
-	switch v.getOrig().Value.(type) {
+	switch v.getOrig().GetValue().(type) {
 	case *otlpcommon.AnyValue_StringValue:
 		return ValueTypeStr
 	case *otlpcommon.AnyValue_BoolValue:
@@ -321,7 +323,7 @@ func (v Value) SetEmptySlice() Slice {
 func (v Value) CopyTo(dest Value) {
 	dest.getState().AssertMutable()
 	destOrig := dest.getOrig()
-	switch ov := v.getOrig().Value.(type) {
+	switch ov := v.getOrig().GetValue().(type) {
 	case *otlpcommon.AnyValue_KvlistValue:
 		kv, ok := destOrig.Value.(*otlpcommon.AnyValue_KvlistValue)
 		if !ok {

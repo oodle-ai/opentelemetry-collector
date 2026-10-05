@@ -70,6 +70,23 @@ func (m Map) Get(key string) (Value, bool) {
 	return newValue(nil, m.getState()), false
 }
 
+// getForWrite is Get for the methods that change the value in place.
+// The decoder keeps a nil AnyValue for a key that has no value on the
+// wire, and a Set* call on a nil AnyValue panics. Reads must not
+// allocate, because concurrent reads of the same Map are permitted.
+func (m Map) getForWrite(key string) (Value, bool) {
+	for i := range *m.getOrig() {
+		akv := (*m.getOrig())[i]
+		if akv.Key == key {
+			if akv.Value == nil {
+				akv.Value = &otlpcommon.AnyValue{}
+			}
+			return newValue(akv.Value, m.getState()), true
+		}
+	}
+	return newValue(nil, m.getState()), false
+}
+
 // Remove removes the entry associated with the key and returns true if the key
 // was present in the map, otherwise returns false.
 func (m Map) Remove(key string) bool {
@@ -109,7 +126,7 @@ func (m Map) RemoveIf(f func(string, Value) bool) {
 // and return the updated/inserted value.
 func (m Map) PutEmpty(k string) Value {
 	m.getState().AssertMutable()
-	if av, existing := m.Get(k); existing {
+	if av, existing := m.getForWrite(k); existing {
 		av.getOrig().Value = nil
 		return newValue(av.getOrig(), m.getState())
 	}
@@ -122,7 +139,7 @@ func (m Map) PutEmpty(k string) Value {
 // updated to the map where the key already existed.
 func (m Map) PutStr(k string, v string) {
 	m.getState().AssertMutable()
-	if av, existing := m.Get(k); existing {
+	if av, existing := m.getForWrite(k); existing {
 		av.SetStr(v)
 	} else {
 		*m.getOrig() = append(*m.getOrig(), newKeyValueString(k, v))
@@ -134,7 +151,7 @@ func (m Map) PutStr(k string, v string) {
 // updated to the map where the key already existed.
 func (m Map) PutInt(k string, v int64) {
 	m.getState().AssertMutable()
-	if av, existing := m.Get(k); existing {
+	if av, existing := m.getForWrite(k); existing {
 		av.SetInt(v)
 	} else {
 		*m.getOrig() = append(*m.getOrig(), newKeyValueInt(k, v))
@@ -146,7 +163,7 @@ func (m Map) PutInt(k string, v int64) {
 // updated to the map where the key already existed.
 func (m Map) PutDouble(k string, v float64) {
 	m.getState().AssertMutable()
-	if av, existing := m.Get(k); existing {
+	if av, existing := m.getForWrite(k); existing {
 		av.SetDouble(v)
 	} else {
 		*m.getOrig() = append(*m.getOrig(), newKeyValueDouble(k, v))
@@ -158,7 +175,7 @@ func (m Map) PutDouble(k string, v float64) {
 // updated to the map where the key already existed.
 func (m Map) PutBool(k string, v bool) {
 	m.getState().AssertMutable()
-	if av, existing := m.Get(k); existing {
+	if av, existing := m.getForWrite(k); existing {
 		av.SetBool(v)
 	} else {
 		*m.getOrig() = append(*m.getOrig(), newKeyValueBool(k, v))
@@ -169,7 +186,7 @@ func (m Map) PutBool(k string, v bool) {
 func (m Map) PutEmptyBytes(k string) ByteSlice {
 	m.getState().AssertMutable()
 	bv := otlpcommon.AnyValue_BytesValue{}
-	if av, existing := m.Get(k); existing {
+	if av, existing := m.getForWrite(k); existing {
 		av.getOrig().Value = &bv
 	} else {
 		*m.getOrig() = append(*m.getOrig(), &otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{Value: &bv}})
@@ -181,7 +198,7 @@ func (m Map) PutEmptyBytes(k string) ByteSlice {
 func (m Map) PutEmptyMap(k string) Map {
 	m.getState().AssertMutable()
 	kvl := otlpcommon.AnyValue_KvlistValue{KvlistValue: &otlpcommon.KeyValueList{Values: []*otlpcommon.KeyValue(nil)}}
-	if av, existing := m.Get(k); existing {
+	if av, existing := m.getForWrite(k); existing {
 		av.getOrig().Value = &kvl
 	} else {
 		*m.getOrig() = append(*m.getOrig(), &otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{Value: &kvl}})
@@ -193,7 +210,7 @@ func (m Map) PutEmptyMap(k string) Map {
 func (m Map) PutEmptySlice(k string) Slice {
 	m.getState().AssertMutable()
 	vl := otlpcommon.AnyValue_ArrayValue{ArrayValue: &otlpcommon.ArrayValue{Values: []*otlpcommon.AnyValue(nil)}}
-	if av, existing := m.Get(k); existing {
+	if av, existing := m.getForWrite(k); existing {
 		av.getOrig().Value = &vl
 	} else {
 		*m.getOrig() = append(*m.getOrig(), &otlpcommon.KeyValue{Key: k, Value: &otlpcommon.AnyValue{Value: &vl}})
@@ -237,6 +254,9 @@ func (m Map) CopyTo(dest Map) {
 			akv := (*m.getOrig())[i]
 			destAkv := (*dest.getOrig())[i]
 			destAkv.Key = akv.Key
+			if destAkv.Value == nil {
+				destAkv.Value = &otlpcommon.AnyValue{}
+			}
 			newValue(akv.Value, m.getState()).CopyTo(newValue(destAkv.Value, dest.getState()))
 		}
 		return
