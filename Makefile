@@ -258,6 +258,12 @@ genproto_sub:
 	cp -R $(PROTO_INTERMEDIATE_DIR)/$(PROTO_PACKAGE)/* $(PROTO_TARGET_GEN_DIR)/
 	# Remove protoc-gen-go-grpc output; vtproto grpc feature provides these.
 	find $(PROTO_TARGET_GEN_DIR) -name '*_grpc.pb.go' -delete
+	# The zero-copy decoders alias the ID fields into the caller's buffer, and
+	# ResetVT keeps those slices for reuse. A later copying decode then writes
+	# into a buffer that the caller owns again, and two IDs can overwrite each
+	# other. ResetVT must drop the ID slices instead.
+	find $(PROTO_TARGET_GEN_DIR) -name '*_vtproto.pb.go' -exec sed -E -i.bak 's/(f[0-9]+) := m\.(TraceId|SpanId|ParentSpanId)\[:0\]$$/\1 := []byte(nil)/' {} \;
+	find $(PROTO_TARGET_GEN_DIR) -name '*_vtproto.pb.go.bak' -delete
 	rm -rf $(PROTO_INTERMEDIATE_DIR)/go.opentelemetry.io
 
 	@rm -rf $(OPENTELEMETRY_PROTO_SRC_DIR)/*

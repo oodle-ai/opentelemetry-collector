@@ -1925,8 +1925,8 @@ var vtprotoPool_Span_Link = sync.Pool{
 
 func (m *Span_Link) ResetVT() {
 	if m != nil {
-		f0 := m.TraceId[:0]
-		f1 := m.SpanId[:0]
+		f0 := []byte(nil)
+		f1 := []byte(nil)
 		for _, mm := range m.Attributes {
 			mm.ResetVT()
 		}
@@ -1955,9 +1955,9 @@ var vtprotoPool_Span = sync.Pool{
 
 func (m *Span) ResetVT() {
 	if m != nil {
-		f0 := m.TraceId[:0]
-		f1 := m.SpanId[:0]
-		f2 := m.ParentSpanId[:0]
+		f0 := []byte(nil)
+		f1 := []byte(nil)
+		f2 := []byte(nil)
 		for _, mm := range m.Attributes {
 			mm.ResetVT()
 		}

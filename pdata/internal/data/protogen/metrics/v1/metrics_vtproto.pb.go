@@ -4755,8 +4755,8 @@ var vtprotoPool_Exemplar = sync.Pool{
 
 func (m *Exemplar) ResetVT() {
 	if m != nil {
-		f0 := m.SpanId[:0]
-		f1 := m.TraceId[:0]
+		f0 := []byte(nil)
+		f1 := []byte(nil)
 		for _, mm := range m.FilteredAttributes {
 			mm.ResetVT()
 		}

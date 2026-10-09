@@ -1144,8 +1144,8 @@ func (m *LogRecord) ResetVT() {
 			mm.ResetVT()
 		}
 		f0 := m.Attributes[:0]
-		f1 := m.TraceId[:0]
-		f2 := m.SpanId[:0]
+		f1 := []byte(nil)
+		f2 := []byte(nil)
 		m.Reset()
 		m.Attributes = f0
 		m.TraceId = f1
